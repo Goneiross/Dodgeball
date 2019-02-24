@@ -12,7 +12,7 @@ test.o: test.cc test.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 main.o: main.cc test.h
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) `pkg-config gtkmm-3.0 --cflags --libs` -c $< -o $@
 
 
 test: $(OFILES)
