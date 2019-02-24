@@ -7,7 +7,7 @@ int draw(int argc, char* argv[]){
       "org.gtkmm.examples.base");
 
     Gtk::Window window;
-    window.set_default_size(200, 200);
+    window.set_default_size(400, 400);
 
   return app->run(window);
 }
