@@ -25,5 +25,5 @@ simulation.o: simulation.cc simulation.h ball.h map.h player.h
 tools.o: tools.cc tools.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-project: $(OFILES)
+projet: $(OFILES)
 	$(CC) $(OFILES) `pkg-config gtkmm-3.0 --cflags --libs` -o $@
