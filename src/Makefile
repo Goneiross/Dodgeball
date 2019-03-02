@@ -1,19 +1,29 @@
 CC     = g++
 CFLAGS = -g -Wall -std=c++11
-OFILES = main.o window.o
-
-all:
-	test
-
+OFILES = ball.o GUI.o main.o map.o player.o simulation.o tools.o
 clean:
 	@/bin/rm -f *.o *.x *.c~ *.h~ prog
 
-window.o: window.cc window.h
+ball.o: ball.cc ball.h tools.h
+	$(CC) $(CFLAGS) -c $< -o $@	
+
+GUI.o: GUI.cc GUI.h 
 	$(CC) $(CFLAGS) `pkg-config gtkmm-3.0 --cflags --libs` -c $< -o $@
 
-main.o: main.cc window.h
+main.o: main.cc GUI.h
 	$(CC) $(CFLAGS) `pkg-config gtkmm-3.0 --cflags --libs` -c $< -o $@
 
+map.o: map.cc map.h tools.h
+	$(CC) $(CFLAGS) -c $< -o $@	
 
-test: $(OFILES)
+player.o: player.cc player.h tools.h
+	$(CC) $(CFLAGS) -c $< -o $@	
+
+simulation.o: simulation.cc simulation.h ball.h map.h player.h
+	$(CC) $(CFLAGS) -c $< -o $@	
+
+tools.o: tools.cc tools.h
+	$(CC) $(CFLAGS) -c $< -o $@	
+
+project: $(OFILES)
 	$(CC) $(OFILES) `pkg-config gtkmm-3.0 --cflags --libs` -o $@
