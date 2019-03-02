@@ -1,12 +1,14 @@
 #include <gtkmm.h>
-#include "window.h"
+#include "GUI.h"
+
+using namespace Gtk;
 
 int draw(int argc, char* argv[]){
     auto app =
-    Gtk::Application::create(argc, argv,
+    Application::create(argc, argv,
       "org.gtkmm.examples.base");
 
-    Gtk::Window window;
+    Window window;
     window.set_default_size(400, 400);
 
   return app->run(window);

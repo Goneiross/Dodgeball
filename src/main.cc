@@ -1,6 +1,7 @@
 #include <iostream>
-#include <gtkmm.h>
-#include "window.h"
+
+#include "GUI.h"
+#include "simulation.h"
 
 using namespace std;
 
