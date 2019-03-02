@@ -3,10 +3,9 @@
 
 using namespace Gtk;
 
-int draw(int argc, char* argv[]){
+int draw(){
     auto app =
-    Application::create(argc, argv,
-      "org.gtkmm.examples.base");
+    Application::create();
 
     Window window;
     window.set_default_size(400, 400);

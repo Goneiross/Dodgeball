@@ -6,6 +6,5 @@
 using namespace std;
 
 int main(int argc, char* argv[]){
-    draw(argc, argv);
     return 0;
 }

@@ -1,1 +1,1 @@
-int draw(int argc, char* argv[]);
+int draw();
