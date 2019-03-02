@@ -2,7 +2,7 @@ CC     = g++
 CFLAGS = -g -Wall -std=c++11
 OFILES = ball.o GUI.o main.o map.o player.o simulation.o tools.o
 clean:
-	@/bin/rm -f *.o *.x *.c~ *.h~ prog
+	@/bin/rm -f *.o *.x *.c~ *.h~ projet
 
 ball.o: ball.cc ball.h tools.h
 	$(CC) $(CFLAGS) -c $< -o $@	
