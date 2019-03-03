@@ -6,21 +6,8 @@
 
 using namespace std;
 
-class Player {
-    public :
-        Player(int x, int y,  int nbCell);
-        void updatePosition(double angle);
-        bool touchedAndDead();
-        ~Player(){};
-        int x(){return xPosition;};
-        int y(){return yPosition;};
-    private :
-        double xPosition, yPosition;
-        double radius;
-        int nbt;
-        double count;
-        double velocity;
-};
+int Player::x(){return xPosition;};
+int Player::y(){return yPosition;};
 
 Player::Player(int x0, int y0, int nbCell){
     xPosition = x0;
