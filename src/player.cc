@@ -12,13 +12,6 @@ Player::Player(double x0, double y0, int nbCell){
     radius = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
     velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
 }
-
-double Player::x() const{return xPosition;};
-double Player::y() const{return yPosition;};
-double Player::getRadius() const{return radius;}
-double Player::getCount() const{return count;}
-double Player::getTimeTouched() const{return timeTouched;}
-
 void Player::updatePosition(double angle){
     xPosition += cos(angle) * velocity;
     yPosition += sin(angle) * velocity;
@@ -30,3 +23,8 @@ bool Player::touchedAndDead(){
     }
     return(false);
 }
+double Player::x() const{return xPosition;};
+double Player::y() const{return yPosition;};
+double Player::getRadius() const{return radius;}
+double Player::getCount() const{return count;}
+double Player::getTimeTouched() const{return timeTouched;}
