@@ -9,7 +9,7 @@ using namespace std;
 Player::Player(double x0, double y0, int nbCell){
     xPosition = x0;
     yPosition = y0;
-    radius = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
+    radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
     velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
 }
 void Player::updatePosition(double angle){
