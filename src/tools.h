@@ -23,3 +23,8 @@ class Square {
         double xPosition;
         double yPosition;
 };
+
+double distance(Circle c1, Circle c2);
+double distance(Square s1, Square s2);
+double distance(Square s, Circle c);
+double distance(Circle c, Square s);
