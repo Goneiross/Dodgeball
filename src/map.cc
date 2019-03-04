@@ -18,3 +18,4 @@ void Map::addObstacle(int xPosition, int yPosition){
 void Map::removeObstacle(int xPosition, int yPosition){
     grid[xPosition][yPosition] = false;
 }
+bool Map::isObstacle(double x, double y) const{return grid[int(x)][int(y)];}
