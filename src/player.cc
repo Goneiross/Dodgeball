@@ -6,10 +6,10 @@
 
 using namespace std;
 
-int Player::x(){return xPosition;};
-int Player::y(){return yPosition;};
+double Player::x() const{return xPosition;};
+double Player::y() const{return yPosition;};
 
-Player::Player(int x0, int y0, int nbCell){
+Player::Player(double x0, double y0, int nbCell){
     xPosition = x0;
     yPosition = y0;
     radius = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
