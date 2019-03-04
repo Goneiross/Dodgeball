@@ -24,26 +24,32 @@ double Square::y () const {return yPosition;}
 // Need to optimize distance computation
 // For example do a generic function computing distance between two points
 
+double distance(double x, double y){
+    return abs(x - y);
+}
+double distance(double x1, double y1, double x2, double y2){
+    return sqrt(pow(distance(x1, x2), 2) + pow(distance(y1, y2), 2));
+}
 double distance(Circle c1, Circle c2){ 
-    return sqrt(pow(c2.x - c1.x, 2) + pow(c2.y - c1.y, 2)) - c1.getRadius - c2.getRadius;
+    return distance(c1.x, c1.y, c2.x, c2.y) - c1.getRadius - c2.getRadius;
 }
 double distance(Square s1, Square s2){
-    double x = s2.x - s1.x;
-    double y = s2.y - s1.y;
+    double x = abs(s2.x - s1.x);
+    double y = abs(s2.y - s1.y);
     double angle = atan(y /x);
     double included = (s1.getSide / 2 + s2.getSide / 2) / cos(angle);
     return sqrt(pow(x, 2) + pow(y, 2)) - included;
 }
 double distance(Square s, Circle c){
-    double x = c.x - s.x;
-    double y = c.y - s.y;
+    double x = abs(c.x - s.x);
+    double y = abs(c.y - s.y);
     double angle = atan(y /x);
     double included = (c.getRadius / 2 + s.getSide / 2) / cos(angle);
     return sqrt(pow(x, 2) + pow(y, 2)) - included;
 }
 double distance(Circle c, Square s){
-    double x = c.x - s.x;
-    double y = c.y - s.y;
+    double x = abs(c.x - s.x);
+    double y = abs(c.y - s.y);
     double angle = atan(y /x);
     double included = (c.getRadius / 2 + s.getSide / 2) / cos(angle);
     return sqrt(pow(x, 2) + pow(y, 2)) - included;
