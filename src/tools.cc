@@ -21,6 +21,9 @@ double Square::getSide () const {return side;}
 double Square::x () const {return xPosition;}
 double Square::y () const {return yPosition;}
 
+// Need to optimize distance computation
+// For example do a generic function computing distance between two points
+
 double distance(Circle c1, Circle c2){ 
     return sqrt(pow(c2.x - c1.x, 2) + pow(c2.y - c1.y, 2)) - c1.getRadius - c2.getRadius;
 }
