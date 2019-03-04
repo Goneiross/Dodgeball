@@ -10,7 +10,7 @@ ball.o: ball.cc ball.h tools.h
 GUI.o: GUI.cc GUI.h 
 	$(CC) $(CFLAGS) `pkg-config gtkmm-3.0 --cflags --libs` -c $< -o $@
 
-main.o: main.cc GUI.h
+main.o: main.cc GUI.h simulation.h
 	$(CC) $(CFLAGS) `pkg-config gtkmm-3.0 --cflags --libs` -c $< -o $@
 
 map.o: map.cc map.h tools.h
