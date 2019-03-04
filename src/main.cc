@@ -27,7 +27,5 @@ int main(int argc, char* argv[]){
     } else {
         cout << "Error, too many arguments, type '--help' for help" << endl;
     }
-    cout << "Mode : " << mode << endl; // #AskBoulic for cout
-    cout << "InputFile : " << inputFile << endl; // #AskBoulic for cout
     return 0;
 }
