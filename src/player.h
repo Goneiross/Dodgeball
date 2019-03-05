@@ -1,6 +1,6 @@
 class Player {
     public :
-        Player(double x, double y,  int nbCell);
+        Player(double x0, double y0,  int nbCell);
         Player(double x0, double y0, double c, int t, int nbCell);
         ~Player(){};
         double x() const;
