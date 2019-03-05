@@ -14,7 +14,7 @@ Player::Player(double x0, double y0, int nbCell){
     radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
     velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
 }
-Player::Player(double x0, double y0, double c, int t, int nbCell){
+Player::Player(double x0, double y0, int t, double c, int nbCell){
     xPosition = x0;
     yPosition = y0;
     timeTouched = c;
