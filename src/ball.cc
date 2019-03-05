@@ -5,13 +5,14 @@
 
 using namespace std;
 
-Ball::Ball(int x0, int y0, int nbCell){
+Ball::Ball(int x0, int y0, double a, int nbCell){
     xPosition = x0;
     yPosition = y0;
+    angle = a;
     radius = COEF_RAYON_BALLE* (SIDE / nbCell);
     velocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
 }
-void Ball::updatePosition(double angle){
+void Ball::updatePosition(){
     xPosition += cos(angle) * velocity;
     yPosition += sin(angle) * velocity;
 }
