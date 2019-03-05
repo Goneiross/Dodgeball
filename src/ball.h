@@ -1,6 +1,6 @@
 class Ball {
     public :
-        Ball(int x, int y, double angle, int nbCell);
+        Ball(double x, double y, double angle, int nbCell);
         ~Ball();
         double x () const;
         double y () const;

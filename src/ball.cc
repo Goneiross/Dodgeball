@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Ball::Ball(int x0, int y0, double a, int nbCell){
+Ball::Ball(double x0, double y0, double a, int nbCell){
     xPosition = x0;
     yPosition = y0;
     angle = a;
