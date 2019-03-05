@@ -1,10 +1,15 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "GUI.h"
 #include "simulation.h"
 
 using namespace std;
+
+int readFile(){
+    
+}
 
 int main(int argc, char* argv[]){
     int mode = 0; // Maybe create a function returning struct with Mode and Inputfile
@@ -27,5 +32,18 @@ int main(int argc, char* argv[]){
     } else {
         cout << "Error, too many arguments, type '--help' for help" << endl;
     }
+
+    ifstream flux;
+    flux.open(inputFile);
+    if (!flux) {
+        cout << "Unable to open file datafile.txt"; // Maybe better with cerr
+        exit(1); 
+    }
+    string x;
+    while(flux >> x){
+        cout << x << endl;
+    }
+    flux.close();
+
     return 0;
 }
