@@ -31,7 +31,7 @@ void simulation(string inputFile){
             flux >> tmp1;
             flux >> tmp2;
             flux >> tmp3;
-            players[i] = new Player(tmp, tmp1, tmp2, tmp3);
+            players[i] = new Player(stod(tmp), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell);
         }
         flux >> nbObstacle;
         Map mainMap = new Map(nbCell, nbCell);
