@@ -9,6 +9,16 @@ using namespace std;
 Player::Player(double x0, double y0, int nbCell){
     xPosition = x0;
     yPosition = y0;
+    timeTouched = 0;
+    count = 0;
+    radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
+    velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
+}
+Player::Player(double x0, double y0, double c, int t, int nbCell){
+    xPosition = x0;
+    yPosition = y0;
+    timeTouched = c;
+    count = t;
     radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
     velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
 }
