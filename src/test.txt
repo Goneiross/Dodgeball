@@ -1,0 +1,15 @@
+# Nom du scenario de test
+#  
+
+nbCell 
+nbPlayer 
+x0  y0 nbt0  count0 
+x1  y1 nbt1  count1
+
+nbObstacle 
+ligne0  colonne0
+ligne1  colonne1
+
+nbBall 
+x0 y0 α0 
+x1 y1 α1 
