@@ -17,8 +17,8 @@ Player::Player(double x0, double y0, int nbCell){
 Player::Player(double x0, double y0, int t, double c, int nbCell){
     xPosition = x0;
     yPosition = y0;
-    timeTouched = c;
-    count = t;
+    timeTouched = t;
+    count = c;
     radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
     velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
 }
