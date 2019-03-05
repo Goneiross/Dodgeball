@@ -22,6 +22,7 @@ int main(int argc, char* argv[]){
                 cout << "Type :" << endl << "'Error' to check input file" << endl 
                 << "'Step' to run only one step of the simulation" << endl
                 << "'filename.extension' to use this input file" << endl; // To do
+                exit(1);
             } else {          // #AskBoulic for extension txt
                 inputFile = argv[i];
             }
