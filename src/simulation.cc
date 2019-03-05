@@ -34,11 +34,11 @@ void simulation(string inputFile){
             players[i] = new Player(stod(tmp), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell);
         }
         flux >> nbObstacle;
-        Map mainMap = new Map(nbCell, nbCell);
+        Map mainMap(nbCell, nbCell); //Is this correct ?
         for (int i = 0; i < nbObstacle; i++){
             flux >> tmp;
             flux >> tmp1;
-            addObstacle(tmp, tmp1);
+            mainMap.addObstacle(stod(tmp), stod(tmp1));
         }
         flux >> nbBall;
         Ball* balls[nbBall];
@@ -46,7 +46,7 @@ void simulation(string inputFile){
             flux >> tmp;
             flux >> tmp1;
             flux >> tmp2;
-            balls[i] = new Ball(tmp, tmp1, tmp2, nbCell);
+            balls[i] = new Ball(stod(tmp), stod(tmp1), stod(tmp2), nbCell);
         }
     }
     flux.close();
