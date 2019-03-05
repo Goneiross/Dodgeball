@@ -19,7 +19,9 @@ int main(int argc, char* argv[]){
             } else if (string(argv[i]) == "Step"){
                 mode = 2;
             } else if(string(argv[i]) == "--help") { // Maybe quit program after --help ? break ?
-                cout << "" << endl; // To do
+                cout << "Type :" << endl << "'Error' to check input file" << endl 
+                << "'Step' to run only one step of the simulation" << endl
+                << "'filename.extension' to use this input file" << endl; // To do
             } else {          // #AskBoulic for extension txt
                 inputFile = argv[i];
             }
