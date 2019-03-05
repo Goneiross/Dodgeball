@@ -7,4 +7,4 @@ class Map {
         bool isObstacle(double x, double y) const;
     private :
         bool** grid;
-}
+};
