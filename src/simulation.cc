@@ -15,6 +15,7 @@ void simulation(string inputFile){
         cout << "Unable to open file datafile.txt"; // Maybe better with cerr
         exit(0); 
     }
+    
     string tmp0, tmp1, tmp2, tmp3;
     while(flux){
         flux >> tmp0;
