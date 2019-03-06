@@ -9,8 +9,8 @@ Circle::Circle(double x, double y, double r){
     radius = r;
 }
 double Circle::getRadius () const {return radius;}
-double Circle::getx () const {return xPosition;}
-double Circle::gety () const {return yPosition;}
+double Circle::getX () const {return xPosition;}
+double Circle::getY () const {return yPosition;}
 
 Square::Square(double x, double y, double s){
     xPosition = x;
@@ -18,8 +18,8 @@ Square::Square(double x, double y, double s){
     side = s;
 }
 double Square::getSide () const {return side;}
-double Square::getx () const {return xPosition;}
-double Square::gety () const {return yPosition;}
+double Square::getX () const {return xPosition;}
+double Square::getY () const {return yPosition;}
 
 // Need to optimize distance computation
 // For example do a generic function computing distance between two points
