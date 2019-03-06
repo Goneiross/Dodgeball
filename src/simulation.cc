@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+
 #include "simulation.h"
 #include "ball.h"
 #include "map.h"
