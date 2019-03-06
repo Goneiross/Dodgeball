@@ -3,8 +3,8 @@ class Player {
         Player(double x0, double y0,  int nbCell);
         Player(double x0, double y0, int t, double c, int nbCell);
         ~Player(){};
-        double x() const;
-        double y() const;
+        double getX() const;
+        double getY() const;
         double getRadius() const;
         double getCount() const;
         double getTimeTouched() const;

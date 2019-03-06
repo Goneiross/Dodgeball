@@ -16,6 +16,6 @@ void Ball::updatePosition(){
     xPosition += cos(angle) * velocity;
     yPosition += sin(angle) * velocity;
 }
-double Ball::x () const {return xPosition;}
-double Ball::y () const {return yPosition;}
+double Ball::getX () const {return xPosition;}
+double Ball::getY () const {return yPosition;}
 double Ball::getRadius () const {return radius;}

@@ -33,8 +33,8 @@ bool Player::touchedAndDead(){
     }
     return(false);
 }
-double Player::x() const{return xPosition;};
-double Player::y() const{return yPosition;};
+double Player::getX() const{return xPosition;};
+double Player::getY() const{return yPosition;};
 double Player::getRadius() const{return radius;}
 double Player::getCount() const{return count;}
 double Player::getTimeTouched() const{return timeTouched;}
