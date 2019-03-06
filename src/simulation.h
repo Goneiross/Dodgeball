@@ -1,1 +1,1 @@
-void simulation(string inputFile);
+void simulation(std::string inputFile);

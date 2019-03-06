@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
 #include "simulation.h"
 #include "ball.h"
 #include "map.h"
@@ -9,7 +8,7 @@
 
 using namespace std;
 
-void simulation(string inputFile){
+void simulation(std::string inputFile){
     int nbCell, nbPlayer, nbObstacle, nbBall;
 
     ifstream flux (inputFile, ios::in);
