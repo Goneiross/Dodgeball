@@ -2,8 +2,8 @@ class Ball {
     public :
         Ball(double x, double y, double angle, int nbCell);
         ~Ball();
-        double x () const;
-        double y () const;
+        double getX () const;
+        double getY () const;
         double getRadius () const;
         void updatePosition();
     private :
