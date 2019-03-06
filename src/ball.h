@@ -1,7 +1,7 @@
 class Ball {
     public :
         Ball(double x, double y, double angle, int nbCell);
-        ~Ball();
+        ~Ball(){};
         double getX () const;
         double getY () const;
         double getRadius () const;
