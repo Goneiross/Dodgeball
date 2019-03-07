@@ -1,15 +1,12 @@
-# Nom du scenario de test
+# Test1
 #  
 
-nbCell 
-nbPlayer 
-x0  y0 nbt0  count0 
-x1  y1 nbt1  count1
+10
+2
+0  0 0  0 
+1  1 0  0
 
-nbObstacle 
-ligne0  colonne0
-ligne1  colonne1
+1 
+0  1
 
-nbBall 
-x0 y0 α0 
-x1 y1 α1 
+0
