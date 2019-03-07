@@ -36,11 +36,11 @@ void simulation(std::string inputFile){
             players[i] = new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell);
         }
         flux >> nbObstacle;
-        Map mainMap(nbCell, nbCell); //Is this correct ? - could modify the class to take only one argument (squared map)
+        Map* mainMap = new Map(nbCell, nbCell); //Is this correct ? - could modify the class to take only one argument (squared map)
         for (int i = 0; i < nbObstacle; i++){
             flux >> tmp0;
             flux >> tmp1;
-            mainMap.addObstacle(stod(tmp0), stod(tmp1));
+            mainMap->addObstacle(stod(tmp0), stod(tmp1));
         }
         flux >> nbBall;
         Ball* balls[nbBall];
