@@ -1,7 +1,10 @@
 #include <math.h>
 #include "define.h"
 #include "ball.h"
+#ifndef TOOLS_H
+#define TOOLS_H
 #include "tools.h"
+#endif
 
 using namespace std;
 

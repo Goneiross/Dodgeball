@@ -1,3 +1,8 @@
+#ifndef TOOLS_H
+#define TOOLS_H
+#include "tools.h"
+#endif
+
 class Ball {
     public :
         Ball(double x, double y, double angle, int nbCell);
