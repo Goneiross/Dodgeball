@@ -34,8 +34,8 @@ void simulation(std::string inputFile){
             flux >> tmp1;
             flux >> tmp2;
             flux >> tmp3;
-            if(stod(tmp0) > double(nbCell) || stod(tmp1) > double(nbCell)){
-                PLAYER_OUT(i+1);
+            if((stod(tmp0) > double(nbCell)) || (stod(tmp1) > double(nbCell))){
+                cout << PLAYER_OUT(i+1) << endl;
                 exit(1);
                 // EXIT or NOT ? 
             } else {
@@ -48,15 +48,15 @@ void simulation(std::string inputFile){
             flux >> tmp0;
             flux >> tmp1;
             if(stoi(tmp0) > nbCell){
-                OBSTACLE_VALUE_INCORRECT(stoi(tmp0));
+                cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp0)) << endl;
                 exit(1);
                 // EXIT or NOT ? 
             } else if(stoi(tmp1) > nbCell){
-                OBSTACLE_VALUE_INCORRECT(stoi(tmp1));
+                cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp1)) << endl;
                 exit(1);
                 // EXIT or NOT ? 
             } else if(mainMap->isObstacle(stoi(tmp0), stoi(tmp1))){
-                MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1));
+                cout << MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1)) << endl;
             } else {
                 mainMap->addObstacle(stod(tmp0), stod(tmp1));
             }
@@ -68,7 +68,7 @@ void simulation(std::string inputFile){
             flux >> tmp1;
             flux >> tmp2;
             if(stod(tmp0) > double(nbCell) || stod(tmp1) > double(nbCell)){
-                BALL_OUT(i+1);
+                cout << BALL_OUT(i+1) << endl;
                 exit(1);
                 // EXIT or NOT ? 
             } else {
