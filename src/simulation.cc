@@ -5,6 +5,7 @@
 #include "ball.h"
 #include "map.h"
 #include "player.h"
+#include "error.h"
 
 using namespace std;
 
@@ -33,14 +34,32 @@ void simulation(std::string inputFile){
             flux >> tmp1;
             flux >> tmp2;
             flux >> tmp3;
-            players[i] = new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell);
+            if(stod(tmp0) > double(nbCell) || stod(tmp1) > double(nbCell)){
+                PLAYER_OUT(i+1);
+                exit(1);
+                // EXIT or NOT ? 
+            } else {
+                players[i] = new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell);
+            }
         }
         flux >> nbObstacle;
         Map* mainMap = new Map(nbCell, nbCell); //Is this correct ? - could modify the class to take only one argument (squared map)
         for (int i = 0; i < nbObstacle; i++){
             flux >> tmp0;
             flux >> tmp1;
-            mainMap->addObstacle(stod(tmp0), stod(tmp1));
+            if(stoi(tmp0) > nbCell){
+                OBSTACLE_VALUE_INCORRECT(stoi(tmp0));
+                exit(1);
+                // EXIT or NOT ? 
+            } else if(stoi(tmp1) > nbCell){
+                OBSTACLE_VALUE_INCORRECT(stoi(tmp1));
+                exit(1);
+                // EXIT or NOT ? 
+            } else if(mainMap->isObstacle(stoi(tmp0), stoi(tmp1))){
+                MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1));
+            } else {
+                mainMap->addObstacle(stod(tmp0), stod(tmp1));
+            }
         }
         flux >> nbBall;
         Ball* balls[nbBall];
@@ -48,7 +67,13 @@ void simulation(std::string inputFile){
             flux >> tmp0;
             flux >> tmp1;
             flux >> tmp2;
-            balls[i] = new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell);
+            if(stod(tmp0) > double(nbCell) || stod(tmp1) > double(nbCell)){
+                BALL_OUT(i+1);
+                exit(1);
+                // EXIT or NOT ? 
+            } else {
+                balls[i] = new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell);
+            }
         }
     }
     flux.close();
