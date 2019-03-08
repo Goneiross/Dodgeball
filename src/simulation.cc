@@ -1,3 +1,4 @@
+//RAJOUTER IFNDEF
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -31,7 +32,7 @@ void simulation(std::string inputFile){
         } else if (part == 2){
             Player* players[nbPlayer];
             flux >> tmp1 >> tmp2 >> tmp3;
-            if((stod(tmp0) > double(nbCell)) || (stod(tmp1) > double(nbCell))){
+            if((abs(stod(tmp0)) > DIM_MAX || abs((stod(tmp1)) > DIM_MAX))){
                 cout << PLAYER_OUT(p+1) << endl;
                 exit(1);
             } else {
@@ -63,7 +64,7 @@ void simulation(std::string inputFile){
         } else if (part == 6){
             Ball* balls[nbBall];
             flux >> tmp1 >> tmp2;
-            if(stod(tmp0) > double(nbCell) || stod(tmp1) > double(nbCell)){
+            if(abs(stod(tmp0)) > DIM_MAX || abs(stod(tmp1)) > DIM_MAX){
                 cout << BALL_OUT(b+1) << endl;
                 exit(1);
             } else {
