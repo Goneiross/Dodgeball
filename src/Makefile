@@ -19,7 +19,7 @@ map.o: map.cc map.h tools.h
 player.o: player.cc player.h tools.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-simulation.o: simulation.cc simulation.h ball.h map.h player.h
+simulation.o: simulation.cc simulation.h ball.h map.h player.h error.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 tools.o: tools.cc tools.h

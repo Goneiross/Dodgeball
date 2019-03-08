@@ -1,10 +1,13 @@
+//RAJOUTER IFNDEF
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 #include "simulation.h"
 #include "ball.h"
 #include "map.h"
 #include "player.h"
+#include "error.h"
 
 using namespace std;
 
@@ -23,6 +26,10 @@ void simulation(std::string inputFile){
             do {flux.get(tmp);} while (tmp != '\n');
         } else if(part == 0){
             nbCell = stoi(tmp0);
+            if ((nbCell > MAX_CELL) || (nbCell < MIN_CELL)){
+                cout << "Error, wrong cell number" << endl; //AskBoulic
+                exit(1);
+            }
             part++;
         } else if (part == 1){
             nbPlayer = stoi(tmp0);
@@ -30,7 +37,12 @@ void simulation(std::string inputFile){
         } else if (part == 2){
             Player* players[nbPlayer];
             flux >> tmp1 >> tmp2 >> tmp3;
-            players[p] = new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell);
+            if(((abs(stoi(tmp0)) > DIM_MAX) || (abs((stoi(tmp1)) > DIM_MAX)))){ //must be doubles ? (vabs(double) ambiguous)
+                cout << PLAYER_OUT(p+1) << endl;
+                exit(1);
+            } else {
+                players[p] = new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell);
+            }
             p ++;
             if (p == nbPlayer){part++;}
         } else if (part == 3){
@@ -38,7 +50,17 @@ void simulation(std::string inputFile){
             part++;
         } else if (part == 4){
             flux >> tmp1;
-            mainMap->addObstacle(stod(tmp0), stod(tmp1));
+            if(stoi(tmp0) > nbCell){
+                cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp0)) << endl;
+                exit(1);
+            } else if(stoi(tmp1) > nbCell){
+                cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp1)) << endl;
+                exit(1);
+            } else if(mainMap->isObstacle(stoi(tmp0), stoi(tmp1))){
+                cout << MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1)) << endl;
+            } else {
+                mainMap->addObstacle(stod(tmp0), stod(tmp1));
+            }
             o++;
             if (o == nbObstacle){part++;}
         } else if (part == 5){
@@ -47,7 +69,12 @@ void simulation(std::string inputFile){
         } else if (part == 6){
             Ball* balls[nbBall];
             flux >> tmp1 >> tmp2;
-            balls[b] = new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell);
+            if((abs(stoi(tmp0)) > DIM_MAX) || (abs(stoi(tmp1)) > DIM_MAX)){     //est-ce que tmp0-1 must be d (marcherait pas)
+                cout << BALL_OUT(b+1) << endl;
+                exit(1);
+            } else {
+                balls[b] = new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell);
+            }
             b++;
             if (b == nbBall){part++;}
         } else {
