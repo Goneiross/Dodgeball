@@ -14,6 +14,7 @@ Ball::Ball(double x0, double y0, double a, int nbCell){
     angle = a;
     radius = COEF_RAYON_BALLE* (SIDE / nbCell);
     velocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
+    Circle* hitbox = new Circle(xPosition, yPosition, radius);
 }
 void Ball::updatePosition(){
     xPosition += cos(angle) * velocity;

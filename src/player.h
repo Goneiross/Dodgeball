@@ -1,3 +1,8 @@
+#ifndef TOOLS_H
+#define TOOLS_H
+#include "tools.h"
+#endif
+
 class Player {
     public :
         Player(double x0, double y0,  int nbCell);
@@ -16,4 +21,5 @@ class Player {
         int timeTouched;
         double count;
         double velocity;
+        Circle* hitBox;
 };

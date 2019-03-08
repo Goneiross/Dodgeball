@@ -16,4 +16,5 @@ class Ball {
         double radius;
         double velocity;
         double angle;
+        Circle* hitBox;
 };

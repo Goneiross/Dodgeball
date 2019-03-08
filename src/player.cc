@@ -1,7 +1,10 @@
 #include <math.h>
 #include <iostream>
 #include "player.h"
+#ifndef TOOLS_H
+#define TOOLS_H
 #include "tools.h"
+#endif
 #include "define.h"
 
 using namespace std;
@@ -13,6 +16,7 @@ Player::Player(double x0, double y0, int nbCell){
     count = 0;
     radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
     velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
+    Circle* hitbox = new Circle(xPosition, yPosition, radius);
 }
 Player::Player(double x0, double y0, int t, double c, int nbCell){
     xPosition = x0;
@@ -21,6 +25,7 @@ Player::Player(double x0, double y0, int t, double c, int nbCell){
     count = c;
     radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
     velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
+    Circle* hitbox = new Circle(xPosition, yPosition, radius);
 }
 void Player::updatePosition(double angle){
     xPosition += cos(angle) * velocity;
