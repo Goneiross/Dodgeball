@@ -1,14 +1,7 @@
 	 # this test file is CORRECT
 
-<<<<<<< HEAD
-10
-2
-15  0 0  0 
-1  1 0  0
-=======
 # nbCell
 	10	
->>>>>>> master
 
 # number of players
 	 5	
