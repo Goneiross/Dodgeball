@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 #include "simulation.h"
 #include "ball.h"
 #include "map.h"
@@ -25,7 +26,7 @@ void simulation(std::string inputFile){
             do {flux.get(tmp);} while (tmp != '\n');
         } else if(part == 0){
             nbCell = stoi(tmp0);
-            if (nbCell > MAX_CELL || nbCell < MIN_CELL){
+            if ((nbCell > MAX_CELL) || (nbCell < MIN_CELL)){
                 cout << "Error, wrong cell number" << endl; //AskBoulic
                 exit(1);
             }
@@ -36,7 +37,7 @@ void simulation(std::string inputFile){
         } else if (part == 2){
             Player* players[nbPlayer];
             flux >> tmp1 >> tmp2 >> tmp3;
-            if((abs(stod(tmp0)) > DIM_MAX || abs((stod(tmp1)) > DIM_MAX))){
+            if(((abs(stoi(tmp0)) > DIM_MAX) || (abs((stoi(tmp1)) > DIM_MAX)))){ //must be doubles ? (vabs(double) ambiguous)
                 cout << PLAYER_OUT(p+1) << endl;
                 exit(1);
             } else {
@@ -68,7 +69,7 @@ void simulation(std::string inputFile){
         } else if (part == 6){
             Ball* balls[nbBall];
             flux >> tmp1 >> tmp2;
-            if(abs(stod(tmp0)) > DIM_MAX || abs(stod(tmp1)) > DIM_MAX){
+            if((abs(stoi(tmp0)) > DIM_MAX) || (abs(stoi(tmp1)) > DIM_MAX)){     //est-ce que tmp0-1 must be d (marcherait pas)
                 cout << BALL_OUT(b+1) << endl;
                 exit(1);
             } else {

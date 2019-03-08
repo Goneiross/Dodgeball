@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include "tools.h"
 
 using namespace std;
