@@ -25,6 +25,10 @@ void simulation(std::string inputFile){
             do {flux.get(tmp);} while (tmp != '\n');
         } else if(part == 0){
             nbCell = stoi(tmp0);
+            if (nbCell > MAX_CELL || nbCell < MIN_CELL){
+                cout << "Error, wrong cell number" << endl; //AskBoulic
+                exit(1);
+            }
             part++;
         } else if (part == 1){
             nbPlayer = stoi(tmp0);
