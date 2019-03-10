@@ -13,10 +13,15 @@
 
 using namespace std;
 
-void checkCollisions(vector<Player*> players, int p, double delta){ //And if not during ini ?
-    for (int i = 0; i < players.size(); i++){
+void checkCollisions(vector<Player*> players, int pmax, int p, double delta){ //And if not during ini ?
+    for (int i = 0; i <= pmax; i++){
         if(i != p){
-            double d = distance(players[i], players[p]);
+            double d = distance(players[i]->getHitBox(), players[p]->getHitBox());
+            cout << "------------------------" << endl;
+            cout << "i : " << i << " p : " << p << " " << endl;
+            cout << "pi.x : " << players[i]->getX() << " pi.y : " << players[i]->getY() << endl;
+            cout << "pp.x : " << players[p]->getX() << " pp.y : " << players[p]->getY() << endl;
+            cout << d << endl;
             if (d < (players[i]->getRadius() + players[p]->getRadius() + delta)){
                 cout << PLAYER_COLLISION(i+1, p+1) << endl; //p or p+1 ?
                 exit(1);
@@ -64,7 +69,7 @@ void simulation(std::string inputFile){
                 exit(1);
             } else {
                 players.push_back(new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell));
-                checkCollisions(players, p, ML);
+                checkCollisions(players, p, p, ML);
             }
             p ++;
             if (p == nbPlayer){part++;}
