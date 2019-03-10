@@ -1,4 +1,4 @@
-	 # this test file is CORRECT
+	 # this test file is NOT CORRECT
 
 # nbCell
 	0	
