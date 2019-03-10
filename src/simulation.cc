@@ -19,7 +19,7 @@ void simulation(std::string inputFile){
     Map* mainMap = new Map(nbCell, nbCell); //Could modify the class to take only one argument (squared map)
     ifstream flux (inputFile, ios::in);
     if (!flux) {
-        cout << "Unable to open file datafile.txt"; // Maybe better with cerr
+        cout << "Unable to open file " << inputFile << endl; // Maybe better with cerr
         exit(0); 
     }while(flux >> tmp0){
         if (tmp0 == "#"){
