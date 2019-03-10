@@ -3,6 +3,8 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <vector> 
+
 #include "simulation.h"
 #include "ball.h"
 #include "map.h"
@@ -16,6 +18,9 @@ void simulation(std::string inputFile){
     string tmp0, tmp1, tmp2, tmp3;
     int part = 0, p = 0, o = 0, b = 0; //Use enum instead of part
     char tmp;
+
+    vector<Player*> players;
+
     Map* mainMap = new Map(nbCell, nbCell); //Could modify the class to take only one argument (squared map)
     ifstream flux (inputFile, ios::in);
     if (!flux) {
@@ -33,15 +38,15 @@ void simulation(std::string inputFile){
             part++;
         } else if (part == 1){
             nbPlayer = stoi(tmp0);
+            players.reserve(nbPlayer);
             part++;
         } else if (part == 2){
-            Player* players[nbPlayer];
             flux >> tmp1 >> tmp2 >> tmp3;
             if(((abs(stoi(tmp0)) > DIM_MAX) || (abs((stoi(tmp1)) > DIM_MAX)))){ //must be doubles ? (vabs(double) ambiguous)
                 cout << PLAYER_OUT(p+1) << endl;
                 exit(1);
             } else {
-                players[p] = new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell);
+                players.push_back(new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell));
                 for (int i = 0; i < p; i++){
                     if ((players[i]->getX() == players[p]->getX()) && (players[i]->getY() == players[p]->getY())){
                         cout << PLAYER_COLLISION(i+1, p+1) << endl; //p or p-1 ?
