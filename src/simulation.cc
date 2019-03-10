@@ -13,6 +13,18 @@
 
 using namespace std;
 
+void checkCollisions(vector<Player*> players, int p, double delta){ //And if not during ini ?
+    for (int i = 0; i < players.size(); i++){
+        if(i != p){
+            double d = distance(players[i], players[p]);
+            if (d < (players[i]->getRadius() + players[p]->getRadius() + delta)){
+                cout << PLAYER_COLLISION(i+1, p+1) << endl; //p or p+1 ?
+                exit(1);
+            }
+        }
+    }
+}
+
 void simulation(std::string inputFile){
     int nbCell, nbPlayer, nbObstacle, nbBall;
     string tmp0, tmp1, tmp2, tmp3;
@@ -21,6 +33,8 @@ void simulation(std::string inputFile){
 
     vector<Player*> players;
     vector<Ball*> balls;
+
+    double MJ, ML;
 
     Map* mainMap = new Map(nbCell, nbCell); //Could modify the class to take only one argument (squared map)
     ifstream flux (inputFile, ios::in);
@@ -36,6 +50,8 @@ void simulation(std::string inputFile){
                 cout << "Error, wrong cell number" << endl; //AskBoulic
                 exit(1);
             }
+            MJ = COEF_MARGE_JEU * (SIDE/nbCell);
+            ML = MJ / 2;
             part++;
         } else if (part == 1){
             nbPlayer = stoi(tmp0);
@@ -48,12 +64,7 @@ void simulation(std::string inputFile){
                 exit(1);
             } else {
                 players.push_back(new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell));
-                for (int i = 0; i < p; i++){
-                    if ((players[i]->getX() == players[p]->getX()) && (players[i]->getY() == players[p]->getY())){
-                        cout << PLAYER_COLLISION(i+1, p+1) << endl; //p or p-1 ?
-                        exit(1);
-                    }
-                }
+                checkCollisions(players, p, ML);
             }
             p ++;
             if (p == nbPlayer){part++;}
