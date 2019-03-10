@@ -42,6 +42,12 @@ void simulation(std::string inputFile){
                 exit(1);
             } else {
                 players[p] = new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell);
+                for (int i = 0; i < p; i++){
+                    if ((players[i]->getX == players[p]->getX) && (players[i]->getY == players[p]->getY)){
+                        cout << PLAYER_COLLISION(i+1, p+1) << endl; //p or p-1 ?
+                        exit(1);
+                    }
+                }
             }
             p ++;
             if (p == nbPlayer){part++;}
