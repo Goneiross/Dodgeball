@@ -20,6 +20,7 @@ void simulation(std::string inputFile){
     char tmp;
 
     vector<Player*> players;
+    vector<Ball*> balls;
 
     Map* mainMap = new Map(nbCell, nbCell); //Could modify the class to take only one argument (squared map)
     ifstream flux (inputFile, ios::in);
@@ -76,15 +77,15 @@ void simulation(std::string inputFile){
             if (o == nbObstacle){part++;}
         } else if (part == 5){
             nbBall = stoi(tmp0);
+            balls.reserve(nbBall+nbPlayer);
             part++;
         } else if (part == 6){
-            Ball* balls[nbBall];
             flux >> tmp1 >> tmp2;
             if((abs(stoi(tmp0)) > DIM_MAX) || (abs(stoi(tmp1)) > DIM_MAX)){     //est-ce que tmp0-1 must be d (marcherait pas)
                 cout << BALL_OUT(b+1) << endl;
                 exit(1);
             } else {
-                balls[b] = new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell);
+                balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell));
             }
             b++;
             if (b == nbBall){part++;}
