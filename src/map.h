@@ -10,4 +10,6 @@ class Map {
         void test();
     private :
         bool **grid;
+        int xSize;
+        int ySize;
 };
