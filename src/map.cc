@@ -1,7 +1,19 @@
 #include "map.h"
+#ifndef TOOLS_H
+#define TOOLS_H
 #include "tools.h"
+#endif
 
 using namespace std;
+
+Obstacle::Obstacle(double x, double y, double s){
+    xPosition = x;
+    yPosition = y;
+    hitbox = new Square(xPosition, yPosition, s);
+}
+double Obstacle::getX () const {return xPosition;}
+double Obstacle::getY () const {return yPosition;}
+Square* Obstacle::getHitbox() const {return hitbox;}
 
 Map::Map(int xSize, int ySize){
     grid = new bool*[10];
