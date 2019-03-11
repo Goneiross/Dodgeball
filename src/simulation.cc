@@ -47,23 +47,20 @@ void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b,
     }
 }
 
-/*
-void checkCollisions(vector<Player*> players, Map* map, int p, double delta){ //And if not during ini ?
+void checkCollisions(vector<Player*> players, Map* map, int p, int o, double delta){ //And if not during ini ?
     int m = map->getObstacle().size();
-    for (int o = 0; o < m; o++){
-        double d = distance(map->getObstacle().at(o)->getHitbox()->getX(), map->getObstacle().at(o)->getHitbox()->getY(), players[p]->getHitbox()->getX(), players[p]->getHitbox()->getY());
-        double X = map->getObstacle().at(o)->getHitbox()->getX() - players[p]->getHitbox()->getX();
-        double Y = map->getObstacle().at(o)->getHitbox()->getY() - players[p]->getHitbox()->getY();
-        double angle = atan(Y/X);
-        double included = Y / sin(angle);
-        cout << d << " " << endl;
-        if (d < (players[p]->getRadius() + included + delta)){
-                    cout << COLL_OBST_PLAYER(o, p+1) << endl; //p or p+1 ?
-                    exit(1);
-                }
+    double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
+    double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getHitbox()->getX();
+    double Y = map->getObstacle()[o]->getHitbox()->getY() - players[p]->getHitbox()->getY();
+    double angle = atan(Y/X);
+    double included =  map->getObstacle()[o]->getHitbox()->getSide() / sin(angle);
+    cout << d << endl;
+    cout << players[p]->getRadius() << " " << included << " " << delta << endl;
+    if (d < (players[p]->getRadius() + included + delta)){
+        cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl; //p or p+1 ?
+        exit(1);
     }
-}
-*/
+} //NOT WORKING YET
 
 void simulation(std::string inputFile){
     int nbCell, nbPlayer, nbObstacle, nbBall;
@@ -76,7 +73,8 @@ void simulation(std::string inputFile){
 
     double MJ, ML;
 
-    Map* mainMap = new Map(nbCell, nbCell); //Could modify the class to take only one argument (squared map)
+    Map* mainMap; //Could modify the class to take only one argument (squared map)
+    
     ifstream flux (inputFile, ios::in);
     if (!flux) {
         cout << "Unable to open file " << inputFile << endl; // Maybe better with cerr
@@ -86,6 +84,7 @@ void simulation(std::string inputFile){
             do {flux.get(tmp);} while (tmp != '\n');
         } else if(part == 0){
             nbCell = stoi(tmp0);
+            mainMap = new Map(nbCell, nbCell);
             if ((nbCell > MAX_CELL) || (nbCell < MIN_CELL)){
                 cout << "Error, wrong cell number" << endl; //AskBoulic
                 exit(1);
@@ -129,6 +128,9 @@ void simulation(std::string inputFile){
                 cout << MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1)) << endl;
             } else {
                 mainMap->addObstacle(stod(tmp0), stod(tmp1));
+                for (int i = 0; i < nbPlayer; i++){
+                    checkCollisions(players, mainMap, i, b, ML);
+                }
             }
             o++;
             if (o == nbObstacle){part++;} //Check Collision with players
@@ -152,7 +154,6 @@ void simulation(std::string inputFile){
             b++;
             if (b == nbBall){part++;}
         } else {
-            cout << "t" << endl;
             flux.get(tmp);
         }
     }
