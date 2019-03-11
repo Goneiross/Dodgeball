@@ -29,6 +29,7 @@ Map::Map(int xSize, int ySize){
 }
 double Map::getX () const {return xSize;}
 double Map::getY () const {return ySize;}
+vector<Obstacle*> Map::getObstacle () const {return obstacles;}
 void Map::addObstacle(int xPosition, int yPosition){
     grid[xPosition][yPosition] = true;
     double S = SIDE / xSize ;
