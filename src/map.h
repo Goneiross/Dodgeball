@@ -1,3 +1,5 @@
+#include <vector>
+
 #ifndef TOOLS_H
 #define TOOLS_H
 #include "tools.h"
@@ -30,4 +32,5 @@ class Map {
         bool **grid;
         int xSize;
         int ySize;
+        std::vector<Obstacle*> obstacles;
 };
