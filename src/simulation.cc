@@ -87,10 +87,16 @@ void simulation(std::string inputFile){
             part++;
         } else if (part == 4){
             flux >> tmp1;
-            if(stoi(tmp0) > nbCell){
+            if(stoi(tmp0) >= nbCell){
                 cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp0)) << endl;
                 exit(1);
-            } else if(stoi(tmp1) > nbCell){
+            } else if(stoi(tmp1) >= nbCell){
+                cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp1)) << endl;
+                exit(1);
+            } else if(stoi(tmp0) < 0){
+                cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp0)) << endl;
+                exit(1);
+            } else if(stoi(tmp1) < 0){
                 cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp1)) << endl;
                 exit(1);
             } else if(mainMap->isObstacle(stoi(tmp0), stoi(tmp1))){
