@@ -13,7 +13,7 @@
 
 using namespace std;
 
-void checkCollisions(vector<Player*> players, int pmax, int p, double delta){ //And if not during ini ?
+void checkCollisions(vector<Player*> players, int p, int pmax, double delta){ //And if not during ini ?
     for (int i = 0; i <= pmax; i++){
         if(i != p){
             double d = distance(players[i]->getHitbox()->getX(), players[i]->getHitbox()->getY(), players[p]->getHitbox()->getX(),players[p]->getHitbox()->getY());
@@ -26,13 +26,44 @@ void checkCollisions(vector<Player*> players, int pmax, int p, double delta){ //
     }
 }
 
-void checkCollisions(vector<Ball*> balls, int bmax, int b, double delta){ //And if not during ini ?
+void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){ //And if not during ini ?
     for (int i = 0; i <= bmax; i++){
         if(i != b){
             double d = distance(balls[i]->getHitbox()->getX(), balls[i]->getHitbox()->getY(), balls[b]->getHitbox()->getX(),balls[b]->getHitbox()->getY());
             //Try doing with circle and not coordinates
             if (d < (balls[i]->getRadius() + balls[b]->getRadius() + delta)){
                 cout << BALL_COLLISION(i+1, b+1) << endl; //p or p+1 ?
+                exit(1);
+            }
+        }
+    }
+}
+
+void checkCollisions(vector<Player*> players, Map* map, int p, double delta){ //And if not during ini ?
+    int m = map->getX(), n = map->getY();
+    for (int i = 0; i < m; i++){
+        for (int j = 0; j < n; j++){
+            if (map->isObstacle(i, j)){
+                double d = distance();
+                double angleVar = ;
+                if (d < (players[i]->getRadius() + angleVar + delta)){
+                    cout << COLL_OBST_PLAYER(, p+1) << endl; //p or p+1 ?
+                    exit(1);
+                }
+            }
+        }
+    }
+}
+
+void checkCollisions(vector<Ball*> balls, Map* map, int b, double delta){ //And if not during ini ?
+    int m = map->getX(), n = map->getY();
+    for (int i = 0; i < m; i++){
+        for (int j = 0; j < n; j++){
+            if (map->isObstacle(i, j)){
+                double d = distance();
+                double angleVar = ;
+                if (d < (balls[i]->getRadius() + angleVar + delta)){
+                cout << COLL_BALL_OBSTACLE(b + 1) << endl; //b or b+1 ?
                 exit(1);
             }
         }
@@ -99,7 +130,7 @@ void simulation(std::string inputFile){
                 mainMap->addObstacle(stod(tmp0), stod(tmp1));
             }
             o++;
-            if (o == nbObstacle){part++;}
+            if (o == nbObstacle){part++;} //Check Collision with players
         } else if (part == 5){
             nbBall = stoi(tmp0);
             balls.reserve(nbBall+nbPlayer);
@@ -112,6 +143,7 @@ void simulation(std::string inputFile){
             } else {
                 balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell));
                 checkCollisions(balls, b, b, ML);
+                // CHeck Collision with obstacles
             }
             b++;
             if (b == nbBall){part++;}
