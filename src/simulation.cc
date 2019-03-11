@@ -39,6 +39,15 @@ void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){ //And 
     }
 }
 
+void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b, double delta){ //And if not during ini ?
+    double d = distance(players[p]->getHitbox()->getX(), players[p]->getHitbox()->getY(), balls[b]->getHitbox()->getX(),balls[b]->getHitbox()->getY());
+    //Try doing with circle and not coordinates
+    if (d < (players[p]->getRadius() + balls[b]->getRadius() + delta)){
+        cout << PLAYER_BALL_COLLISION(p+1, b+1) << endl; //p or p+1 ?
+        exit(1);
+    }
+}
+
 void simulation(std::string inputFile){
     int nbCell, nbPlayer, nbObstacle, nbBall;
     string tmp0, tmp1, tmp2, tmp3;
