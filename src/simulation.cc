@@ -26,6 +26,19 @@ void checkCollisions(vector<Player*> players, int pmax, int p, double delta){ //
     }
 }
 
+void checkCollisions(vector<Ball*> balls, int bmax, int b, double delta){ //And if not during ini ?
+    for (int i = 0; i <= bmax; i++){
+        if(i != b){
+            double d = distance(balls[i]->getHitbox()->getX(), balls[i]->getHitbox()->getY(), balls[b]->getHitbox()->getX(),balls[b]->getHitbox()->getY());
+            //Try doing with circle and not coordinates
+            if (d < (balls[i]->getRadius() + balls[b]->getRadius() + delta)){
+                cout << BALL_COLLISION(i+1, b+1) << endl; //p or p+1 ?
+                exit(1);
+            }
+        }
+    }
+}
+
 void simulation(std::string inputFile){
     int nbCell, nbPlayer, nbObstacle, nbBall;
     string tmp0, tmp1, tmp2, tmp3;
@@ -94,10 +107,11 @@ void simulation(std::string inputFile){
         } else if (part == 6){
             flux >> tmp1 >> tmp2;
             if((abs(stoi(tmp0)) > DIM_MAX) || (abs(stoi(tmp1)) > DIM_MAX)){     //est-ce que tmp0-1 must be d (marcherait pas)
-                cout << BALL_OUT(b+1) << endl;
+                cout << BALL_OUT(b+1) << endl; //b or b+1 ?
                 exit(1);
             } else {
                 balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell));
+                checkCollisions(balls, b, b, ML);
             }
             b++;
             if (b == nbBall){part++;}
