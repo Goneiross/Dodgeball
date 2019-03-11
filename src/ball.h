@@ -10,11 +10,12 @@ class Ball {
         double getX () const;
         double getY () const;
         double getRadius () const;
+        Circle* getHitbox() const;
         void updatePosition();
     private :
         double xPosition, yPosition;
         double radius;
         double velocity;
         double angle;
-        Circle* hitBox;
+        Circle* hitbox;
 };

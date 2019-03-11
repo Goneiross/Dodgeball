@@ -22,10 +22,17 @@
 //
 //              cout << OBSTACLE_VALUE_INCORRECT(-1) << endl;
 //
+// version 28/02: version initiale
+// version 08/03: avec message en cas de lecture sans erreur
+// version 09/02: avec les deux dernier messages balle-balle et joueur-balle
+
 
 #include <sstream>
 
 #include "define.h"
+
+// un seul message est destiné à indiquer l'absence d'erreur après la lecture complète
+#define FILE_READING_SUCCESS				("File reading successful")
 
 // le centre d'une balle est en dehors du domaine du terrain de jeu
 #define BALL_OUT(PARAM)						("Ball out: " + std::to_string(PARAM))
@@ -37,6 +44,12 @@
 #define PLAYER_COLLISION(PARAM1, PARAM2)	\
 		("Player collision: " + std::to_string(PARAM1)	\
 							  + " with " + std::to_string(PARAM2))
+
+// le joueur d'indice PARAM1 est en collision avec la balle d'indice PARAM2
+#define PLAYER_BALL_COLLISION(PARAM1, PARAM2)	\
+		("Player  " + std::to_string(PARAM1)	\
+				    + " colliding with ball " + std::to_string(PARAM2))
+
 
 // la valeur PARAM indiquant l'indice incorrect de ligne ou de colonne 						  
 #define OBSTACLE_VALUE_INCORRECT(PARAM)		\
@@ -53,6 +66,11 @@
 #define COLL_OBST_PLAYER(PARAM1, PARAM2)	\
 		("Obstacle " + std::to_string(PARAM1) + " in collision with player "	\
 											  + std::to_string(PARAM2))
+
+// les deux balles d'indices PARAM1 et PARAM2 sont en collision
+#define BALL_COLLISION(PARAM1, PARAM2)	\
+		("Ball collision: " + std::to_string(PARAM1)	\
+							+ " with " + std::to_string(PARAM2))
 
 // collision balle-obstacle
 // l'unique paramètre est l'indice de la balle

@@ -1,4 +1,4 @@
-	 # this test file is NOT CORRECT
+	 # error on ball position
 
 # nbCell
 	10	
@@ -16,15 +16,15 @@
 # number of obstacles
 	4
 # position of obstacles
-4 5	    # first obstacle
+8 5	    # first obstacle
 7 5	    # second obstacle
 6 5	    # third obstacle
 8 1	    # fourth obstacle
 
 # number of balls
 	3
-  1000  100	0	# first ball
- 100 100 1.5	# second ball
+  200  100	0	# first ball
+ -100 -450 1.5	# second ball
  -280 270  -3	# third ball
 
   #	 And that's all

@@ -14,7 +14,7 @@ Ball::Ball(double x0, double y0, double a, int nbCell){
     angle = a;
     radius = COEF_RAYON_BALLE* (SIDE / nbCell);
     velocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
-    Circle* hitbox = new Circle(xPosition, yPosition, radius);
+    hitbox = new Circle(xPosition, yPosition, radius);
 }
 void Ball::updatePosition(){
     xPosition += cos(angle) * velocity;
@@ -23,3 +23,4 @@ void Ball::updatePosition(){
 double Ball::getX () const {return xPosition;}
 double Ball::getY () const {return yPosition;}
 double Ball::getRadius () const {return radius;}
+Circle* Ball::getHitbox() const{return hitbox;}

@@ -38,14 +38,10 @@ bool Player::touchedAndDead(){
     }
     return(false);
 }
-double Player::getX() const{return xPosition;};
-double Player::getY() const{return yPosition;};
+double Player::getX() const{return xPosition;}
+double Player::getY() const{return yPosition;}
 double Player::getRadius() const{return radius;}
 double Player::getCount() const{return count;}
 double Player::getTimeTouched() const{return timeTouched;}
-Circle* Player::getHitbox() const{return hitbox;}
 
-/*
-int main(){
-    Player* p = new Player(0,0,0);
-} */
+Circle* Player::getHitbox() const{return hitbox;}
