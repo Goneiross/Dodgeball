@@ -20,7 +20,7 @@ class Obstacle {
 
 class Map {
     public :
-        Map(int xSize, int ySize);
+        Map(int x, int y);
         ~Map(){};
         double getX () const;
         double getY () const;

@@ -1,5 +1,4 @@
 #include <vector>
-
 #include "define.h"
 #include "map.h"
 #ifndef TOOLS_H
@@ -18,11 +17,13 @@ double Obstacle::getX () const {return xPosition;}
 double Obstacle::getY () const {return yPosition;}
 Square* Obstacle::getHitbox() const {return hitbox;}
 
-Map::Map(int xSize, int ySize){
-    grid = new bool*[10];
-    for (int i = 0; i < 10; i++) {
-        grid[i] = new bool[10];
-        for (int j = 0; j < 10; j++) {
+Map::Map(int x, int y){
+    xSize = x;
+    ySize = y;
+    grid = new bool*[xSize];
+    for (int i = 0; i < xSize; i++) {
+        grid[i] = new bool[ySize];
+        for (int j = 0; j < ySize; j++) {
             grid[i][j] = false;
         }
     }
