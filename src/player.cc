@@ -16,7 +16,7 @@ Player::Player(double x0, double y0, int nbCell){
     count = 0;
     radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
     velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
-    Circle* hitbox = new Circle(xPosition, yPosition, radius);
+    hitbox = new Circle(xPosition, yPosition, radius);
 }
 Player::Player(double x0, double y0, int t, double c, int nbCell){
     xPosition = x0;
@@ -25,7 +25,7 @@ Player::Player(double x0, double y0, int t, double c, int nbCell){
     count = c;
     radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
     velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
-    Circle* hitbox = new Circle(xPosition, yPosition, radius);
+    hitbox = new Circle(xPosition, yPosition, radius);
 }
 void Player::updatePosition(double angle){
     xPosition += cos(angle) * velocity;
@@ -43,3 +43,9 @@ double Player::getY() const{return yPosition;};
 double Player::getRadius() const{return radius;}
 double Player::getCount() const{return count;}
 double Player::getTimeTouched() const{return timeTouched;}
+Circle* Player::getHitbox() const{return hitbox;}
+
+/*
+int main(){
+    Player* p = new Player(0,0,0);
+} */

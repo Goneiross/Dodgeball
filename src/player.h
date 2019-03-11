@@ -13,6 +13,7 @@ class Player {
         double getRadius() const;
         double getCount() const;
         double getTimeTouched() const;
+        Circle* getHitbox() const;
         void updatePosition(double angle);
         bool touchedAndDead();
     private :
@@ -21,5 +22,5 @@ class Player {
         int timeTouched;
         double count;
         double velocity;
-        Circle* hitBox;
+        Circle* hitbox;
 };
