@@ -23,3 +23,4 @@ void Ball::updatePosition(){
 double Ball::getX () const {return xPosition;}
 double Ball::getY () const {return yPosition;}
 double Ball::getRadius () const {return radius;}
+Circle* Ball::getHitbox() const{return hitbox;}
