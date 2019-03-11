@@ -39,37 +39,6 @@ void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){ //And 
     }
 }
 
-void checkCollisions(vector<Player*> players, Map* map, int p, double delta){ //And if not during ini ?
-    int m = map->getX(), n = map->getY();
-    for (int i = 0; i < m; i++){
-        for (int j = 0; j < n; j++){
-            if (map->isObstacle(i, j)){
-                double d = distance();
-                double angleVar = ;
-                if (d < (players[i]->getRadius() + angleVar + delta)){
-                    cout << COLL_OBST_PLAYER(, p+1) << endl; //p or p+1 ?
-                    exit(1);
-                }
-            }
-        }
-    }
-}
-
-void checkCollisions(vector<Ball*> balls, Map* map, int b, double delta){ //And if not during ini ?
-    int m = map->getX(), n = map->getY();
-    for (int i = 0; i < m; i++){
-        for (int j = 0; j < n; j++){
-            if (map->isObstacle(i, j)){
-                double d = distance();
-                double angleVar = ;
-                if (d < (balls[i]->getRadius() + angleVar + delta)){
-                cout << COLL_BALL_OBSTACLE(b + 1) << endl; //b or b+1 ?
-                exit(1);
-            }
-        }
-    }
-}
-
 void simulation(std::string inputFile){
     int nbCell, nbPlayer, nbObstacle, nbBall;
     string tmp0, tmp1, tmp2, tmp3;
