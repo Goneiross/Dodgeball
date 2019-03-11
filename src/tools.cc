@@ -27,15 +27,15 @@ double distance(double x1, double x2){
 double distance(double x1, double y1, double x2, double y2){
     return sqrt(pow(distance(x2, x1), 2) + pow(distance(y2, y1), 2));
 }
-double distance(Circle c1, Circle c2){ 
-    return distance(c1.getX(), c1.getY(), c2.getX(), c2.getY());
+double distance(Circle* c1, Circle* c2){
+    return distance(c1->getX(), c1->getY(), c2->getX(), c2->getY());
 }
-double distance(Square s1, Square s2){
-    return distance(s1.getX(), s1.getY(), s2.getX(), s2.getY());
+double distance(Square* s1, Square* s2){
+    return distance(s1->getX(), s1->getY(), s2->getX(), s2->getY());
 }
-double distance(Square s, Circle c){
-    return distance(s.getX(), s.getY(), c.getX(), c.getY());
+double distance(Square* s, Circle* c){
+    return distance(s->getX(), s->getY(), c->getX(), c->getY());
 }
-double distance(Circle c, Square s){
-    return distance(s.getX(), s.getY(), c.getX(), c.getY());
+double distance(Circle* c, Square* s){
+    return distance(s->getX(), s->getY(), c->getX(), c->getY());
 }

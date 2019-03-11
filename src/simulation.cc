@@ -16,12 +16,8 @@ using namespace std;
 void checkCollisions(vector<Player*> players, int pmax, int p, double delta){ //And if not during ini ?
     for (int i = 0; i <= pmax; i++){
         if(i != p){
-            double d = distance(players[i]->getHitBox(), players[p]->getHitBox());
-            cout << "------------------------" << endl;
-            cout << "i : " << i << " p : " << p << " " << endl;
-            cout << "pi.x : " << players[i]->getX() << " pi.y : " << players[i]->getY() << endl;
-            cout << "pp.x : " << players[p]->getX() << " pp.y : " << players[p]->getY() << endl;
-            cout << d << endl;
+            double d = distance(players[i]->getHitbox()->getX(), players[i]->getHitbox()->getY(), players[p]->getHitbox()->getX(),players[p]->getHitbox()->getY());
+            //Try doing with circle and not coordinates
             if (d < (players[i]->getRadius() + players[p]->getRadius() + delta)){
                 cout << PLAYER_COLLISION(i+1, p+1) << endl; //p or p+1 ?
                 exit(1);
