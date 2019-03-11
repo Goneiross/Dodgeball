@@ -13,7 +13,7 @@ GUI.o: GUI.cc GUI.h
 main.o: main.cc GUI.h simulation.h
 	$(CC) $(CFLAGS) `pkg-config gtkmm-3.0 --cflags --libs` -c $< -o $@
 
-map.o: map.cc map.h tools.h
+map.o: map.cc map.h tools.h define.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 player.o: player.cc player.h tools.h
