@@ -12,6 +12,8 @@ Map::Map(int xSize, int ySize){
         }
     }
 }
+double Ball::getX () const {return xSize;}
+double Ball::getY () const {return ySize;}
 void Map::addObstacle(int xPosition, int yPosition){
     grid[xPosition][yPosition] = true;
 }
