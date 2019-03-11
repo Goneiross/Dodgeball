@@ -1,2 +1,3 @@
 *.o
 projet
+.vscode/settings.json
