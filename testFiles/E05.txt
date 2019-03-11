@@ -1,0 +1,32 @@
+	 # Collision test file
+	 #    player-player
+
+# nbCell
+	10	
+
+# number of players
+	 5	
+
+# position of players
+	0	 0	4 0	   # first player
+  -90   20	3 0	   # second player
+  150 -150	2 0	   # third player
+ -200  200	1 0	   # fourth player
+ -200  170  2 0	   # fifth player
+
+# number of obstacles
+	4
+# position of obstacles
+8 5	    # first obstacle
+7 5	    # second obstacle
+6 5	    # third obstacle
+8 1	    # fourth obstacle
+
+# number of balls
+	3
+  200  100	0	# first ball
+ -100 -250 1.5	# second ball
+ -280 270  -3	# third ball
+
+  #	 And that's all
+
