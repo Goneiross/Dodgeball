@@ -40,12 +40,30 @@ void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){ //And 
 }
 
 void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b, double delta){ //And if not during ini ?
-    double d = distance(players[p]->getHitbox(), balls[b]->getHitbox());
+    double d = distance(players[p]->getHitbox()->getX(), players[p]->getHitbox()->getY(), balls[b]->getHitbox()->getX(), balls[b]->getHitbox()->getY());
     if (d < (players[p]->getRadius() + balls[b]->getRadius() + delta)){
         cout << PLAYER_BALL_COLLISION(p+1, b+1) << endl; //p or p+1 ?
         exit(1);
     }
 }
+
+/*
+void checkCollisions(vector<Player*> players, Map* map, int p, double delta){ //And if not during ini ?
+    int m = map->getObstacle().size();
+    for (int o = 0; o < m; o++){
+        double d = distance(map->getObstacle().at(o)->getHitbox()->getX(), map->getObstacle().at(o)->getHitbox()->getY(), players[p]->getHitbox()->getX(), players[p]->getHitbox()->getY());
+        double X = map->getObstacle().at(o)->getHitbox()->getX() - players[p]->getHitbox()->getX();
+        double Y = map->getObstacle().at(o)->getHitbox()->getY() - players[p]->getHitbox()->getY();
+        double angle = atan(Y/X);
+        double included = Y / sin(angle);
+        cout << d << " " << endl;
+        if (d < (players[p]->getRadius() + included + delta)){
+                    cout << COLL_OBST_PLAYER(o, p+1) << endl; //p or p+1 ?
+                    exit(1);
+                }
+    }
+}
+*/
 
 void simulation(std::string inputFile){
     int nbCell, nbPlayer, nbObstacle, nbBall;
@@ -127,9 +145,7 @@ void simulation(std::string inputFile){
                 balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell));
                 checkCollisions(balls, b, b, ML);
                 for (int i = 0; i < nbPlayer; i++){
-                    for (int j = 0; j < nbBall; j ++){
-                        checkCollisions(players, balls, i, j, ML);
-                    }
+                    checkCollisions(players, balls, i, b, ML);
                 }
                 // CHeck Collision with obstacles
             }
