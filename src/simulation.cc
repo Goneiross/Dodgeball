@@ -52,7 +52,7 @@ void checkCollisions(vector<Player*> players, Map* map, int p, int o, double del
     double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
     double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getHitbox()->getX();
     double Y = map->getObstacle()[o]->getHitbox()->getY() - players[p]->getHitbox()->getY();
-    double angle = atan(Y/X);
+    //double angle = atan(Y/X);
     // cout << "angle : "<< angle <<endl;
     double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
     double included = included = rayon / X * d;
@@ -63,7 +63,26 @@ void checkCollisions(vector<Player*> players, Map* map, int p, int o, double del
         cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl; //p or p+1 ?
         exit(1);
     }
-} //NOT WORKING YET
+}
+
+void checkCollisions(vector<Ball*> balls, Map* map, int b, int o, double delta){ //And if not during ini ?
+    int m = map->getObstacle().size();
+    double d = distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
+    double X = map->getObstacle()[o]->getHitbox()->getX() - balls[b]->getHitbox()->getX();
+    double Y = map->getObstacle()[o]->getHitbox()->getY() - balls[b]->getHitbox()->getY();
+    //double angle = atan(Y/X);
+    //cout << "angle : "<< angle <<endl;
+    double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
+    double included = included = rayon / X * d;
+    cout << b << " " << o << endl;
+    cout << X << endl;
+    cout << d << endl;
+    cout << balls[b]->getRadius() << " " << map->getObstacle()[o]->getHitbox()->getSide() << " " << included << " " << delta << endl << endl;
+    if (d < (balls[b]->getRadius() + included + delta)){
+        cout << COLL_BALL_OBSTACLE(b + 1) << endl; //p or p+1 ?
+        exit(1);
+    }
+}
 
 void simulation(std::string inputFile){
     int nbCell, nbPlayer, nbObstacle, nbBall;
@@ -152,7 +171,9 @@ void simulation(std::string inputFile){
                 for (int i = 0; i < nbPlayer; i++){
                     checkCollisions(players, balls, i, b, ML);
                 }
-                // CHeck Collision with obstacles
+                for (int o = 0; o < nbObstacle; o++){
+                    //checkCollisions(balls, mainMap, b, o, ML);
+                }
             }
             b++;
             if (b == nbBall){part++;}
