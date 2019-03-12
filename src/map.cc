@@ -1,5 +1,6 @@
 #include <vector>
 #include "define.h"
+#include <iostream>
 #include "map.h"
 #ifndef TOOLS_H
 #define TOOLS_H
@@ -34,8 +35,13 @@ vector<Obstacle*> Map::getObstacle () const {return obstacles;}
 void Map::addObstacle(int xPosition, int yPosition){
     grid[xPosition][yPosition] = true;
     double S = SIDE / xSize ;
-    double X = 1/2 * S + xPosition * S;
-    double Y = 1/2 * S + yPosition * S;
+    double X = (0.5 * S + xPosition * S) - (DIM_MAX);
+    double Y = (0.5 * S + yPosition * S) - (DIM_MAX);
+    cout << S << " " << ySize << " " << yPosition << " " << endl;
+    cout << (0.5* ySize * S) << endl;
+    cout << "S : " << S << endl;
+    cout << "X : " << X << endl;
+    cout << "Y : " << Y << endl;
     obstacles.push_back(new Obstacle(X, Y, S));
 }
 void Map::removeObstacle(int xPosition, int yPosition){

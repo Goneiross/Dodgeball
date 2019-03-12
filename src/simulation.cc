@@ -53,9 +53,21 @@ void checkCollisions(vector<Player*> players, Map* map, int p, int o, double del
     double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getHitbox()->getX();
     double Y = map->getObstacle()[o]->getHitbox()->getY() - players[p]->getHitbox()->getY();
     double angle = atan(Y/X);
-    double included =  map->getObstacle()[o]->getHitbox()->getSide() / sin(angle);
+    cout << "angle : "<< angle * 180 / M_PI <<endl;
+    double included = map->getObstacle()[o]->getHitbox()->getSide();
+    if (angle == 0 || abs(angle) == M_PI || abs(angle) == M_PI/2){
+        included /= 2;
+    } else if((abs(angle) == M_PI / 4) || (abs(angle) == 3 * M_PI / 4)){
+        included = included / 2 * sqrt(2);
+    }
+    else if (( - M_PI / 4 < angle < M_PI / 4) || (3 * M_PI / 4 < angle < M_PI / 2) || (- 3 * M_PI / 4 > angle > - M_PI / 2)) {
+        included = abs(included / (2 * cos(angle)));
+    } else{
+        included = abs(included / (2 * sin(angle)));
+    }
+    cout << p << " " << o << endl;
     cout << d << endl;
-    cout << players[p]->getRadius() << " " << included << " " << delta << endl;
+    cout << players[p]->getRadius() << " " << map->getObstacle()[o]->getHitbox()->getSide() << " " << included << " " << delta << endl << endl;
     if (d < (players[p]->getRadius() + included + delta)){
         cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl; //p or p+1 ?
         exit(1);
@@ -129,7 +141,7 @@ void simulation(std::string inputFile){
             } else {
                 mainMap->addObstacle(stod(tmp0), stod(tmp1));
                 for (int i = 0; i < nbPlayer; i++){
-                    checkCollisions(players, mainMap, i, b, ML);
+                    checkCollisions(players, mainMap, i, o, ML);
                 }
             }
             o++;
