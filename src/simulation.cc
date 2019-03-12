@@ -53,17 +53,14 @@ void checkCollisions(vector<Player*> players, Map* map, int p, int o, double del
     double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getHitbox()->getX();
     double Y = map->getObstacle()[o]->getHitbox()->getY() - players[p]->getHitbox()->getY();
     double angle = atan(Y/X);
-    cout << "angle : "<< angle * 180 / M_PI <<endl;
-    double included = map->getObstacle()[o]->getHitbox()->getSide();
-    if (angle == 0 || abs(angle) == M_PI || abs(angle) == M_PI/2){
-        included /= 2;
-    } else if((abs(angle) == M_PI / 4) || (abs(angle) == 3 * M_PI / 4)){
-        included = included / 2 * sqrt(2);
-    }
-    else if (( - M_PI / 4 < angle < M_PI / 4) || (3 * M_PI / 4 < angle < M_PI / 2) || (- 3 * M_PI / 4 > angle > - M_PI / 2)) {
-        included = abs(included / (2 * cos(angle)));
-    } else{
-        included = abs(included / (2 * sin(angle)));
+    cout << "angle : "<< angle <<endl;
+    double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
+    double included;
+    if (((M_PI / 4 < abs(angle)) && (abs(angle) < 3 * M_PI /4))){
+        cout << "test" << endl;
+        included = rayon / Y * d;
+    } else {
+        included = rayon / X * d;
     }
     cout << p << " " << o << endl;
     cout << d << endl;
