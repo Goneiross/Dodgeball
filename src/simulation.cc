@@ -52,26 +52,30 @@ void checkCollisions(vector<Player*> players, Map* map, int p, int o, double del
     double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
     double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getHitbox()->getX();
     double Y = map->getObstacle()[o]->getHitbox()->getY() - players[p]->getHitbox()->getY();
-    double angle = atan(Y/X);
-    //cout << "angle : "<< angle <<endl;
+    double angle;
+    if (X == 0){
+        angle = M_PI_2;
+    } else if(Y == 0){
+        angle = 0;
+    } else {
+        angle = atan(Y/X);
+    }
     double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
     double included;
-    if((-M_PI < angle < - 2 * M_PI / 3) || (2 * M_PI / 3 < angle < M_PI)){
-        included  = (rayon / X) * d;
-        //cout << "case 1" << endl;
-    } else if ((abs(angle) == M_PI) || (abs(angle) == M_PI / 2)){
+    if((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)){
         included = rayon;
     } else if ((abs(angle) == M_PI / 3) || (abs(angle) == 2 * M_PI / 3)){
         included = sqrt(2) * rayon;
+    } else if ((2 * M_PI / 3 < angle) && (angle < M_PI)){
+        included  = (rayon / X) * d;
+    } else if ((- M_PI / 3 < angle) && (angle < M_PI / 3)){
+        included  = (rayon / X) * d;
+    } else if ((- 2 * M_PI / 3 > angle) && ( angle > - M_PI)){
+        included  = (rayon / X) * d;
     } else {
         included  = (rayon / Y) * d;
-        //cout << "case 4" << endl;
-    }
-        
-    // cout << p << " " << o << endl;
-    // cout << d << endl;
-    // cout << players[p]->getRadius() << " " << map->getObstacle()[o]->getHitbox()->getSide() << " " << included << " " << delta << endl << endl;
-    if (d < (players[p]->getRadius() + included + delta)){
+    } 
+    if (d < (players[p]->getRadius() + abs(included) + delta)){
         cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl; //p or p+1 ?
         exit(1);
     }
@@ -90,28 +94,22 @@ void checkCollisions(vector<Ball*> balls, Map* map, int b, int o, double delta){
     } else {
         angle = atan(Y/X);
     }
-    cout << b << " " << o << endl;
-    cout << "angle : "<< angle * 180 / M_PI <<endl;
     double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
     double included;
-    if((abs(angle) == M_PI) || (abs(angle) == M_PI / 2)){
+    if((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)){
         included = rayon;
-        cout << "case 1" << endl;
     } else if ((abs(angle) == M_PI / 3) || (abs(angle) == 2 * M_PI / 3)){
         included = sqrt(2) * rayon;
-        cout << "case 2" << endl;
-    } else if ((-M_PI < angle < - 2 * M_PI / 3) || (2 * M_PI / 3 < angle < M_PI)){
+    } else if ((2 * M_PI / 3 < angle) && (angle < M_PI)){
         included  = (rayon / X) * d;
-        cout << "case 3" << endl;
+    } else if ((- M_PI / 3 < angle) && (angle < M_PI / 3)){
+        included  = (rayon / X) * d;
+    } else if ((- 2 * M_PI / 3 > angle) && ( angle > - M_PI)){
+        included  = (rayon / X) * d;
     } else {
         included  = (rayon / Y) * d;
-        cout << "case 4" << endl;
     }
-    cout << "X : " << X << " = " << map->getObstacle()[o]->getHitbox()->getX() << " to " << balls[b]->getHitbox()->getX() << endl;
-    cout << "Y : " << Y << " = " << map->getObstacle()[o]->getHitbox()->getY() << " to " << balls[b]->getHitbox()->getY() << endl;    
-    cout << "Distance : " << d << endl;
-    cout << "Ball radius : "<< balls[b]->getRadius() << ", Square size : " << map->getObstacle()[o]->getHitbox()->getSide() << ", Square included : " << included << ", delta : " << delta << endl << endl;
-    if (d < (balls[b]->getRadius() + included + delta)){
+    if (d < (balls[b]->getRadius() + abs(included) + delta)){
         cout << COLL_BALL_OBSTACLE(b + 1) << endl; //p or p+1 ?
         exit(1);
     }
@@ -181,8 +179,9 @@ void simulation(std::string inputFile){
                 exit(1);
             } else if(mainMap->isObstacle(stoi(tmp0), stoi(tmp1))){
                 cout << MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1)) << endl;
+                exit(1);
             } else {
-                mainMap->addObstacle(stod(tmp0), stod(tmp1));
+                mainMap->addObstacle(stod(tmp0), stod(tmp1)); //Be aware
                 for (int i = 0; i < nbPlayer; i++){
                     checkCollisions(players, mainMap, i, o, ML);
                 }

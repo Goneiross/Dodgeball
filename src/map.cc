@@ -1,4 +1,5 @@
 #include <vector>
+#include <iostream>
 #include "define.h"
 #include "map.h"
 #ifndef TOOLS_H
@@ -31,21 +32,14 @@ Map::Map(int x, int y){
 double Map::getX () const {return xSize;}
 double Map::getY () const {return ySize;}
 vector<Obstacle*> Map::getObstacle () const {return obstacles;}
-void Map::addObstacle(int xPosition, int yPosition){
-    grid[xPosition][yPosition] = true;
+void Map::addObstacle(int lPosition, int cPosition){
+    grid[lPosition][cPosition] = true;
     double S = SIDE / xSize ;
-    double X = (0.5 * S + xPosition * S) - (DIM_MAX);
-    double Y = (0.5 * S + yPosition * S) - (DIM_MAX);
-    /*
-    cout << S << " " << ySize << " " << yPosition << " " << endl;
-    cout << (0.5* ySize * S) << endl;
-    cout << "S : " << S << endl;
-    cout << "X : " << X << endl;
-    cout << "Y : " << Y << endl;
-    */
+    double X = (0.5 * S + cPosition * S) - (DIM_MAX);
+    double Y = -(0.5 * S + lPosition * S) + (DIM_MAX);
     obstacles.push_back(new Obstacle(X, Y, S));
 }
-void Map::removeObstacle(int xPosition, int yPosition){
-    grid[xPosition][yPosition] = false;
+void Map::removeObstacle(int lPosition, int cPosition){
+    grid[lPosition][cPosition] = false;
 }
 bool Map::isObstacle(double x, double y) const{return grid[int(x)][int(y)];}
