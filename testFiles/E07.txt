@@ -11,7 +11,7 @@
 	0	 0	4 0	   # first player
   -90   20	3 0	   # second player
   290 -160	2 0	   # third player
- -270  250	1 0	   # fourth player
+ -270  250	1 0	   # fourth player <----
  -200  120  2 0	   # fifth player
 
 # number of obstacles
@@ -26,7 +26,7 @@
 	3
   200  100	0	# first ball
  -100 -250 1.5	# second ball
- -280 270  -3	# third ball
+ -280 270  -3	# third ball  <----
 
   #	 And that's all
 

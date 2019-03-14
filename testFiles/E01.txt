@@ -24,7 +24,7 @@
 # number of balls
 	3
   200  100	0	# first ball
- -100 -450 1.5	# second ball
+ -100 -450 1.5	# second ball <----
  -280 270  -3	# third ball
 
   #	 And that's all

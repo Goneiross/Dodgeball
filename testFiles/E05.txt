@@ -11,8 +11,8 @@
 	0	 0	4 0	   # first player
   -90   20	3 0	   # second player
   150 -150	2 0	   # third player
- -200  200	1 0	   # fourth player
- -200  170  2 0	   # fifth player
+ -200  200	1 0	   # fourth player <----
+ -200  170  2 0	   # fifth player  <----
 
 # number of obstacles
 	4
