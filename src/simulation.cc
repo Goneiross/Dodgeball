@@ -39,6 +39,82 @@ void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){ //And 
     }
 }
 
+void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b, double delta){ //And if not during ini ?
+    double d = distance(players[p]->getHitbox()->getX(), players[p]->getHitbox()->getY(), balls[b]->getHitbox()->getX(), balls[b]->getHitbox()->getY());
+    if (d < (players[p]->getRadius() + balls[b]->getRadius() + delta)){
+        cout << PLAYER_BALL_COLLISION(p+1, b+1) << endl; //p or p+1 ?
+        exit(1);
+    }
+}
+
+void checkCollisions(vector<Player*> players, Map* map, int p, int o, double delta){ //And if not during ini ?
+    int m = map->getObstacle().size();
+    double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
+    double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getHitbox()->getX();
+    double Y = map->getObstacle()[o]->getHitbox()->getY() - players[p]->getHitbox()->getY();
+    double angle;
+    if (X == 0){
+        angle = M_PI_2;
+    } else if(Y == 0){
+        angle = 0;
+    } else {
+        angle = atan(Y/X);
+    }
+    double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
+    double included;
+    if((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)){
+        included = rayon;
+    } else if ((abs(angle) == M_PI / 3) || (abs(angle) == 2 * M_PI / 3)){
+        included = sqrt(2) * rayon;
+    } else if ((2 * M_PI / 3 < angle) && (angle < M_PI)){
+        included  = (rayon / X) * d;
+    } else if ((- M_PI / 3 < angle) && (angle < M_PI / 3)){
+        included  = (rayon / X) * d;
+    } else if ((- 2 * M_PI / 3 > angle) && ( angle > - M_PI)){
+        included  = (rayon / X) * d;
+    } else {
+        included  = (rayon / Y) * d;
+    } 
+    if (d < (players[p]->getRadius() + abs(included) + delta)){
+        cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl; //p or p+1 ?
+        exit(1);
+    }
+}
+
+void checkCollisions(vector<Ball*> balls, Map* map, int b, int o, double delta){ //And if not during ini ?
+    int m = map->getObstacle().size();
+    double d = distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
+    double X = map->getObstacle()[o]->getHitbox()->getX() - balls[b]->getHitbox()->getX();
+    double Y = map->getObstacle()[o]->getHitbox()->getY() - balls[b]->getHitbox()->getY();
+    double angle;
+    if (X == 0){
+        angle = M_PI_2;
+    } else if(Y == 0){
+        angle = 0;
+    } else {
+        angle = atan(Y/X);
+    }
+    double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
+    double included;
+    if((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)){
+        included = rayon;
+    } else if ((abs(angle) == M_PI / 3) || (abs(angle) == 2 * M_PI / 3)){
+        included = sqrt(2) * rayon;
+    } else if ((2 * M_PI / 3 < angle) && (angle < M_PI)){
+        included  = (rayon / X) * d;
+    } else if ((- M_PI / 3 < angle) && (angle < M_PI / 3)){
+        included  = (rayon / X) * d;
+    } else if ((- 2 * M_PI / 3 > angle) && ( angle > - M_PI)){
+        included  = (rayon / X) * d;
+    } else {
+        included  = (rayon / Y) * d;
+    }
+    if (d < (balls[b]->getRadius() + abs(included) + delta)){
+        cout << COLL_BALL_OBSTACLE(b + 1) << endl; //p or p+1 ?
+        exit(1);
+    }
+}
+
 void simulation(std::string inputFile){
     int nbCell, nbPlayer, nbObstacle, nbBall;
     string tmp0, tmp1, tmp2, tmp3;
@@ -50,7 +126,8 @@ void simulation(std::string inputFile){
 
     double MJ, ML;
 
-    Map* mainMap = new Map(nbCell, nbCell); //Could modify the class to take only one argument (squared map)
+    Map* mainMap; //Could modify the class to take only one argument (squared map)
+    
     ifstream flux (inputFile, ios::in);
     if (!flux) {
         cout << "Unable to open file " << inputFile << endl; // Maybe better with cerr
@@ -60,6 +137,7 @@ void simulation(std::string inputFile){
             do {flux.get(tmp);} while (tmp != '\n');
         } else if(part == 0){
             nbCell = stoi(tmp0);
+            mainMap = new Map(nbCell, nbCell);
             if ((nbCell > MAX_CELL) || (nbCell < MIN_CELL)){
                 cout << "Error, wrong cell number" << endl; //AskBoulic
                 exit(1);
@@ -101,8 +179,12 @@ void simulation(std::string inputFile){
                 exit(1);
             } else if(mainMap->isObstacle(stoi(tmp0), stoi(tmp1))){
                 cout << MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1)) << endl;
+                exit(1);
             } else {
-                mainMap->addObstacle(stod(tmp0), stod(tmp1));
+                mainMap->addObstacle(stod(tmp0), stod(tmp1)); //Be aware
+                for (int i = 0; i < nbPlayer; i++){
+                    checkCollisions(players, mainMap, i, o, ML);
+                }
             }
             o++;
             if (o == nbObstacle){part++;} //Check Collision with players
@@ -118,12 +200,16 @@ void simulation(std::string inputFile){
             } else {
                 balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell));
                 checkCollisions(balls, b, b, ML);
-                // CHeck Collision with obstacles
+                for (int i = 0; i < nbPlayer; i++){
+                    checkCollisions(players, balls, i, b, ML);
+                }
+                for (int o = 0; o < nbObstacle; o++){
+                    checkCollisions(balls, mainMap, b, o, ML);
+                }
             }
             b++;
             if (b == nbBall){part++;}
         } else {
-            cout << "t" << endl;
             flux.get(tmp);
         }
     }

@@ -27,7 +27,7 @@
   200  100	0	# first ball
  -100 -250 1.5	# second ball
  -280 270  -3	# third ball
- -325 -240  -3	# fourth ball
+ -325 -240  -3	# fourth ball <--- only the ball number is reported
 
   #	 And that's all
 

@@ -20,10 +20,11 @@ class Obstacle {
 
 class Map {
     public :
-        Map(int xSize, int ySize);
+        Map(int lPosition, int cPosition);
         ~Map(){};
         double getX () const;
         double getY () const;
+        std::vector<Obstacle*> getObstacle () const;
         void addObstacle(int xPosition, int yPosition);
         void removeObstacle(int xPosition, int yPosition);
         bool isObstacle(double x, double y) const;
