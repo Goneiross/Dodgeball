@@ -17,7 +17,6 @@ class Player {
         void updatePosition(double angle);
         bool touchedAndDead();
     private :
-        double xPosition, yPosition;
         double radius;
         int timeTouched;
         double count;
