@@ -13,41 +13,41 @@
 
 using namespace std;
 
-void checkCollisions(vector<Player*> players, int p, int pmax, double delta){ //And if not during ini ?
+void checkCollisions(vector<Player*> players, int p, int pmax, double delta){ 
     for (int i = 0; i <= pmax; i++){
         if(i != p){
             double d = distance(players[i]->getHitbox()->getX(), players[i]->getHitbox()->getY(), players[p]->getHitbox()->getX(),players[p]->getHitbox()->getY());
             //Try doing with circle and not coordinates
             if (d < (players[i]->getRadius() + players[p]->getRadius() + delta)){
-                cout << PLAYER_COLLISION(i+1, p+1) << endl; //p or p+1 ?
+                cout << PLAYER_COLLISION(i+1, p+1) << endl;
                 exit(1);
             }
         }
     }
 }
 
-void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){ //And if not during ini ?
+void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){ 
     for (int i = 0; i <= bmax; i++){
         if(i != b){
             double d = distance(balls[i]->getHitbox()->getX(), balls[i]->getHitbox()->getY(), balls[b]->getHitbox()->getX(),balls[b]->getHitbox()->getY());
             //Try doing with circle and not coordinates
             if (d < (balls[i]->getRadius() + balls[b]->getRadius() + delta)){
-                cout << BALL_COLLISION(i+1, b+1) << endl; //p or p+1 ?
+                cout << BALL_COLLISION(i+1, b+1) << endl;
                 exit(1);
             }
         }
     }
 }
 
-void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b, double delta){ //And if not during ini ?
+void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b, double delta){ 
     double d = distance(players[p]->getHitbox()->getX(), players[p]->getHitbox()->getY(), balls[b]->getHitbox()->getX(), balls[b]->getHitbox()->getY());
     if (d < (players[p]->getRadius() + balls[b]->getRadius() + delta)){
-        cout << PLAYER_BALL_COLLISION(p+1, b+1) << endl; //p or p+1 ?
+        cout << PLAYER_BALL_COLLISION(p+1, b+1) << endl;
         exit(1);
     }
 }
 
-void checkCollisions(vector<Player*> players, Map* map, int p, int o, double delta){ //And if not during ini ?
+void checkCollisions(vector<Player*> players, Map* map, int p, int o, double delta){ 
     int m = map->getObstacle().size();
     double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
     double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getHitbox()->getX();
@@ -81,7 +81,7 @@ void checkCollisions(vector<Player*> players, Map* map, int p, int o, double del
     }
 }
 
-void checkCollisions(vector<Ball*> balls, Map* map, int b, int o, double delta){ //And if not during ini ?
+void checkCollisions(vector<Ball*> balls, Map* map, int b, int o, double delta){ 
     int m = map->getObstacle().size();
     double d = distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
     double X = map->getObstacle()[o]->getHitbox()->getX() - balls[b]->getHitbox()->getX();
@@ -110,7 +110,7 @@ void checkCollisions(vector<Ball*> balls, Map* map, int b, int o, double delta){
         included  = (rayon / Y) * d;
     }
     if (d < (balls[b]->getRadius() + abs(included) + delta)){
-        cout << COLL_BALL_OBSTACLE(b + 1) << endl; //p or p+1 ?
+        cout << COLL_BALL_OBSTACLE(b + 1) << endl;
         exit(1);
     }
 }
@@ -123,7 +123,7 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer, vector<Player*
 
     ifstream flux (inputFile, ios::in);
     if (!flux) {
-        cout << "Unable to open file " << inputFile << endl; // Maybe better with cerr
+        cout << "Unable to open file " << inputFile << endl;
         exit(0); 
     }while(flux >> tmp0){
         if (tmp0 == "#"){
@@ -132,7 +132,7 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer, vector<Player*
             nbCell = stoi(tmp0);
             mainMap = new Map(nbCell, nbCell);
             if ((nbCell > MAX_CELL) || (nbCell < MIN_CELL)){
-                cout << "Error, wrong cell number" << endl; //AskBoulic
+                cout << "Error, wrong cell number" << endl;
                 exit(1);
             }
             MJ = COEF_MARGE_JEU * (SIDE/nbCell);
@@ -174,21 +174,21 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer, vector<Player*
                 cout << MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1)) << endl;
                 exit(1);
             } else {
-                mainMap->addObstacle(stod(tmp0), stod(tmp1)); //Be aware
+                mainMap->addObstacle(stod(tmp0), stod(tmp1));
                 for (int i = 0; i < nbPlayer; i++){
                     checkCollisions(players, mainMap, i, o, ML);
                 }
             }
             o++;
-            if (o == nbObstacle){part++;} //Check Collision with players
+            if (o == nbObstacle){part++;}
         } else if (part == 5){
             nbBall = stoi(tmp0);
             balls.reserve(nbBall+nbPlayer);
             part++;
         } else if (part == 6){
             flux >> tmp1 >> tmp2;
-            if((abs(stoi(tmp0)) > DIM_MAX) || (abs(stoi(tmp1)) > DIM_MAX)){     //est-ce que tmp0-1 must be d (marcherait pas)
-                cout << BALL_OUT(b+1) << endl; //b or b+1 ?
+            if((abs(stoi(tmp0)) > DIM_MAX) || (abs(stoi(tmp1)) > DIM_MAX)){
+                cout << BALL_OUT(b+1) << endl;
                 exit(1);
             } else {
                 balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell));
