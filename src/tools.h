@@ -5,6 +5,8 @@ class Circle {
         double getRadius () const;
         double getX() const;
         double getY() const;
+        void setX(int x);
+        void setY(int y);
     private :
         double radius;
         double xPosition;
@@ -18,6 +20,8 @@ class Square {
         double getSide () const;
         double getX() const;
         double getY() const;
+        void setX(int x);
+        void setY(int y);
     private :
         double side;
         double xPosition;

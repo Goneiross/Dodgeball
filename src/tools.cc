@@ -11,6 +11,8 @@ Circle::Circle(double x, double y, double r){
 double Circle::getRadius() const {return radius;}
 double Circle::getX() const {return xPosition;}
 double Circle::getY() const {return yPosition;}
+void Circle::setX(int x) {xPosition = x;}
+void Circle::setY(int y) {yPosition = y;}
 
 Square::Square(double x, double y, double s){
     xPosition = x;
@@ -20,6 +22,8 @@ Square::Square(double x, double y, double s){
 double Square::getSide() const {return side;}
 double Square::getX() const {return xPosition;}
 double Square::getY() const {return yPosition;}
+void Square::setX(int x) {xPosition = x;}
+void Square::setY(int y) {yPosition = y;}
 
 double distance(double x1, double x2){
     return abs(x1 - x2);
