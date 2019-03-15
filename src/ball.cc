@@ -9,18 +9,16 @@
 using namespace std;
 
 Ball::Ball(double x0, double y0, double a, int nbCell){
-    xPosition = x0;
-    yPosition = y0;
     angle = a;
     radius = COEF_RAYON_BALLE* (SIDE / nbCell);
     velocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
-    hitbox = new Circle(xPosition, yPosition, radius);
+    hitbox = new Circle(x0, y0, radius);
 }
 void Ball::updatePosition(){
-    xPosition += cos(angle) * velocity;
-    yPosition += sin(angle) * velocity;
+    hitbox->setX( hitbox->getX() + cos(angle) * velocity);
+    hitbox->setY( hitbox->getY() + sin(angle) * velocity);
 }
-double Ball::getX () const {return xPosition;}
-double Ball::getY () const {return yPosition;}
+double Ball::getX () const {return hitbox->getX();}
+double Ball::getY () const {return hitbox->getY();}
 double Ball::getRadius () const {return radius;}
 Circle* Ball::getHitbox() const{return hitbox;}

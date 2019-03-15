@@ -13,7 +13,6 @@ class Ball {
         Circle* getHitbox() const;
         void updatePosition();
     private :
-        double xPosition, yPosition;
         double radius;
         double velocity;
         double angle;

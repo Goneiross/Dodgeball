@@ -16,7 +16,7 @@ using namespace std;
 void checkCollisions(vector<Player*> players, int p, int pmax, double delta){ 
     for (int i = 0; i <= pmax; i++){
         if(i != p){
-            double d = distance(players[i]->getHitbox()->getX(), players[i]->getHitbox()->getY(), players[p]->getHitbox()->getX(),players[p]->getHitbox()->getY());
+            double d = distance(players[i]->getX(), players[i]->getY(), players[p]->getX(),players[p]->getY());
             //Try doing with circle and not coordinates
             if (d < (players[i]->getRadius() + players[p]->getRadius() + delta)){
                 cout << PLAYER_COLLISION(i+1, p+1) << endl;
@@ -40,7 +40,7 @@ void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){
 }
 
 void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b, double delta){ 
-    double d = distance(players[p]->getHitbox()->getX(), players[p]->getHitbox()->getY(), balls[b]->getHitbox()->getX(), balls[b]->getHitbox()->getY());
+    double d = distance(players[p]->getX(), players[p]->getY(), balls[b]->getHitbox()->getX(), balls[b]->getHitbox()->getY());
     if (d < (players[p]->getRadius() + balls[b]->getRadius() + delta)){
         cout << PLAYER_BALL_COLLISION(p+1, b+1) << endl;
         exit(1);
@@ -50,8 +50,8 @@ void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b,
 void checkCollisions(vector<Player*> players, Map* map, int p, int o, double delta){ 
     int m = map->getObstacle().size();
     double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
-    double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getHitbox()->getX();
-    double Y = map->getObstacle()[o]->getHitbox()->getY() - players[p]->getHitbox()->getY();
+    double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getX();
+    double Y = map->getObstacle()[o]->getHitbox()->getY() - players[p]->getY();
     double angle;
     if (X == 0){
         angle = M_PI_2;
@@ -220,14 +220,11 @@ void simulation(std::string inputFile, int mode){
         cout << FILE_READING_SUCCESS << endl;
         delete mainMap;
         for (int i = 0; i < nbPlayer; i++){
-            delete players[i]->getHitbox();
             delete players[i];
         }
         for (int i = 0; i < nbBall; i++){
-            delete balls[i]->getHitbox();
             delete balls[i];
         }
-
         return;
     }
 }
