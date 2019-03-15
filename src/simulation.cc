@@ -218,6 +218,16 @@ void simulation(std::string inputFile, int mode){
     initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap, nbBall, balls);
     if (mode == 1){
         cout << FILE_READING_SUCCESS << endl;
+        delete mainMap;
+        for (int i = 0; i < nbPlayer; i++){
+            delete players[i]->getHitbox();
+            delete players[i];
+        }
+        for (int i = 0; i < nbBall; i++){
+            delete balls[i]->getHitbox();
+            delete balls[i];
+        }
+
         return;
     }
 }
