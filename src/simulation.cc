@@ -115,19 +115,12 @@ void checkCollisions(vector<Ball*> balls, Map* map, int b, int o, double delta){
     }
 }
 
-void simulation(std::string inputFile){
-    int nbCell, nbPlayer, nbObstacle, nbBall;
+void initialization(string inputFile, int &nbCell, int &nbPlayer, vector<Player*> &players, int &nbObstacle, Map* &mainMap, int &nbBall, vector<Ball*> &balls){
     string tmp0, tmp1, tmp2, tmp3;
-    int part = 0, p = 0, o = 0, b = 0; //Use enum instead of part
     char tmp;
-
-    vector<Player*> players;
-    vector<Ball*> balls;
-
+    int part = 0, p = 0, o = 0, b = 0; //Use enum instead of part
     double MJ, ML;
 
-    Map* mainMap; //Could modify the class to take only one argument (squared map)
-    
     ifstream flux (inputFile, ios::in);
     if (!flux) {
         cout << "Unable to open file " << inputFile << endl; // Maybe better with cerr
@@ -214,4 +207,17 @@ void simulation(std::string inputFile){
         }
     }
     flux.close();
+}
+
+void simulation(std::string inputFile, int mode){
+    int nbCell, nbPlayer, nbObstacle, nbBall;
+    vector<Player*> players;
+    vector<Ball*> balls;
+    Map* mainMap;
+
+    initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap, nbBall, balls);
+    if (mode == 1){
+        cout << FILE_READING_SUCCESS << endl;
+        return;
+    }
 }
