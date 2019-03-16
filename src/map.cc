@@ -9,13 +9,11 @@
 
 using namespace std;
 
-Obstacle::Obstacle(double x, double y, double s){
-    xPosition = x;
-    yPosition = y;
-    hitbox = new Square(xPosition, yPosition, s);
+Obstacle::Obstacle(double x0, double y0, double s){
+    hitbox = new Square(x0, y0, s);
 }
-double Obstacle::getX () const {return xPosition;}
-double Obstacle::getY () const {return yPosition;}
+double Obstacle::getX () const {return hitbox->getX();}
+double Obstacle::getY () const {return hitbox->getY();}
 Square* Obstacle::getHitbox() const {return hitbox;}
 
 Map::Map(int x, int y){
