@@ -29,7 +29,7 @@ void checkCollisions(vector<Player*> players, int p, int pmax, double delta){
 void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){ 
     for (int i = 0; i <= bmax; i++){
         if(i != b){
-            double d = distance(balls[i]->getHitbox()->getX(), balls[i]->getHitbox()->getY(), balls[b]->getHitbox()->getX(),balls[b]->getHitbox()->getY());
+            double d = distance(balls[i]->getX(), balls[i]->getY(), balls[b]->getX(),balls[b]->getY());
             //Try doing with circle and not coordinates
             if (d < (balls[i]->getRadius() + balls[b]->getRadius() + delta)){
                 cout << BALL_COLLISION(i+1, b+1) << endl;
@@ -40,7 +40,7 @@ void checkCollisions(vector<Ball*> balls, int b, int bmax, double delta){
 }
 
 void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b, double delta){ 
-    double d = distance(players[p]->getX(), players[p]->getY(), balls[b]->getHitbox()->getX(), balls[b]->getHitbox()->getY());
+    double d = distance(players[p]->getX(), players[p]->getY(), balls[b]->getX(), balls[b]->getY());
     if (d < (players[p]->getRadius() + balls[b]->getRadius() + delta)){
         cout << PLAYER_BALL_COLLISION(p+1, b+1) << endl;
         exit(1);
@@ -50,8 +50,8 @@ void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b,
 void checkCollisions(vector<Player*> players, Map* map, int p, int o, double delta){ 
     int m = map->getObstacle().size();
     double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
-    double X = map->getObstacle()[o]->getHitbox()->getX() - players[p]->getX();
-    double Y = map->getObstacle()[o]->getHitbox()->getY() - players[p]->getY();
+    double X = map->getObstacle()[o]->getX() - players[p]->getX();
+    double Y = map->getObstacle()[o]->getY() - players[p]->getY();
     double angle;
     if (X == 0){
         angle = M_PI_2;
@@ -84,8 +84,8 @@ void checkCollisions(vector<Player*> players, Map* map, int p, int o, double del
 void checkCollisions(vector<Ball*> balls, Map* map, int b, int o, double delta){ 
     int m = map->getObstacle().size();
     double d = distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
-    double X = map->getObstacle()[o]->getHitbox()->getX() - balls[b]->getHitbox()->getX();
-    double Y = map->getObstacle()[o]->getHitbox()->getY() - balls[b]->getHitbox()->getY();
+    double X = map->getObstacle()[o]->getX() - balls[b]->getX();
+    double Y = map->getObstacle()[o]->getY() - balls[b]->getY();
     double angle;
     if (X == 0){
         angle = M_PI_2;
@@ -125,7 +125,8 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer, vector<Player*
     if (!flux) {
         cout << "Unable to open file " << inputFile << endl;
         exit(0); 
-    }while(flux >> tmp0){
+    } 
+    while(flux >> tmp0){
         if (tmp0 == "#"){
             do {flux.get(tmp);} while (tmp != '\n');
         } else if(part == 0){

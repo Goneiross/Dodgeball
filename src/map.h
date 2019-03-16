@@ -7,14 +7,12 @@
 
 class Obstacle {
     public :
-        Obstacle(double x, double y, double s);
+        Obstacle(double x0, double y0, double s);
         ~Obstacle(){};
         double getX () const;
         double getY () const;
         Square* getHitbox() const;
     private :
-        double xPosition;
-        double yPosition;
         Square* hitbox;
 };
 
