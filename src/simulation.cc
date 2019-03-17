@@ -48,7 +48,6 @@ void checkCollisions(vector<Player*> players, vector<Ball*> balls, int p, int b,
 }
 
 void checkCollisions(vector<Player*> players, Map* map, int p, int o, double delta){ 
-    int m = map->getObstacle().size();
     double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
     double X = map->getObstacle()[o]->getX() - players[p]->getX();
     double Y = map->getObstacle()[o]->getY() - players[p]->getY();
@@ -82,7 +81,6 @@ void checkCollisions(vector<Player*> players, Map* map, int p, int o, double del
 }
 
 void checkCollisions(vector<Ball*> balls, Map* map, int b, int o, double delta){ 
-    int m = map->getObstacle().size();
     double d = distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
     double X = map->getObstacle()[o]->getX() - balls[b]->getX();
     double Y = map->getObstacle()[o]->getY() - balls[b]->getY();
