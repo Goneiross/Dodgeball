@@ -39,8 +39,7 @@ void checkCollisions(vector<Ball *> balls, int b, int bmax, double delta) {
 
 void checkCollisions(vector<Player *> players, vector<Ball *> balls, int p,
                      int b, double delta) {
-  double d = distance(players[p]->getX(), players[p]->getY(), balls[b]->getX(),
-                      balls[b]->getY());
+  double d = distance(players[p]->getHitbox(), balls[b]->getHitbox());
   if (d < (players[p]->getRadius() + balls[b]->getRadius() + delta)) {
     cout << PLAYER_BALL_COLLISION(p + 1, b + 1) << endl;
     exit(1);
