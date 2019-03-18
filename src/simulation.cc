@@ -46,10 +46,8 @@ void checkCollisions(vector<Player *> players, vector<Ball *> balls, int p,
   }
 }
 
-void checkCollisions(vector<Player *> players, Map *map, int p, int o,
-                     double delta) {
-  double d =
-      distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
+void checkCollisions(vector<Player *> players, Map *map, int p, int o, double delta) {
+  double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
   double X = map->getObstacle()[o]->getX() - players[p]->getX();
   double Y = map->getObstacle()[o]->getY() - players[p]->getY();
   double angle;
@@ -76,15 +74,13 @@ void checkCollisions(vector<Player *> players, Map *map, int p, int o,
     included = (rayon / Y) * d;
   }
   if (d < (players[p]->getRadius() + abs(included) + delta)) {
-    cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl; // p or p+1 ?
+    cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl;
     exit(1);
   }
 }
 
-void checkCollisions(vector<Ball *> balls, Map *map, int b, int o,
-                     double delta) {
-  double d =
-      distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
+void checkCollisions(vector<Ball *> balls, Map *map, int b, int o, double delta) {
+  double d = distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
   double X = map->getObstacle()[o]->getX() - balls[b]->getX();
   double Y = map->getObstacle()[o]->getY() - balls[b]->getY();
   double angle;
@@ -116,8 +112,7 @@ void checkCollisions(vector<Ball *> balls, Map *map, int b, int o,
   }
 }
 
-void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML,
-               string tmp0) {
+void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0) {
   nbCell = stoi(tmp0);
   mainMap = new Map(nbCell, nbCell);
   if ((nbCell > MAX_CELL) || (nbCell < MIN_CELL)) {
@@ -129,9 +124,8 @@ void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML,
 }
 void parseData(vector<Player *> &players, int p, int nbCell, double ML,
                string tmp0, string tmp1, string tmp2, string tmp3) {
-  if (((abs(stoi(tmp0)) > DIM_MAX) ||
-       (abs((stoi(tmp1)) >
-            DIM_MAX)))) { // must be doubles ? (vabs(double) ambiguous)
+  if (((abs(stod(tmp0)) > DIM_MAX) ||
+       (abs(stod(tmp1)  > DIM_MAX)))) { // must be doubles ? (vabs(double) ambiguous)
     cout << PLAYER_OUT(p + 1) << endl;
     exit(1);
   } else {
