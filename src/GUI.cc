@@ -1,3 +1,4 @@
+/*
 #include <gtkmm.h>
 #include "GUI.h"
 
@@ -12,3 +13,4 @@ int draw(){
 
   return app->run(window);
 }
+*/
