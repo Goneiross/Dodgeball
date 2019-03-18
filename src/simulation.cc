@@ -16,9 +16,7 @@ using namespace std;
 void checkCollisions(vector<Player *> players, int p, int pmax, double delta) {
   for (int i = 0; i <= pmax; i++) {
     if (i != p) {
-      double d = distance(players[i]->getX(), players[i]->getY(),
-                          players[p]->getX(), players[p]->getY());
-      // Try doing with circle and not coordinates
+      double d = distance(players[i]->getHitbox(), players[p]->getHitbox());
       if (d < (players[i]->getRadius() + players[p]->getRadius() + delta)) {
         cout << PLAYER_COLLISION(i + 1, p + 1) << endl;
         exit(1);
@@ -30,9 +28,7 @@ void checkCollisions(vector<Player *> players, int p, int pmax, double delta) {
 void checkCollisions(vector<Ball *> balls, int b, int bmax, double delta) {
   for (int i = 0; i <= bmax; i++) {
     if (i != b) {
-      double d = distance(balls[i]->getX(), balls[i]->getY(), balls[b]->getX(),
-                          balls[b]->getY());
-      // Try doing with circle and not coordinates
+      double d = distance(balls[i]->getHitbox(), balls[b]->getHitbox());
       if (d < (balls[i]->getRadius() + balls[b]->getRadius() + delta)) {
         cout << BALL_COLLISION(i + 1, b + 1) << endl;
         exit(1);
