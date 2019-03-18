@@ -88,7 +88,8 @@ void checkCollisions(vector<Player *> players, Map *map, int p, int o,
 
 void checkCollisions(vector<Ball *> balls, Map *map, int b, int o,
                      double delta) {
-  double d = distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
+  double d =
+      distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
   double X = map->getObstacle()[o]->getX() - balls[b]->getX();
   double Y = map->getObstacle()[o]->getY() - balls[b]->getY();
   double angle;
