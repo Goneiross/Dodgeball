@@ -125,7 +125,7 @@ void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0) 
 void parseData(vector<Player *> &players, int p, int nbCell, double ML,
                string tmp0, string tmp1, string tmp2, string tmp3) {
   if (((abs(stod(tmp0)) > DIM_MAX) ||
-       (abs(stod(tmp1)  > DIM_MAX)))) { // must be doubles ? (vabs(double) ambiguous)
+       (abs(stod(tmp1)  > DIM_MAX)))) {
     cout << PLAYER_OUT(p + 1) << endl;
     exit(1);
   } else {
