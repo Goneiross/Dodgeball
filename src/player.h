@@ -1,3 +1,10 @@
+/*!
+  \file   player.h
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  "Player" module header
+*/
+
 #ifndef TOOLS_H
 #define TOOLS_H
 #include "tools.h"

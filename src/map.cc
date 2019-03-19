@@ -16,6 +16,13 @@ double Obstacle::getX() const { return hitbox->getX(); }
 double Obstacle::getY() const { return hitbox->getY(); }
 Square *Obstacle::getHitbox() const { return hitbox; }
 
+/*!
+  \file   map.cc
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  "Map" module implementation
+*/
+
 Map::Map(int x, int y) {
   xSize = x;
   ySize = y;

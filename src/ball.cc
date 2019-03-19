@@ -1,3 +1,10 @@
+/*!
+  \file   ball.cc
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  "Ball" module implementation
+*/
+
 #include <math.h>
 #include "define.h"
 #include "ball.h"

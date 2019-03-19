@@ -1,3 +1,10 @@
+/*!
+  \file   ball.h
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  "Ball" module header
+*/
+
 #ifndef TOOLS_H
 #define TOOLS_H
 #include "tools.h"

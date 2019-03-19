@@ -1,3 +1,10 @@
+/*!
+  \file   define.h
+  \author Ronan Boulic
+  \date   March 2019
+  \brief  Definition of constants
+*/
+
 #ifndef HEADER_DEFINE_H
 #define HEADER_DEFINE_H
 

@@ -1,3 +1,10 @@
+/*!
+  \file   tools.h
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  "Tools" module header
+*/
+
 class Circle {
 public:
   Circle(double x, double y, double r);
