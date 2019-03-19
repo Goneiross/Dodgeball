@@ -31,13 +31,13 @@ public:
   double getX() const;
   double getY() const;
   std::vector<Obstacle *> getObstacle() const;
-  void addObstacle(int xPosition, int yPosition);
-  void removeObstacle(int xPosition, int yPosition);
-  bool isObstacle(double x, double y) const;
-  void test();
+  void addObstacle(int lPosition, int cPosition, int ID);
+  void removeObstacle(int lPosition, int cPosition);
+  bool isObstacle(double lPosition, double cPosition);
+  int whichObstacle(double lPosition, double cPosition);
 
 private:
-  bool **grid;
+  int **grid;
   int xSize;
   int ySize;
   std::vector<Obstacle *> obstacles;
