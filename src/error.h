@@ -1,3 +1,10 @@
+/*!
+  \file   define.h
+  \author Ronan Boulic
+  \date   March 2019
+  \brief  Definition of errors
+*/
+
 #ifndef HEADER_ERROR_H
 #define HEADER_ERROR_H
 

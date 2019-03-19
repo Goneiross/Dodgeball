@@ -1,4 +1,11 @@
 // RAJOUTER IFNDEF
+/*!
+  \file   ball.cc
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  Ball module implementation
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>

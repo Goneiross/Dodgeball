@@ -1,3 +1,10 @@
+/*!
+  \file   map.h
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  "Map" module header
+*/
+
 #include <vector>
 
 #ifndef TOOLS_H

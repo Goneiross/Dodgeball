@@ -1,3 +1,10 @@
+/*!
+  \file   player.cc
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  "Player" module implementation
+*/
+
 #include <math.h>
 #include <iostream>
 #include "player.h"

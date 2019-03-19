@@ -1,3 +1,10 @@
+/*!
+  \file   tools.cc
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  "Tools" module implementation
+*/
+
 #include <cmath>
 #include "tools.h"
 

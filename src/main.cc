@@ -1,3 +1,10 @@
+/*!
+  \file   main.cc
+  \author Guillaume Pellerin & Vincent Miche
+  \date   March 2019
+  \brief  main module
+*/
+
 #include <iostream>
 #include <string>
 
