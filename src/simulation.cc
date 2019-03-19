@@ -122,10 +122,12 @@ void checkCollisions(vector<Ball *> balls, Map *map, int b, int o, double delta)
 void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0) {
   nbCell = stoi(tmp0);
   mainMap = new Map(nbCell, nbCell);
+  /*
   if ((nbCell > MAX_CELL) || (nbCell < MIN_CELL)) {
     cout << "Error, wrong cell number" << endl;
     exit(1);
   }
+  */
   MJ = COEF_MARGE_JEU * (SIDE / nbCell);
   ML = MJ / 2;
 }
