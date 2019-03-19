@@ -13,6 +13,7 @@
 class Ball {
 public:
   Ball(double x, double y, double angle, int nbCell);
+  Ball(double x, double y, double angle, double r, double v);
   ~Ball(){};
   double getX() const;
   double getY() const;

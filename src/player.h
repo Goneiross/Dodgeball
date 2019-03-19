@@ -14,6 +14,7 @@ class Player {
 public:
   Player(double x0, double y0, int nbCell);
   Player(double x0, double y0, int t, double c, int nbCell);
+  Player(double x0, double y0, int t, double c, double r, double v); 
   ~Player(){};
   double getX() const;
   double getY() const;

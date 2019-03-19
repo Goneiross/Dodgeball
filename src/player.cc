@@ -30,9 +30,16 @@ Player::Player(double x0, double y0, int t, double c, int nbCell) {
   velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
   hitbox = new Circle(x0, y0, radius);
 }
+Player::Player(double x0, double y0, int t, double c, double r, double v) {
+  timeTouched = t;
+  count = c;
+  radius = r;
+  velocity = v;
+  hitbox = new Circle(x0, y0, radius);
+}
 void Player::updatePosition(double angle) {
-  // xPosition += cos(angle) * velocity;
-  // yPosition += sin(angle) * velocity;
+  hitbox->setX(hitbox->getX() + cos(angle) * velocity);
+  hitbox->setY(hitbox->getY() + sin(angle) * velocity);
 }
 bool Player::touchedAndDead() {
   timeTouched += 1;

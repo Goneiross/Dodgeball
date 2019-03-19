@@ -131,15 +131,15 @@ void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0) 
   MJ = COEF_MARGE_JEU * (SIDE / nbCell);
   ML = MJ / 2;
 }
-void parseData(vector<Player *> &players, int p, int nbCell, double ML,
-               string tmp0, string tmp1, string tmp2, string tmp3) {
+void parseData(vector<Player *> &players, int p, double ML, 
+                            double playerRadius, double playerVelocity, string tmp0, string tmp1, string tmp2, string tmp3) {
   if (((abs(stod(tmp0)) > DIM_MAX) ||
        (abs(stod(tmp1)  > DIM_MAX)))) {
     cout << PLAYER_OUT(p + 1) << endl;
     exit(1);
   } else {
     players.push_back(
-        new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), nbCell));
+        new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), playerRadius, playerVelocity));
     checkCollisions(players, p, p, ML);
   }
 }
@@ -168,13 +168,13 @@ void parseData(Map *&mainMap, vector<Player *> &players, int nbPlayer, int o,
   }
 }
 void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
-               int nbCell, int nbPlayer, int nbObstacle, double ML, int b,
+               int nbPlayer, int nbObstacle, double ML, int b, double ballRadius, double ballVelocity,
                string tmp0, string tmp1, string tmp2) {
   if ((abs(stoi(tmp0)) > DIM_MAX) || (abs(stoi(tmp1)) > DIM_MAX)) {
     cout << BALL_OUT(b + 1) << endl;
     exit(1);
   } else {
-    balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), nbCell));
+    balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), ballRadius, ballVelocity));
     checkCollisions(balls, b, b, ML);
     for (int i = 0; i < nbPlayer; i++) {
       checkCollisions(players, balls, i, b, ML);
@@ -212,7 +212,9 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
       part++;
     } else if (part == 2) {
       flux >> tmp1 >> tmp2 >> tmp3;
-      parseData(players, p, nbCell, ML, tmp0, tmp1, tmp2, tmp3);
+      double playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
+      double playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
+      parseData(players, p, ML, playerRadius, playerVelocity, tmp0, tmp1, tmp2, tmp3);
       p++;
       if (p == nbPlayer) {
         part++;
@@ -233,7 +235,9 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
       part++;
     } else if (part == 6) {
       flux >> tmp1 >> tmp2;
-      parseData(balls, players, mainMap, nbCell, nbPlayer, nbObstacle, ML, b,
+      double ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
+      double ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
+      parseData(balls, players, mainMap, nbPlayer, nbObstacle, ML, b, ballRadius, ballVelocity,
                 tmp0, tmp1, tmp2);
       b++;
       if (b == nbBall) {
