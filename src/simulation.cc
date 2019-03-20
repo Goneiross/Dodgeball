@@ -76,7 +76,8 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
                     int &nbBall, vector<Ball *> &balls) {
   string inputData[4];
   char charBin;
-  int part = 0, p = 0, o = 0, b = 0; // Use enum instead of part
+  int parseType = 0;
+  int p = 0, o = 0, b = 0; // Use enum instead of parseType
   double MJ, ML;
 
   ifstream flux(inputFile, ios::in);
@@ -89,26 +90,26 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
       do {
         flux.get(charBin);
       } while (charBin != '\n');
-    } else if (part == 0) {
+    } else if (parseType == 0) {
       parseData(mainMap, nbCell, MJ, ML, inputData[0]);
-      part++;
-    } else if (part == 1) {
+      parseType++;
+    } else if (parseType == 1) {
       nbPlayer = stoi(inputData[0]);
       players.reserve(nbPlayer);
-      part++;
-    } else if (part == 2) {
+      parseType++;
+    } else if (parseType == 2) {
       flux >> inputData[1] >> inputData[2] >> inputData[3];
       double playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
       double playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
       parseData(players, p, ML, playerRadius, playerVelocity, inputData[0], inputData[1], inputData[2], inputData[3]);
       p++;
       if (p == nbPlayer) {
-        part++;
+        parseType++;
       }
-    } else if (part == 3) {
+    } else if (parseType == 3) {
       nbObstacle = stoi(inputData[0]);
-      part++;
-    } else if (part == 4) {
+      parseType++;
+    } else if (parseType == 4) {
       flux >> inputData[1];
       parseData(mainMap, nbCell, o, inputData[0], inputData[1]);
       o++;
@@ -120,13 +121,13 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
             checkCollisions(players, mainMap, i, o, ML);
           }
         }
-        part++;
+        parseType++;
       }
-    } else if (part == 5) {
+    } else if (parseType == 5) {
       nbBall = stoi(inputData[0]);
       balls.reserve(nbBall + nbPlayer);
-      part++;
-    } else if (part == 6) {
+      parseType++;
+    } else if (parseType == 6) {
       flux >> inputData[1] >> inputData[2];
       double ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
       double ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
@@ -141,7 +142,7 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
             checkCollisions(balls, mainMap, i, o, ML);
           }
         }
-        part++;
+        parseType++;
       }
     } else {
       flux.get(charBin);
