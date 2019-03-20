@@ -78,7 +78,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
   string inputData[4];
   char charBin;
   int parseType = 0;
-  int p = 0, o = 0, b = 0; // Use enum instead of parseType
+  int p = 0, o = 0, b = 0;  // ID of the currently selected object/player/ball
   double MJ, ML;
 
   ifstream flux(inputFile, ios::in);
