@@ -158,8 +158,6 @@ void largeCheckColision(vector<Player *> players, Map* map, int p,
   int lPosition = - ((players[p]->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
-  cout << cPosition << " " << lPosition << " " << players[p]->getX() << " " 
-        << players[p]->getY() << endl << endl;
   for (int i = - 1; i <= 1; i++){
     for (int j = - 1; j <= 1; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
@@ -176,8 +174,6 @@ void largeCheckColision(vector<Ball *> balls, Map* map, int b, vector<int> &toCh
   int lPosition = - ((balls[b]->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
-  cout << cPosition << " " << lPosition << " " << balls[b]->getX() << " " 
-        << balls[b]->getY() << endl << endl;
   for (int i = - 1; i <= 1; i++){
     for (int j = - 1; j <= 1; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
