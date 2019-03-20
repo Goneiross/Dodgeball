@@ -1,4 +1,3 @@
-// RAJOUTER IFNDEF
 /*!
   \file   ball.cc
   \author Guillaume Pellerin & Vincent Miche
@@ -19,6 +18,137 @@
 #include "error.h"
 
 using namespace std;
+
+void largeCheckColision(vector<Player *> players, Map* map, int p, 
+                        vector<int> &toCheck);
+void largeCheckColision(vector<Ball *> balls, Map* map, int b, vector<int> &toCheck);
+void checkCollisions(vector<Player *> players, int p, int pmax, double delta) ;
+void checkCollisions(vector<Ball *> balls, int b, int bmax, double delta) ;
+void checkCollisions(vector<Player *> players, vector<Ball *> balls, int p,
+                     int b, double delta) ;
+void checkCollisions(vector<Player *> players, Map *map, int p, int o, double delta);
+void checkCollisions(vector<Ball *> balls, Map *map, int b, int o, double delta) ;
+void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0);
+void parseData(vector<Player *> &players, int p, double ML, 
+                            double playerRadius, double playerVelocity, string tmp0, 
+                            string tmp1, string tmp2, string tmp3) ;
+void parseData(Map *&mainMap, int nbCell, int o, string tmp0, string tmp1) ;
+void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
+               int nbPlayer, int nbObstacle, double ML, int b, double ballRadius, 
+               double ballVelocity, string tmp0, string tmp1, string tmp2) ;
+void initialization(string inputFile, int &nbCell, int &nbPlayer,
+                    vector<Player *> &players, int &nbObstacle, Map *&mainMap,
+                    int &nbBall, vector<Ball *> &balls) ;
+
+void simulation(std::string inputFile, int mode) {
+  int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
+  vector<Player *> players;
+  vector<Ball *> balls;
+  Map *mainMap;
+
+  initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap,
+                 nbBall, balls);
+  if (mode == 1) {
+    cout << FILE_READING_SUCCESS << endl;
+    delete mainMap;
+    for (int i = 0; i < nbPlayer; i++) {
+      delete players[i];
+    }
+    for (int i = 0; i < nbBall; i++) {
+      delete balls[i];
+    }
+    return;
+  } else {
+    cout << FILE_READING_SUCCESS << endl;
+    delete mainMap;
+    for (int i = 0; i < nbPlayer; i++) {
+      delete players[i];
+    }
+    for (int i = 0; i < nbBall; i++) {
+      delete balls[i];
+    }
+    return;
+  }
+}
+
+void initialization(string inputFile, int &nbCell, int &nbPlayer,
+                    vector<Player *> &players, int &nbObstacle, Map *&mainMap,
+                    int &nbBall, vector<Ball *> &balls) {
+  string tmp0, tmp1, tmp2, tmp3;
+  char tmp;
+  int part = 0, p = 0, o = 0, b = 0; // Use enum instead of part
+  double MJ, ML;
+
+  ifstream flux(inputFile, ios::in);
+  if (!flux) {
+    cout << "Unable to open file " << inputFile << endl;
+    exit(0);
+  }
+  while (flux >> tmp0) {
+    if (tmp0 == "#") {
+      do {
+        flux.get(tmp);
+      } while (tmp != '\n');
+    } else if (part == 0) {
+      parseData(mainMap, nbCell, MJ, ML, tmp0);
+      part++;
+    } else if (part == 1) {
+      nbPlayer = stoi(tmp0);
+      players.reserve(nbPlayer);
+      part++;
+    } else if (part == 2) {
+      flux >> tmp1 >> tmp2 >> tmp3;
+      double playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
+      double playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
+      parseData(players, p, ML, playerRadius, playerVelocity, tmp0, tmp1, tmp2, tmp3);
+      p++;
+      if (p == nbPlayer) {
+        part++;
+      }
+    } else if (part == 3) {
+      nbObstacle = stoi(tmp0);
+      part++;
+    } else if (part == 4) {
+      flux >> tmp1;
+      parseData(mainMap, nbCell, o, tmp0, tmp1);
+      o++;
+      if (o == nbObstacle) {
+        for (int i = 0; i < nbPlayer; i++) {
+          vector<int> toCheck;
+          largeCheckColision(players, mainMap, i, toCheck);
+          for (auto o : toCheck){
+            checkCollisions(players, mainMap, i, o, ML);
+          }
+        }
+        part++;
+      }
+    } else if (part == 5) {
+      nbBall = stoi(tmp0);
+      balls.reserve(nbBall + nbPlayer);
+      part++;
+    } else if (part == 6) {
+      flux >> tmp1 >> tmp2;
+      double ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
+      double ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
+      parseData(balls, players, mainMap, nbPlayer, nbObstacle, ML, b, ballRadius, 
+                ballVelocity, tmp0, tmp1, tmp2);
+      b++;
+      if (b == nbBall) {
+        for (int i = 0; i < nbBall; i++) {
+          vector<int> toCheck;
+          largeCheckColision(balls, mainMap, i, toCheck);
+          for (auto o : toCheck){
+            checkCollisions(balls, mainMap, i, o, ML);
+          }
+        }
+        part++;
+      }
+    } else {
+      flux.get(tmp);
+    }
+  }
+  flux.close();
+}
 
 void largeCheckColision(vector<Player *> players, Map* map, int p, 
                         vector<int> &toCheck){
@@ -168,6 +298,7 @@ void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0) 
   MJ = COEF_MARGE_JEU * (SIDE / nbCell);
   ML = MJ / 2;
 }
+
 void parseData(vector<Player *> &players, int p, double ML, 
                             double playerRadius, double playerVelocity, string tmp0, 
                             string tmp1, string tmp2, string tmp3) {
@@ -182,6 +313,7 @@ void parseData(vector<Player *> &players, int p, double ML,
     checkCollisions(players, p, p, ML);
   }
 }
+
 void parseData(Map *&mainMap, int nbCell, int o, string tmp0, string tmp1) {
   if (stoi(tmp0) >= nbCell) {
     cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp0)) << endl;
@@ -202,6 +334,7 @@ void parseData(Map *&mainMap, int nbCell, int o, string tmp0, string tmp1) {
     mainMap->addObstacle(stod(tmp0), stod(tmp1), o);
   }
 }
+
 void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
                int nbPlayer, int nbObstacle, double ML, int b, double ballRadius, 
                double ballVelocity, string tmp0, string tmp1, string tmp2) {
@@ -218,115 +351,5 @@ void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
     for (int o = 0; o < nbObstacle; o++) {
       checkCollisions(balls, mainMap, b, o, ML);
     }
-  }
-}
-
-void initialization(string inputFile, int &nbCell, int &nbPlayer,
-                    vector<Player *> &players, int &nbObstacle, Map *&mainMap,
-                    int &nbBall, vector<Ball *> &balls) {
-  string tmp0, tmp1, tmp2, tmp3;
-  char tmp;
-  int part = 0, p = 0, o = 0, b = 0; // Use enum instead of part
-  double MJ, ML;
-
-  ifstream flux(inputFile, ios::in);
-  if (!flux) {
-    cout << "Unable to open file " << inputFile << endl;
-    exit(0);
-  }
-  while (flux >> tmp0) {
-    if (tmp0 == "#") {
-      do {
-        flux.get(tmp);
-      } while (tmp != '\n');
-    } else if (part == 0) {
-      parseData(mainMap, nbCell, MJ, ML, tmp0);
-      part++;
-    } else if (part == 1) {
-      nbPlayer = stoi(tmp0);
-      players.reserve(nbPlayer);
-      part++;
-    } else if (part == 2) {
-      flux >> tmp1 >> tmp2 >> tmp3;
-      double playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
-      double playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
-      parseData(players, p, ML, playerRadius, playerVelocity, tmp0, tmp1, tmp2, tmp3);
-      p++;
-      if (p == nbPlayer) {
-        part++;
-      }
-    } else if (part == 3) {
-      nbObstacle = stoi(tmp0);
-      part++;
-    } else if (part == 4) {
-      flux >> tmp1;
-      parseData(mainMap, nbCell, o, tmp0, tmp1);
-      o++;
-      if (o == nbObstacle) {
-        for (int i = 0; i < nbPlayer; i++) {
-          vector<int> toCheck;
-          largeCheckColision(players, mainMap, i, toCheck);
-          for (auto o : toCheck){
-            checkCollisions(players, mainMap, i, o, ML);
-          }
-        }
-        part++;
-      }
-    } else if (part == 5) {
-      nbBall = stoi(tmp0);
-      balls.reserve(nbBall + nbPlayer);
-      part++;
-    } else if (part == 6) {
-      flux >> tmp1 >> tmp2;
-      double ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
-      double ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
-      parseData(balls, players, mainMap, nbPlayer, nbObstacle, ML, b, ballRadius, 
-                ballVelocity, tmp0, tmp1, tmp2);
-      b++;
-      if (b == nbBall) {
-        for (int i = 0; i < nbBall; i++) {
-          vector<int> toCheck;
-          largeCheckColision(balls, mainMap, i, toCheck);
-          for (auto o : toCheck){
-            checkCollisions(balls, mainMap, i, o, ML);
-          }
-        }
-        part++;
-      }
-    } else {
-      flux.get(tmp);
-    }
-  }
-  flux.close();
-}
-
-void simulation(std::string inputFile, int mode) {
-  int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
-  vector<Player *> players;
-  vector<Ball *> balls;
-  Map *mainMap;
-
-  initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap,
-                 nbBall, balls);
-  if (mode == 1) {
-    cout << FILE_READING_SUCCESS << endl;
-    delete mainMap;
-    for (int i = 0; i < nbPlayer; i++) {
-      delete players[i];
-    }
-    for (int i = 0; i < nbBall; i++) {
-      delete balls[i];
-    }
-    return;
-  } else {
-    cout << FILE_READING_SUCCESS << endl;
-    delete mainMap;
-    for (int i = 0; i < nbPlayer; i++) {
-      delete players[i];
-    }
-    for (int i = 0; i < nbBall; i++) {
-      delete balls[i];
-    }
-    return;
   }
 }
