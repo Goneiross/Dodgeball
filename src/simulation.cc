@@ -20,14 +20,16 @@
 
 using namespace std;
 
-void largeCheckColision(vector<Player *> players, Map* map, int p, vector<int> &toCheck){
+void largeCheckColision(vector<Player *> players, Map* map, int p, 
+                        vector<int> &toCheck){
   int cPosition = ((players[p]->getX() + DIM_MAX ) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
   int lPosition = - ((players[p]->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
-  cout << cPosition << " " << lPosition << " " << players[p]->getX() << " " << players[p]->getY() << endl << endl;
+  cout << cPosition << " " << lPosition << " " << players[p]->getX() << " " 
+        << players[p]->getY() << endl << endl;
   for (int i = - 1; i <= 1; i++){
     for (int j = - 1; j <= 1; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
@@ -44,7 +46,8 @@ void largeCheckColision(vector<Ball *> balls, Map* map, int b, vector<int> &toCh
   int lPosition = - ((balls[b]->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
-  cout << cPosition << " " << lPosition << " " << balls[b]->getX() << " " << balls[b]->getY() << endl << endl;
+  cout << cPosition << " " << lPosition << " " << balls[b]->getX() << " " 
+        << balls[b]->getY() << endl << endl;
   for (int i = - 1; i <= 1; i++){
     for (int j = - 1; j <= 1; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
@@ -166,14 +169,16 @@ void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0) 
   ML = MJ / 2;
 }
 void parseData(vector<Player *> &players, int p, double ML, 
-                            double playerRadius, double playerVelocity, string tmp0, string tmp1, string tmp2, string tmp3) {
+                            double playerRadius, double playerVelocity, string tmp0, 
+                            string tmp1, string tmp2, string tmp3) {
   if (((abs(stod(tmp0)) > DIM_MAX) ||
        (abs(stod(tmp1)  > DIM_MAX)))) {
     cout << PLAYER_OUT(p + 1) << endl;
     exit(1);
   } else {
     players.push_back(
-        new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), playerRadius, playerVelocity));
+        new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), playerRadius, 
+                    playerVelocity));
     checkCollisions(players, p, p, ML);
   }
 }
@@ -198,13 +203,14 @@ void parseData(Map *&mainMap, int nbCell, int o, string tmp0, string tmp1) {
   }
 }
 void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
-               int nbPlayer, int nbObstacle, double ML, int b, double ballRadius, double ballVelocity,
-               string tmp0, string tmp1, string tmp2) {
+               int nbPlayer, int nbObstacle, double ML, int b, double ballRadius, 
+               double ballVelocity, string tmp0, string tmp1, string tmp2) {
   if ((abs(stoi(tmp0)) > DIM_MAX) || (abs(stoi(tmp1)) > DIM_MAX)) {
     cout << BALL_OUT(b + 1) << endl;
     exit(1);
   } else {
-    balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), ballRadius, ballVelocity));
+    balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), ballRadius, 
+                    ballVelocity));
     checkCollisions(balls, b, b, ML);
     for (int i = 0; i < nbPlayer; i++) {
       checkCollisions(players, balls, i, b, ML);
@@ -274,8 +280,8 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
       flux >> tmp1 >> tmp2;
       double ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
       double ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
-      parseData(balls, players, mainMap, nbPlayer, nbObstacle, ML, b, ballRadius, ballVelocity,
-                tmp0, tmp1, tmp2);
+      parseData(balls, players, mainMap, nbPlayer, nbObstacle, ML, b, ballRadius, 
+                ballVelocity, tmp0, tmp1, tmp2);
       b++;
       if (b == nbBall) {
         for (int i = 0; i < nbBall; i++) {
@@ -295,7 +301,7 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
 }
 
 void simulation(std::string inputFile, int mode) {
-  int nbCell, nbPlayer, nbObstacle, nbBall;
+  int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
   vector<Player *> players;
   vector<Ball *> balls;
   Map *mainMap;
