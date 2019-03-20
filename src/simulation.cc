@@ -20,6 +20,40 @@
 
 using namespace std;
 
+void largeCheckColision(vector<Player *> players, Map* map, int p, vector<int> &toCheck){
+  int cPosition = ((players[p]->getX() + DIM_MAX ) /
+                    map->getObstacle()[0]->getHitbox()->getSide() )
+                    - 1 / 2;
+  int lPosition = - ((players[p]->getY() - DIM_MAX) /
+                    map->getObstacle()[0]->getHitbox()->getSide() )
+                    - 1 / 2;
+  cout << cPosition << " " << lPosition << " " << players[p]->getX() << " " << players[p]->getY() << endl << endl;
+  for (int i = - 1; i <= 1; i++){
+    for (int j = - 1; j <= 1; j++){
+      if(map->isObstacle(lPosition + i, cPosition + j)){
+        toCheck.push_back(map->whichObstacle(lPosition + i, cPosition + j));
+      }
+    }
+  }
+}
+
+void largeCheckColision(vector<Ball *> balls, Map* map, int b, vector<int> &toCheck){
+  int cPosition = ((balls[b]->getX() + DIM_MAX ) /
+                    map->getObstacle()[0]->getHitbox()->getSide() )
+                    - 1 / 2;
+  int lPosition = - ((balls[b]->getY() - DIM_MAX) /
+                    map->getObstacle()[0]->getHitbox()->getSide() )
+                    - 1 / 2;
+  cout << cPosition << " " << lPosition << " " << balls[b]->getX() << " " << balls[b]->getY() << endl << endl;
+  for (int i = - 1; i <= 1; i++){
+    for (int j = - 1; j <= 1; j++){
+      if(map->isObstacle(lPosition + i, cPosition + j)){
+        toCheck.push_back(map->whichObstacle(lPosition + i, cPosition + j));
+      }
+    }
+  }
+}
+
 void checkCollisions(vector<Player *> players, int p, int pmax, double delta) {
   for (int i = 0; i <= pmax; i++) {
     if (i != p) {
@@ -143,8 +177,7 @@ void parseData(vector<Player *> &players, int p, double ML,
     checkCollisions(players, p, p, ML);
   }
 }
-void parseData(Map *&mainMap, vector<Player *> &players, int nbPlayer, int o,
-               double ML, int nbCell, string tmp0, string tmp1) {
+void parseData(Map *&mainMap, int nbCell, int o, string tmp0, string tmp1) {
   if (stoi(tmp0) >= nbCell) {
     cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp0)) << endl;
     exit(1);
@@ -161,10 +194,7 @@ void parseData(Map *&mainMap, vector<Player *> &players, int nbPlayer, int o,
     cout << MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1)) << endl;
     exit(1);
   } else {
-    mainMap->addObstacle(stod(tmp0), stod(tmp1));
-    for (int i = 0; i < nbPlayer; i++) {
-      checkCollisions(players, mainMap, i, o, ML);
-    }
+    mainMap->addObstacle(stod(tmp0), stod(tmp1), o);
   }
 }
 void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
@@ -224,9 +254,16 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
       part++;
     } else if (part == 4) {
       flux >> tmp1;
-      parseData(mainMap, players, nbPlayer, o, ML, nbCell, tmp0, tmp1);
+      parseData(mainMap, nbCell, o, tmp0, tmp1);
       o++;
       if (o == nbObstacle) {
+        for (int i = 0; i < nbPlayer; i++) {
+          vector<int> toCheck;
+          largeCheckColision(players, mainMap, i, toCheck);
+          for (auto o : toCheck){
+            checkCollisions(players, mainMap, i, o, ML);
+          }
+        }
         part++;
       }
     } else if (part == 5) {
@@ -241,6 +278,13 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
                 tmp0, tmp1, tmp2);
       b++;
       if (b == nbBall) {
+        for (int i = 0; i < nbBall; i++) {
+          vector<int> toCheck;
+          largeCheckColision(balls, mainMap, i, toCheck);
+          for (auto o : toCheck){
+            checkCollisions(balls, mainMap, i, o, ML);
+          }
+        }
         part++;
       }
     } else {
