@@ -28,14 +28,14 @@ void checkCollisions(vector<Player *> players, vector<Ball *> balls, int p,
                      int b, double delta) ;
 void checkCollisions(vector<Player *> players, Map *map, int p, int o, double delta);
 void checkCollisions(vector<Ball *> balls, Map *map, int b, int o, double delta) ;
-void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0);
+void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string inputData0);
 void parseData(vector<Player *> &players, int p, double ML, 
-                            double playerRadius, double playerVelocity, string tmp0, 
-                            string tmp1, string tmp2, string tmp3) ;
-void parseData(Map *&mainMap, int nbCell, int o, string tmp0, string tmp1) ;
+                            double playerRadius, double playerVelocity, string inputData0, 
+                            string inputData1, string inputData2, string inputData3) ;
+void parseData(Map *&mainMap, int nbCell, int o, string inputData0, string inputData1) ;
 void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
                int nbPlayer, int nbObstacle, double ML, int b, double ballRadius, 
-               double ballVelocity, string tmp0, string tmp1, string tmp2) ;
+               double ballVelocity, string inputData0, string inputData1, string inputData2) ;
 void initialization(string inputFile, int &nbCell, int &nbPlayer,
                     vector<Player *> &players, int &nbObstacle, Map *&mainMap,
                     int &nbBall, vector<Ball *> &balls) ;
@@ -74,8 +74,8 @@ void simulation(std::string inputFile, int mode) {
 void initialization(string inputFile, int &nbCell, int &nbPlayer,
                     vector<Player *> &players, int &nbObstacle, Map *&mainMap,
                     int &nbBall, vector<Ball *> &balls) {
-  string tmp0, tmp1, tmp2, tmp3;
-  char tmp;
+  string inputData[4];
+  char charBin;
   int part = 0, p = 0, o = 0, b = 0; // Use enum instead of part
   double MJ, ML;
 
@@ -84,33 +84,33 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
     cout << "Unable to open file " << inputFile << endl;
     exit(0);
   }
-  while (flux >> tmp0) {
-    if (tmp0 == "#") {
+  while (flux >> inputData[0]) {
+    if (inputData[0] == "#") {
       do {
-        flux.get(tmp);
-      } while (tmp != '\n');
+        flux.get(charBin);
+      } while (charBin != '\n');
     } else if (part == 0) {
-      parseData(mainMap, nbCell, MJ, ML, tmp0);
+      parseData(mainMap, nbCell, MJ, ML, inputData[0]);
       part++;
     } else if (part == 1) {
-      nbPlayer = stoi(tmp0);
+      nbPlayer = stoi(inputData[0]);
       players.reserve(nbPlayer);
       part++;
     } else if (part == 2) {
-      flux >> tmp1 >> tmp2 >> tmp3;
+      flux >> inputData[1] >> inputData[2] >> inputData[3];
       double playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
       double playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
-      parseData(players, p, ML, playerRadius, playerVelocity, tmp0, tmp1, tmp2, tmp3);
+      parseData(players, p, ML, playerRadius, playerVelocity, inputData[0], inputData[1], inputData[2], inputData[3]);
       p++;
       if (p == nbPlayer) {
         part++;
       }
     } else if (part == 3) {
-      nbObstacle = stoi(tmp0);
+      nbObstacle = stoi(inputData[0]);
       part++;
     } else if (part == 4) {
-      flux >> tmp1;
-      parseData(mainMap, nbCell, o, tmp0, tmp1);
+      flux >> inputData[1];
+      parseData(mainMap, nbCell, o, inputData[0], inputData[1]);
       o++;
       if (o == nbObstacle) {
         for (int i = 0; i < nbPlayer; i++) {
@@ -123,15 +123,15 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
         part++;
       }
     } else if (part == 5) {
-      nbBall = stoi(tmp0);
+      nbBall = stoi(inputData[0]);
       balls.reserve(nbBall + nbPlayer);
       part++;
     } else if (part == 6) {
-      flux >> tmp1 >> tmp2;
+      flux >> inputData[1] >> inputData[2];
       double ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
       double ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
       parseData(balls, players, mainMap, nbPlayer, nbObstacle, ML, b, ballRadius, 
-                ballVelocity, tmp0, tmp1, tmp2);
+                ballVelocity, inputData[0], inputData[1], inputData[2]);
       b++;
       if (b == nbBall) {
         for (int i = 0; i < nbBall; i++) {
@@ -144,7 +144,7 @@ void initialization(string inputFile, int &nbCell, int &nbPlayer,
         part++;
       }
     } else {
-      flux.get(tmp);
+      flux.get(charBin);
     }
   }
   flux.close();
@@ -229,21 +229,21 @@ void checkCollisions(vector<Player *> players, Map *map, int p, int o, double de
     angle = atan(Y / X);
   }
   double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
-  double included;
+  double squareRadius;
   if ((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)) {
-    included = rayon;
+    squareRadius = rayon;
   } else if ((abs(angle) == M_PI / 3) || (abs(angle) == 2 * M_PI / 3)) {
-    included = sqrt(2) * rayon;
+    squareRadius = sqrt(2) * rayon;
   } else if ((2 * M_PI / 3 < angle) && (angle < M_PI)) {
-    included = (rayon / X) * d;
+    squareRadius = (rayon / X) * d;
   } else if ((-M_PI / 3 < angle) && (angle < M_PI / 3)) {
-    included = (rayon / X) * d;
+    squareRadius = (rayon / X) * d;
   } else if ((-2 * M_PI / 3 > angle) && (angle > -M_PI)) {
-    included = (rayon / X) * d;
+    squareRadius = (rayon / X) * d;
   } else {
-    included = (rayon / Y) * d;
+    squareRadius = (rayon / Y) * d;
   }
-  if (d < (players[p]->getRadius() + abs(included) + delta)) {
+  if (d < (players[p]->getRadius() + abs(squareRadius) + delta)) {
     cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl;
     exit(1);
   }
@@ -262,28 +262,28 @@ void checkCollisions(vector<Ball *> balls, Map *map, int b, int o, double delta)
     angle = atan(Y / X);
   }
   double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
-  double included;
+  double squareRadius;
   if ((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)) {
-    included = rayon;
+    squareRadius = rayon;
   } else if ((abs(angle) == M_PI / 3) || (abs(angle) == 2 * M_PI / 3)) {
-    included = sqrt(2) * rayon;
+    squareRadius = sqrt(2) * rayon;
   } else if ((2 * M_PI / 3 < angle) && (angle < M_PI)) {
-    included = (rayon / X) * d;
+    squareRadius = (rayon / X) * d;
   } else if ((-M_PI / 3 < angle) && (angle < M_PI / 3)) {
-    included = (rayon / X) * d;
+    squareRadius = (rayon / X) * d;
   } else if ((-2 * M_PI / 3 > angle) && (angle > -M_PI)) {
-    included = (rayon / X) * d;
+    squareRadius = (rayon / X) * d;
   } else {
-    included = (rayon / Y) * d;
+    squareRadius = (rayon / Y) * d;
   }
-  if (d < (balls[b]->getRadius() + abs(included) + delta)) {
+  if (d < (balls[b]->getRadius() + abs(squareRadius) + delta)) {
     cout << COLL_BALL_OBSTACLE(b + 1) << endl;
     exit(1);
   }
 }
 
-void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0) {
-  nbCell = stoi(tmp0);
+void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string inputData0) {
+  nbCell = stoi(inputData0);
   mainMap = new Map(nbCell, nbCell);
   /*
   if ((nbCell > MAX_CELL) || (nbCell < MIN_CELL)) {
@@ -296,49 +296,49 @@ void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, string tmp0) 
 }
 
 void parseData(vector<Player *> &players, int p, double ML, 
-                            double playerRadius, double playerVelocity, string tmp0, 
-                            string tmp1, string tmp2, string tmp3) {
-  if (((abs(stod(tmp0)) > DIM_MAX) ||
-       (abs(stod(tmp1)  > DIM_MAX)))) {
+                            double playerRadius, double playerVelocity, string inputData0, 
+                            string inputData1, string inputData2, string inputData3) {
+  if (((abs(stod(inputData0)) > DIM_MAX) ||
+       (abs(stod(inputData1)  > DIM_MAX)))) {
     cout << PLAYER_OUT(p + 1) << endl;
     exit(1);
   } else {
     players.push_back(
-        new Player(stod(tmp0), stod(tmp1), stoi(tmp2), stod(tmp3), playerRadius, 
+        new Player(stod(inputData0), stod(inputData1), stoi(inputData2), stod(inputData3), playerRadius, 
                     playerVelocity));
     checkCollisions(players, p, p, ML);
   }
 }
 
-void parseData(Map *&mainMap, int nbCell, int o, string tmp0, string tmp1) {
-  if (stoi(tmp0) >= nbCell) {
-    cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp0)) << endl;
+void parseData(Map *&mainMap, int nbCell, int o, string inputData0, string inputData1) {
+  if (stoi(inputData0) >= nbCell) {
+    cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData0)) << endl;
     exit(1);
-  } else if (stoi(tmp1) >= nbCell) {
-    cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp1)) << endl;
+  } else if (stoi(inputData1) >= nbCell) {
+    cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData1)) << endl;
     exit(1);
-  } else if (stoi(tmp0) < 0) {
-    cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp0)) << endl;
+  } else if (stoi(inputData0) < 0) {
+    cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData0)) << endl;
     exit(1);
-  } else if (stoi(tmp1) < 0) {
-    cout << OBSTACLE_VALUE_INCORRECT(stoi(tmp1)) << endl;
+  } else if (stoi(inputData1) < 0) {
+    cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData1)) << endl;
     exit(1);
-  } else if (mainMap->isObstacle(stoi(tmp0), stoi(tmp1))) {
-    cout << MULTI_OBSTACLE(stoi(tmp0), stoi(tmp1)) << endl;
+  } else if (mainMap->isObstacle(stoi(inputData0), stoi(inputData1))) {
+    cout << MULTI_OBSTACLE(stoi(inputData0), stoi(inputData1)) << endl;
     exit(1);
   } else {
-    mainMap->addObstacle(stod(tmp0), stod(tmp1), o);
+    mainMap->addObstacle(stod(inputData0), stod(inputData1), o);
   }
 }
 
 void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
                int nbPlayer, int nbObstacle, double ML, int b, double ballRadius, 
-               double ballVelocity, string tmp0, string tmp1, string tmp2) {
-  if ((abs(stoi(tmp0)) > DIM_MAX) || (abs(stoi(tmp1)) > DIM_MAX)) {
+               double ballVelocity, string inputData0, string inputData1, string inputData2) {
+  if ((abs(stoi(inputData0)) > DIM_MAX) || (abs(stoi(inputData1)) > DIM_MAX)) {
     cout << BALL_OUT(b + 1) << endl;
     exit(1);
   } else {
-    balls.push_back(new Ball(stod(tmp0), stod(tmp1), stod(tmp2), ballRadius, 
+    balls.push_back(new Ball(stod(inputData0), stod(inputData1), stod(inputData2), ballRadius, 
                     ballVelocity));
       checkCollisions(players, balls, i, b, ML);
       checkCollisions(balls, mainMap, b, o, ML);
