@@ -5,6 +5,7 @@
   \brief  "Player" module header
 */
 
+#include <vector>
 #ifndef TOOLS_H
 #define TOOLS_H
 #include "tools.h"
@@ -30,4 +31,15 @@ private:
   double count;
   double velocity;
   Circle *hitbox;
+};
+
+class PlayerMap {
+  public:
+    PlayerMap(int l, int c);
+    void addPlayer(double x, double y, double angle, int nbCell, int ID);
+  private:
+    int lineNumber;
+    int columnNumber;
+    std::vector<Player*> players;
+    std::vector<int>** playerGrid;
 };
