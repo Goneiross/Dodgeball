@@ -34,17 +34,17 @@ static void collisionCheck(vector<Player *> players, Map *map, int p, int o,
                             double delta);
 static void collisionCheck(vector<Ball *> balls, Map *map, int b, int o, 
                             double delta);
-static void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, 
-                      string inputData0);
-static void parseData(vector<Player *> &players, int p, double ML, double playerRadius,
-                      double playerVelocity, string inputData0, string inputData1, 
-                      string inputData2, string inputData3);
+static void parseData(Map *&mainMap, int &nbCell, double &ingameMargin, 
+                      double &parsingMargin, string inputData0);
+static void parseData(vector<Player *> &players, int p, double parsingMargin, 
+                      double playerRadius, double playerVelocity, string inputData0, 
+                      string inputData1, string inputData2, string inputData3);
 static void parseData(Map *&mainMap, int nbCell, int o, string inputData0, 
                             string inputData1);
 static void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
-               int nbPlayer, int nbObstacle, double ML, int b, double ballRadius, 
-               double ballVelocity, string inputData0, string inputData1, 
-               string inputData2);
+               int nbPlayer, int nbObstacle, double parsingMargin, int b,
+               double ballRadius, double ballVelocity, string inputData0,
+               string inputData1, string inputData2);
 void simulation(std::string inputFile, int mode) {
   int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
   vector<Player *> players;
@@ -83,7 +83,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
   char charBin;
   int parseType = 0;
   int p = 0, o = 0, b = 0;  // ID of the currently selected object/player/ball
-  double MJ, ML;
+  double ingameMargin, parsingMargin;
 
   ifstream flux(inputFile, ios::in);
   if (!flux) {
@@ -96,7 +96,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
         flux.get(charBin);
       } while (charBin != '\n');
     } else if (parseType == 0) {
-      parseData(mainMap, nbCell, MJ, ML, inputData[0]);
+      parseData(mainMap, nbCell, ingameMargin, parsingMargin, inputData[0]);
       parseType++;
     } else if (parseType == 1) {
       nbPlayer = stoi(inputData[0]);
@@ -106,7 +106,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
       flux >> inputData[1] >> inputData[2] >> inputData[3];
       double playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
       double playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
-      parseData(players, p, ML, playerRadius, playerVelocity, inputData[0], 
+      parseData(players, p, parsingMargin, playerRadius, playerVelocity, inputData[0], 
                 inputData[1], inputData[2], inputData[3]);
       p++;
       if (p == nbPlayer) {
@@ -126,7 +126,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
           largeCollisionCheck(players, mainMap, i, toCheck);
           int nbToCheck = toCheck.size();
           for (int j = 0; j < nbToCheck; j++){
-            collisionCheck(players, mainMap, i, toCheck[j], ML);
+            collisionCheck(players, mainMap, i, toCheck[j], parsingMargin);
           }
         }
         parseType++;
@@ -139,15 +139,15 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
       flux >> inputData[1] >> inputData[2];
       double ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
       double ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
-      parseData(balls, players, mainMap, nbPlayer, nbObstacle, ML, b, ballRadius, 
-                ballVelocity, inputData[0], inputData[1], inputData[2]);
+      parseData(balls, players, mainMap, nbPlayer, nbObstacle, parsingMargin, b, 
+                ballRadius, ballVelocity, inputData[0], inputData[1], inputData[2]);
       b++;
       if (b == nbBall) {
         for (int i = 0; i < nbBall; i++) {
           vector<int> toCheck;
           largeCollisionCheck(balls, mainMap, i, toCheck);
           for (auto o : toCheck){
-            collisionCheck(balls, mainMap, i, o, ML);
+            collisionCheck(balls, mainMap, i, o, parsingMargin);
           }
         }
         parseType++;
@@ -294,17 +294,17 @@ static void collisionCheck(vector<Ball *> balls, Map *map, int b, int o,
   }
 }
 
-static void parseData(Map *&mainMap, int &nbCell, double &MJ, double &ML, 
-                      string inputData0) {
+static void parseData(Map *&mainMap, int &nbCell, double &ingameMargin, 
+                      double &parsingMargin, string inputData0) {
   nbCell = stoi(inputData0);
   mainMap = new Map(nbCell, nbCell);
-  MJ = COEF_MARGE_JEU * (SIDE / nbCell);
-  ML = MJ / 2;
+  ingameMargin = COEF_MARGE_JEU * (SIDE / nbCell);
+  parsingMargin = ingameMargin / 2;
 }
 
-static void parseData(vector<Player *> &players, int p, double ML, double playerRadius,
-                      double playerVelocity, string inputData0, string inputData1, 
-                      string inputData2, string inputData3) {
+static void parseData(vector<Player *> &players, int p, double parsingMargin, 
+                      double playerRadius, double playerVelocity, string inputData0,
+                      string inputData1, string inputData2, string inputData3) {
   if (((abs(stod(inputData0)) > DIM_MAX) ||
        (abs(stod(inputData1)  > DIM_MAX)))) {
     cout << PLAYER_OUT(p + 1) << endl;
@@ -313,7 +313,7 @@ static void parseData(vector<Player *> &players, int p, double ML, double player
     players.push_back(
         new Player(stod(inputData0), stod(inputData1), stoi(inputData2), 
                     stod(inputData3), playerRadius, playerVelocity));
-    collisionCheck(players, p, p, ML);
+    collisionCheck(players, p, p, parsingMargin);
   }
 }
 
@@ -340,7 +340,7 @@ static void parseData(Map *&mainMap, int nbCell, int o, string inputData0,
 }
 
 static void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
-                      int nbPlayer, int nbObstacle, double ML, int b, 
+                      int nbPlayer, int nbObstacle, double parsingMargin, int b, 
                       double ballRadius, double ballVelocity, string inputData0, 
                       string inputData1, string inputData2) {
   if ((abs(stoi(inputData0)) > DIM_MAX) || (abs(stoi(inputData1)) > DIM_MAX)) {
@@ -349,12 +349,12 @@ static void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&ma
   } else {
     balls.push_back(new Ball(stod(inputData0), stod(inputData1), stod(inputData2), 
                               ballRadius, ballVelocity));
-    collisionCheck(balls, b, b, ML);
+    collisionCheck(balls, b, b, parsingMargin);
     for (int i = 0; i < nbPlayer; i++) {
-      collisionCheck(players, balls, i, b, ML);
+      collisionCheck(players, balls, i, b, parsingMargin);
     }
     for (int o = 0; o < nbObstacle; o++) {
-      collisionCheck(balls, mainMap, b, o, ML);
+      collisionCheck(balls, mainMap, b, o, parsingMargin);
     }
   }
 }
