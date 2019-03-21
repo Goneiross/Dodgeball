@@ -89,6 +89,10 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
     cout << "Unable to open file " << inputFile << endl;
     exit(0);
   }
+  double ballRadius;
+  double ballVelocity;
+  double playerRadius;
+  double playerVelocity;
   while (flux >> inputData[0]) {
     if (inputData[0] == "#") {
       do {
@@ -96,6 +100,10 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
       } while (charBin != '\n');
     } else if (parseType == 0) {
       parseData(mainMap, nbCell, ingameMargin, parsingMargin, inputData[0]);
+      ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
+      ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
+      playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
+      playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
       parseType++;
     } else if (parseType == 1) {
       nbPlayer = stoi(inputData[0]);
@@ -103,8 +111,6 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
       parseType++;
     } else if (parseType == 2) {
       flux >> inputData[1] >> inputData[2] >> inputData[3];
-      double playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
-      double playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
       parseData(players, p, parsingMargin, playerRadius, playerVelocity, inputData[0], 
                 inputData[1], inputData[2], inputData[3]);
       p++;
@@ -136,8 +142,6 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
       parseType++;
     } else if (parseType == 6) {
       flux >> inputData[1] >> inputData[2];
-      double ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
-      double ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
       parseData(balls, players, mainMap, nbPlayer, nbObstacle, parsingMargin, b, 
                 ballRadius, ballVelocity, inputData[0], inputData[1], inputData[2]);
       b++;
@@ -361,9 +365,6 @@ static void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&ma
     collisionCheck(balls, b, b, parsingMargin);
     for (int i = 0; i < nbPlayer; i++) {
       collisionCheck(players, balls, i, b, parsingMargin);
-    }
-    for (int o = 0; o < nbObstacle; o++) {
-      collisionCheck(balls, mainMap, b, o, parsingMargin);
     }
   }
 }
