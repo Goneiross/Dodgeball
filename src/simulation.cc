@@ -103,8 +103,6 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
       parseType++;
     } else if (parseType == 2) {
       flux >> inputData[1] >> inputData[2] >> inputData[3];
-      double playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
-      double playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
       parseData(players, p, nbCell, parsingMargin, playerRadius, playerVelocity, inputData[0], 
                 inputData[1], inputData[2], inputData[3]);
       p++;
@@ -135,8 +133,6 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
       parseType++;
     } else if (parseType == 6) {
       flux >> inputData[1] >> inputData[2];
-      double ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
-      double ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
       parseData(balls, players, mainMap,nbCell, nbPlayer, nbObstacle, parsingMargin, b, 
                 ballRadius, ballVelocity, inputData[0], inputData[1], inputData[2]);
       b++;
