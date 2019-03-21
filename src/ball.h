@@ -12,7 +12,8 @@
 
 class Ball {
 public:
-  Ball(double x, double y, double angle, double r, double v, int l, int c, int i);
+  Ball(double xPosition, double yPosition, double angle, double radius, 
+      double velocity, int lPosition, int cPosition, int ID);
   ~Ball(){};
   double getX() const;
   double getY() const;
@@ -34,11 +35,12 @@ private:
 class BallMap {
   public:
     BallMap(int l, int c);
-    void addBall(double x, double y, double angle, double r, double v, int ID);
+    void addBall(double xPosition, double yPosition, double angle, 
+                double radius, double velocity, int ID);
     void reserveSpace(int nbBall);
     bool isBall(int lPosition, int cPosition);
     std::vector<int> whichBall(int lPosition, int cPosition);
-    Ball* getBall(int i) const;
+    Ball* getBall(int index) const;
   private:
     int lineNumber;
     int columnNumber;
