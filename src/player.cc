@@ -6,7 +6,7 @@
 */
 
 #include <math.h>
-#include <iostream>
+#include <vector>
 #include "player.h"
 #ifndef TOOLS_H
 #define TOOLS_H
@@ -54,3 +54,27 @@ double Player::getCount() const { return count; }
 double Player::getTimeTouched() const { return timeTouched; }
 
 Circle *Player::getHitbox() const { return hitbox; }
+
+PlayerMap::PlayerMap(int l, int c){
+  lineNumber = l;
+  columnNumber = c;
+
+  playerGrid = new vector<int>* [lineNumber];
+  for (int i = 0; i < lineNumber; i++) {
+    playerGrid[i] = new vector<int>[columnNumber];
+    for (int j = 0; j < columnNumber; j++) {
+      playerGrid[i][j].push_back(-1);
+    }
+  }
+}
+
+void PlayerMap::addPlayer(double x, double y, double angle, int nbCell, int ID){
+  players.push_back(new Player(x, y, angle, nbCell, ID));
+  int cPosition = ((x + DIM_MAX ) / columnNumber ) - 1 / 2;
+  int lPosition = - ((y - DIM_MAX) / lineNumber ) - 1 / 2;
+  if (playerGrid[lPosition][cPosition][0] == -1){
+    playerGrid[lPosition][cPosition][0] = ID;
+  } else {
+    playerGrid[lPosition][cPosition].push_back(ID);
+  }
+}

@@ -12,7 +12,8 @@
 
 class Ball {
 public:
-  Ball(double x, double y, double angle, int nbCell);
+  Ball(double x, double y, double angle, int nbCell, int i);
+  Ball(double x, double y, double angle, double r, double v, int i);
   ~Ball(){};
   double getX() const;
   double getY() const;
@@ -21,7 +22,19 @@ public:
   void updatePosition();
 
 private:
+  int ID;
   double velocity;
   double angle;
   Circle *hitbox;
+};
+
+class BallMap {
+  public:
+    BallMap(int l, int c);
+    void addBall(double x, double y, double angle, int nbCell, int ID);
+  private:
+    int lineNumber;
+    int columnNumber;
+    std::vector<Ball*> balls;
+    std::vector<int>** ballGrid;
 };
