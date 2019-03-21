@@ -125,9 +125,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
           vector<int> toCheck;
           largeCollisionCheck(players, mainMap, i, toCheck);
           int nbToCheck = toCheck.size();
-          cout << "To check size : " << nbToCheck << endl;
           for (int j = 0; j < nbToCheck; j++){
-            cout << toCheck[j]+1 << " " << i+1 << endl;
             collisionCheck(players, mainMap, i, toCheck[j], ML);
           }
         }
@@ -169,18 +167,13 @@ static void largeCollisionCheck(vector<Player *> players, Map* map, int p,
   int lPosition = - ((players[p]->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
-  cout << "Player" << p+1 << " : " << players[p]->getX() << " " << players[p]->getY() << endl;
-  cout << "Colonne : " << cPosition << " Ligne : " << lPosition << endl;
   for (int i = - 1; i <= 1; i++){
     for (int j = - 1; j <= 1; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
-        cout << "Obstacle" << map->whichObstacle(lPosition + i, cPosition + j) + 1 << " : " << lPosition + i << " " <<  cPosition + j << endl;
         toCheck.push_back(map->whichObstacle(lPosition + i, cPosition + j));
       }
     }
   }
-  cout << "Number to check : " << toCheck.size() << endl;
-  cout << endl;
 }
 
 static void largeCollisionCheck(vector<Ball *> balls, Map* map, int b, 
@@ -253,20 +246,14 @@ static void collisionCheck(vector<Player *> players, Map *map, int p, int o,
   } else if ((abs(angle) == M_PI / 4) || (abs(angle) == 2 * M_PI / 4)) {
     squareRadius = sqrt(2) * rayon;
   } else if ((2 * M_PI / 4 < angle) && (angle < M_PI)) {
-    cout << "case 1" << endl;
     squareRadius = (rayon / X) * d;
   } else if ((-M_PI / 4 < angle) && (angle < M_PI / 4)) {
-    cout << "case 2" << -M_PI / 4  * 180 / M_PI  << M_PI / 4 * 180 / M_PI  <<   endl;
     squareRadius = (rayon / X) * d;
   } else if ((-2 * M_PI / 4 > angle) && (angle > -M_PI)) {
-    cout << "case 3" << endl;
     squareRadius = (rayon / X) * d;
   } else {
-    cout << "case 4" << endl;
     squareRadius = (rayon / Y) * d;
   }
-  cout << "Angle : " << angle * 180 / M_PI << endl;
-  cout << "Distance : " << d << " PLayeRadius : " << players[p]->getRadius() << " SquareRadius : " << abs(squareRadius)  << " Delta : " << delta << endl;
   if (d < (players[p]->getRadius() + abs(squareRadius) + delta)) {
     cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl;
     exit(1);
