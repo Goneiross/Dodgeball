@@ -250,17 +250,23 @@ static void collisionCheck(vector<Player *> players, Map *map, int p, int o,
   double squareRadius;
   if ((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)) {
     squareRadius = rayon;
-  } else if ((abs(angle) == M_PI / 3) || (abs(angle) == 2 * M_PI / 3)) {
+  } else if ((abs(angle) == M_PI / 4) || (abs(angle) == 2 * M_PI / 4)) {
     squareRadius = sqrt(2) * rayon;
-  } else if ((2 * M_PI / 3 < angle) && (angle < M_PI)) {
+  } else if ((2 * M_PI / 4 < angle) && (angle < M_PI)) {
+    cout << "case 1" << endl;
     squareRadius = (rayon / X) * d;
-  } else if ((-M_PI / 3 < angle) && (angle < M_PI / 3)) {
+  } else if ((-M_PI / 4 < angle) && (angle < M_PI / 4)) {
+    cout << "case 2" << -M_PI / 4  * 180 / M_PI  << M_PI / 4 * 180 / M_PI  <<   endl;
     squareRadius = (rayon / X) * d;
-  } else if ((-2 * M_PI / 3 > angle) && (angle > -M_PI)) {
+  } else if ((-2 * M_PI / 4 > angle) && (angle > -M_PI)) {
+    cout << "case 3" << endl;
     squareRadius = (rayon / X) * d;
   } else {
+    cout << "case 4" << endl;
     squareRadius = (rayon / Y) * d;
   }
+  cout << "Angle : " << angle * 180 / M_PI << endl;
+  cout << "Distance : " << d << " PLayeRadius : " << players[p]->getRadius() << " SquareRadius : " << abs(squareRadius)  << " Delta : " << delta << endl;
   if (d < (players[p]->getRadius() + abs(squareRadius) + delta)) {
     cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl;
     exit(1);
@@ -284,13 +290,13 @@ static void collisionCheck(vector<Ball *> balls, Map *map, int b, int o,
   double squareRadius;
   if ((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)) {
     squareRadius = rayon;
-  } else if ((abs(angle) == M_PI / 3) || (abs(angle) == 2 * M_PI / 3)) {
+  } else if ((abs(angle) == M_PI / 4) || (abs(angle) == 2 * M_PI / 4)) {
     squareRadius = sqrt(2) * rayon;
-  } else if ((2 * M_PI / 3 < angle) && (angle < M_PI)) {
+  } else if ((2 * M_PI / 4 < angle) && (angle < M_PI)) {
     squareRadius = (rayon / X) * d;
-  } else if ((-M_PI / 3 < angle) && (angle < M_PI / 3)) {
+  } else if ((-M_PI / 4 < angle) && (angle < M_PI / 4)) {
     squareRadius = (rayon / X) * d;
-  } else if ((-2 * M_PI / 3 > angle) && (angle > -M_PI)) {
+  } else if ((-2 * M_PI / 4 > angle) && (angle > -M_PI)) {
     squareRadius = (rayon / X) * d;
   } else {
     squareRadius = (rayon / Y) * d;
