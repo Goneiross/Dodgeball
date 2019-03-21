@@ -8,7 +8,7 @@
 	 5	
 
 # position of players
-	0	 0	4 0	   # first player
+    0	 0	4 0	   # first player
   -90   20	3 0	   # second player
   290 -160	2 0	   # third player
  -270  220	1 0	   # fourth player
@@ -24,7 +24,7 @@
 
 # number of balls
 	4
-  200  100	0	# first ball
+  200  100  0	# first ball
  -100 -250 1.5	# second ball
  -280 270  -3	# third ball   <---
  -270 260  -3	# fourth ball  <---
