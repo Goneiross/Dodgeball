@@ -15,13 +15,13 @@
 
 using namespace std;
 
-Ball::Ball(double x0, double y0, double a, double r, double v, int l, int c, int i) {
+Ball::Ball(double x, double y, double a, double r, double v, int l, int c, int i) {
   angle = a;
   ID = i;
   velocity = v;
   lPosition = l;
   cPosition = c;
-  hitbox = new Circle(x0, y0, r);
+  hitbox = new Circle(x, y, r);
 }
 void Ball::updatePosition() {
   hitbox->setX(hitbox->getX() + cos(angle) * velocity);

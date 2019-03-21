@@ -13,8 +13,8 @@
 
 class Player {
 public:
-  Player(double x0, double y0, int timeTouched, 
-        double counter, double radius, int l,int col,double v, int i); 
+  Player(double xPosition, double yPosition, int timeTouched, double counter,
+         double radius, int lPosition, int cPosition, double velocity, int ID); 
   ~Player(){};
   double getX() const;
   double getY() const;
@@ -39,9 +39,10 @@ private:
 
 class PlayerMap {
   public:
-    PlayerMap(int l, int c);
+    PlayerMap(int lPosition, int cPosition);
     ~PlayerMap(){};
-    void addPlayer(double x, double y, int t, double c, double r, double v, int ID);
+    void addPlayer(double xPosition, double yPosition, int timeTouched, double counter,
+                   double radius, double velocity, int ID);
     void reserveSpace(int nbPlayer);
     bool isPlayer(int lPosition, int cPosition);
     std::vector<int> whichPlayer(int lPosition, int cPosition);
