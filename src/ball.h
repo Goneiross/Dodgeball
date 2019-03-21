@@ -32,6 +32,8 @@ class BallMap {
   public:
     BallMap(int l, int c);
     void addBall(double x, double y, double angle, int nbCell, int ID);
+    void reserveSpace(int nbBall);
+    std::vector<Ball*> getBall() const;
   private:
     int lineNumber;
     int columnNumber;

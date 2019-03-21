@@ -60,3 +60,11 @@ void BallMap::addBall(double x, double y, double angle, int nbCell, int ID){
     ballGrid[lPosition][cPosition].push_back(ID);
   }
 }
+
+void BallMap::reserveSpace(int nbBall){
+  balls.reserve(nbBall);
+}
+
+vector<Ball*> BallMap::getBall() const {
+  return balls;
+}

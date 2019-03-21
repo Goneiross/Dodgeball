@@ -20,35 +20,35 @@
 using namespace std;
 
 static void initialization(string inputFile, int &nbCell, int &nbPlayer,
-                    vector<Player *> &players, int &nbObstacle, Map *&mainMap,
-                    int &nbBall, vector<Ball *> &balls) ;
-static void largeCollisionCheck(vector<Player *> players, Map* map, int p, 
+                    PlayerMap* &players, int &nbObstacle, Map *&mainMap,
+                    int &nbBall, BallMap* &balls) ;
+static void largeCollisionCheck(PlayerMap* players, Map* map, int p, 
                         vector<int> &toCheck);
-static void largeCollisionCheck(vector<Ball *> balls, Map* map, int b, 
+static void largeCollisionCheck(BallMap* balls, Map* map, int b, 
                                 vector<int> &toCheck);
-static void collisionCheck(vector<Player *> players, int p, int pmax, double delta);
-static void collisionCheck(vector<Ball *> balls, int b, int bmax, double delta);
-static void collisionCheck(vector<Player *> players, vector<Ball *> balls, int p,
+static void collisionCheck(PlayerMap* players, int p, int pmax, double delta);
+static void collisionCheck(BallMap* balls, int b, int bmax, double delta);
+static void collisionCheck(PlayerMap* players, BallMap* balls, int p,
                             int b, double delta);
-static void collisionCheck(vector<Player *> players, Map *map, int p, int o, 
+static void collisionCheck(PlayerMap* players, Map *map, int p, int o, 
                             double delta);
-static void collisionCheck(vector<Ball *> balls, Map *map, int b, int o, 
+static void collisionCheck(BallMap* balls, Map *map, int b, int o, 
                             double delta);
 static void parseData(Map *&mainMap, int &nbCell, double &ingameMargin, 
                       double &parsingMargin, string inputData0);
-static void parseData(vector<Player *> &players, int p, double parsingMargin, 
+static void parseData(PlayerMap* &players, int p, double parsingMargin, 
                       double playerRadius, double playerVelocity, string inputData0, 
                       string inputData1, string inputData2, string inputData3);
 static void parseData(Map *&mainMap, int nbCell, int o, string inputData0, 
                             string inputData1);
-static void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
+static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap,
                int nbPlayer, int nbObstacle, double parsingMargin, int b,
                double ballRadius, double ballVelocity, string inputData0,
                string inputData1, string inputData2);
 void simulation(std::string inputFile, int mode) {
   int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
-  vector<Player *> players;
-  vector<Ball *> balls;
+  PlayerMap* players;
+  BallMap* balls;
   Map *mainMap;
 
   initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap,
@@ -57,27 +57,27 @@ void simulation(std::string inputFile, int mode) {
     cout << FILE_READING_SUCCESS << endl;
     delete mainMap;
     for (int i = 0; i < nbPlayer; i++) {
-      delete players[i];
+      delete players;
     }
     for (int i = 0; i < nbBall; i++) {
-      delete balls[i];
+      delete balls;
     }
     return;
   } else {
     delete mainMap;
     for (int i = 0; i < nbPlayer; i++) {
-      delete players[i];
+      delete players;
     }
     for (int i = 0; i < nbBall; i++) {
-      delete balls[i];
+      delete balls;
     }
     return;
   }
 }
 
 static void initialization(string inputFile, int &nbCell, int &nbPlayer,
-                    vector<Player *> &players, int &nbObstacle, Map *&mainMap,
-                    int &nbBall, vector<Ball *> &balls) {
+                    PlayerMap* &players, int &nbObstacle, Map *&mainMap,
+                    int &nbBall, BallMap* &balls) {
   string inputData[4];
   char charBin;
   int parseType = 0;
@@ -99,7 +99,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
       parseType++;
     } else if (parseType == 1) {
       nbPlayer = stoi(inputData[0]);
-      players.reserve(nbPlayer);
+      players->reserveSpace(nbPlayer);
       parseType++;
     } else if (parseType == 2) {
       flux >> inputData[1] >> inputData[2] >> inputData[3];
@@ -132,7 +132,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
       }
     } else if (parseType == 5) {
       nbBall = stoi(inputData[0]);
-      balls.reserve(nbBall + nbPlayer);
+      balls->reserveSpace(nbBall + nbPlayer);
       parseType++;
     } else if (parseType == 6) {
       flux >> inputData[1] >> inputData[2];
@@ -158,12 +158,12 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
   flux.close();
 }
 
-static void largeCollisionCheck(vector<Player *> players, Map* map, int p, 
+static void largeCollisionCheck(PlayerMap* players, Map* map, int p, 
                         vector<int> &toCheck){
-  int cPosition = ((players[p]->getX() + DIM_MAX ) /
+  int cPosition = ((players->getPlayer(p)->getX() + DIM_MAX ) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
-  int lPosition = - ((players[p]->getY() - DIM_MAX) /
+  int lPosition = - ((players->getPlayer(p)->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
   int leftL = -1, leftC = -1, rightL = 1, rightC = 1;
@@ -180,12 +180,12 @@ static void largeCollisionCheck(vector<Player *> players, Map* map, int p,
   }
 }
 
-static void largeCollisionCheck(vector<Ball *> balls, Map* map, int b, 
+static void largeCollisionCheck(BallMap* balls, Map* map, int b, 
                                 vector<int> &toCheck){
-  int cPosition = ((balls[b]->getX() + DIM_MAX ) /
+  int cPosition = ((balls->getBall(b)->getX() + DIM_MAX ) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
-  int lPosition = - ((balls[b]->getY() - DIM_MAX) /
+  int lPosition = - ((balls->getBall(b)->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
   int leftL = -1, leftC = -1, rightL = 1, rightC = 1;
@@ -202,11 +202,11 @@ static void largeCollisionCheck(vector<Ball *> balls, Map* map, int b,
   }
 }
 
-static void collisionCheck(vector<Player *> players, int p, int pmax, double delta) {
+static void collisionCheck(PlayerMap* players, int p, int pmax, double delta) {
   for (int i = 0; i <= pmax; i++) {
     if (i != p) {
-      double d = distance(players[i]->getHitbox(), players[p]->getHitbox());
-      if (d < (players[i]->getRadius() + players[p]->getRadius() + delta)) {
+      double d = distance(players->getPlayer(i)->getHitbox(), players->getPlayer(p)->getHitbox());
+      if (d < (players->getPlayer(i)->getRadius() + players->getPlayer(p)->getRadius() + delta)) {
         cout << PLAYER_COLLISION(i + 1, p + 1) << endl;
         exit(1);
       }
@@ -214,11 +214,11 @@ static void collisionCheck(vector<Player *> players, int p, int pmax, double del
   }
 }
 
-static void collisionCheck(vector<Ball *> balls, int b, int bmax, double delta) {
+static void collisionCheck(BallMap* balls, int b, int bmax, double delta) {
   for (int i = 0; i <= bmax; i++) {
     if (i != b) {
-      double d = distance(balls[i]->getHitbox(), balls[b]->getHitbox());
-      if (d < (balls[i]->getRadius() + balls[b]->getRadius() + delta)) {
+      double d = distance(balls->getBall(i)->getHitbox(), balls->getBall(b)->getHitbox());
+      if (d < (balls->getBall(i)->getRadius() + balls->getBall(b)->getRadius() + delta)) {
         cout << BALL_COLLISION(i + 1, b + 1) << endl;
         exit(1);
       }
@@ -226,20 +226,20 @@ static void collisionCheck(vector<Ball *> balls, int b, int bmax, double delta) 
   }
 }
 
-static void collisionCheck(vector<Player *> players, vector<Ball *> balls, int p,
+static void collisionCheck(PlayerMap* players, BallMap* balls, int p,
                      int b, double delta) {
-  double d = distance(players[p]->getHitbox(), balls[b]->getHitbox());
-  if (d < (players[p]->getRadius() + balls[b]->getRadius() + delta)) {
+  double d = distance(players->getPlayer(p)->getHitbox(), balls->getBall(b)->getHitbox());
+  if (d < (players->getPlayer(p)->getRadius() + balls->getBall(b)->getRadius() + delta)) {
     cout << PLAYER_BALL_COLLISION(p + 1, b + 1) << endl;
     exit(1);
   }
 }
 
-static void collisionCheck(vector<Player *> players, Map *map, int p, int o, 
+static void collisionCheck(PlayerMap* players, Map *map, int p, int o, 
                             double delta) {
-  double d = distance(map->getObstacle()[o]->getHitbox(), players[p]->getHitbox());
-  double X = map->getObstacle()[o]->getX() - players[p]->getX();
-  double Y = map->getObstacle()[o]->getY() - players[p]->getY();
+  double d = distance(map->getObstacle()[o]->getHitbox(), players->getPlayer(p)->getHitbox());
+  double X = map->getObstacle()[o]->getX() - players->getPlayer(p)->getX();
+  double Y = map->getObstacle()[o]->getY() - players->getPlayer(p)->getY();
   double angle;
   if (X == 0) {
     angle = M_PI_2;
@@ -263,17 +263,17 @@ static void collisionCheck(vector<Player *> players, Map *map, int p, int o,
   } else {
     squareRadius = (rayon / Y) * d;
   }
-  if (d < (players[p]->getRadius() + abs(squareRadius) + delta)) {
+  if (d < (players->getPlayer(p)->getRadius() + abs(squareRadius) + delta)) {
     cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl;
     exit(1);
   }
 }
 
-static void collisionCheck(vector<Ball *> balls, Map *map, int b, int o, 
+static void collisionCheck(BallMap* balls, Map *map, int b, int o, 
                             double delta) {
-  double d = distance(map->getObstacle()[o]->getHitbox(), balls[b]->getHitbox());
-  double X = map->getObstacle()[o]->getX() - balls[b]->getX();
-  double Y = map->getObstacle()[o]->getY() - balls[b]->getY();
+  double d = distance(map->getObstacle()[o]->getHitbox(), balls->getBall(b)->getHitbox());
+  double X = map->getObstacle()[o]->getX() - balls->getBall(b)->getX();
+  double Y = map->getObstacle()[o]->getY() - balls->getBall(b)->getY();
   double angle;
   if (X == 0) {
     angle = M_PI_2;
@@ -297,7 +297,7 @@ static void collisionCheck(vector<Ball *> balls, Map *map, int b, int o,
   } else {
     squareRadius = (rayon / Y) * d;
   }
-  if (d < (balls[b]->getRadius() + abs(squareRadius) + delta)) {
+  if (d < (balls->getBall(b)->getRadius() + abs(squareRadius) + delta)) {
     cout << COLL_BALL_OBSTACLE(b + 1) << endl;
     exit(1);
   }
@@ -311,7 +311,7 @@ static void parseData(Map *&mainMap, int &nbCell, double &ingameMargin,
   parsingMargin = ingameMargin / 2;
 }
 
-static void parseData(vector<Player *> &players, int p, double parsingMargin, 
+static void parseData(PlayerMap* &players, int p, double parsingMargin, 
                       double playerRadius, double playerVelocity, string inputData0,
                       string inputData1, string inputData2, string inputData3) {
   if (((abs(stod(inputData0)) > DIM_MAX) ||
@@ -319,9 +319,8 @@ static void parseData(vector<Player *> &players, int p, double parsingMargin,
     cout << PLAYER_OUT(p + 1) << endl;
     exit(1);
   } else {
-    players.push_back(
-        new Player(stod(inputData0), stod(inputData1), stoi(inputData2), 
-                    stod(inputData3), playerRadius, playerVelocity));
+    players->addPlayer(stod(inputData0), stod(inputData1), stoi(inputData2), 
+                    stod(inputData3), playerRadius, playerVelocity, p);
     collisionCheck(players, p, p, parsingMargin);
   }
 }
@@ -348,7 +347,7 @@ static void parseData(Map *&mainMap, int nbCell, int o, string inputData0,
   }
 }
 
-static void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&mainMap,
+static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap,
                       int nbPlayer, int nbObstacle, double parsingMargin, int b, 
                       double ballRadius, double ballVelocity, string inputData0, 
                       string inputData1, string inputData2) {
