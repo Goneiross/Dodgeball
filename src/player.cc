@@ -19,16 +19,22 @@ using namespace std;
 Player::Player(double x0, double y0, int nbCell) {
   timeTouched = 0;
   count = 0;
-  radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
+  double radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
   velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
   hitbox = new Circle(x0, y0, radius);
 }
 Player::Player(double x0, double y0, int t, double c, int nbCell) {
   timeTouched = t;
   count = c;
-  radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
+  double radius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
   velocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
   hitbox = new Circle(x0, y0, radius);
+}
+Player::Player(double x0, double y0, int t, double c, double r, double v) {
+  timeTouched = t;
+  count = c;
+  velocity = v;
+  hitbox = new Circle(x0, y0, r);
 }
 void Player::updatePosition(double angle) {
   // xPosition += cos(angle) * velocity;
@@ -43,7 +49,7 @@ bool Player::touchedAndDead() {
 }
 double Player::getX() const { return hitbox->getX(); }
 double Player::getY() const { return hitbox->getY(); }
-double Player::getRadius() const { return radius; }
+double Player::getRadius() const { return hitbox->getRadius(); }
 double Player::getCount() const { return count; }
 double Player::getTimeTouched() const { return timeTouched; }
 
