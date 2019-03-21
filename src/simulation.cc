@@ -45,8 +45,6 @@ static void parseData(vector<Ball *> &balls, vector<Player *> &players, Map *&ma
                int nbPlayer, int nbObstacle, double ML, int b, double ballRadius, 
                double ballVelocity, string inputData0, string inputData1, 
                string inputData2);
-
-
 void simulation(std::string inputFile, int mode) {
   int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
   vector<Player *> players;
@@ -120,13 +118,17 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
     } else if (parseType == 4) {
       flux >> inputData[1];
       parseData(mainMap, nbCell, o, inputData[0], inputData[1]);
+
       o++;
       if (o == nbObstacle) {
         for (int i = 0; i < nbPlayer; i++) {
           vector<int> toCheck;
           largeCollisionCheck(players, mainMap, i, toCheck);
-          for (auto o : toCheck){
-            collisionCheck(players, mainMap, i, o, ML);
+          int nbToCheck = toCheck.size();
+          cout << "To check size : " << nbToCheck << endl;
+          for (int j = 0; j < nbToCheck; j++){
+            cout << toCheck[j]+1 << " " << i+1 << endl;
+            collisionCheck(players, mainMap, i, toCheck[j], ML);
           }
         }
         parseType++;
@@ -167,13 +169,18 @@ static void largeCollisionCheck(vector<Player *> players, Map* map, int p,
   int lPosition = - ((players[p]->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
+  cout << "Player" << p+1 << " : " << players[p]->getX() << " " << players[p]->getY() << endl;
+  cout << "Colonne : " << cPosition << " Ligne : " << lPosition << endl;
   for (int i = - 1; i <= 1; i++){
     for (int j = - 1; j <= 1; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
+        cout << "Obstacle" << map->whichObstacle(lPosition + i, cPosition + j) + 1 << " : " << lPosition + i << " " <<  cPosition + j << endl;
         toCheck.push_back(map->whichObstacle(lPosition + i, cPosition + j));
       }
     }
   }
+  cout << "Number to check : " << toCheck.size() << endl;
+  cout << endl;
 }
 
 static void largeCollisionCheck(vector<Ball *> balls, Map* map, int b, 
