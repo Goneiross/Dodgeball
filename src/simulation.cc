@@ -64,7 +64,6 @@ void simulation(std::string inputFile, int mode) {
     }
     return;
   } else {
-    cout << FILE_READING_SUCCESS << endl;
     delete mainMap;
     for (int i = 0; i < nbPlayer; i++) {
       delete players[i];
