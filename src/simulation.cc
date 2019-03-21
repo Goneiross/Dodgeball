@@ -166,8 +166,13 @@ static void largeCollisionCheck(vector<Player *> players, Map* map, int p,
   int lPosition = - ((players[p]->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
-  for (int i = - 1; i <= 1; i++){
-    for (int j = - 1; j <= 1; j++){
+  int leftL = -1, leftC = -1, rightL = 1, rightC = 1;
+  if (lPosition == 0){leftL = 0;}
+  if (cPosition == 0){leftC = 0;}
+  if (lPosition == map->getX() - 1){leftL = 0;}
+  if (cPosition == map->getY() - 1){leftC = 0;}
+  for (int i = leftL; i <= rightL; i++){
+    for (int j = leftC; j <= rightC; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
         toCheck.push_back(map->whichObstacle(lPosition + i, cPosition + j));
       }
@@ -183,8 +188,13 @@ static void largeCollisionCheck(vector<Ball *> balls, Map* map, int b,
   int lPosition = - ((balls[b]->getY() - DIM_MAX) /
                     map->getObstacle()[0]->getHitbox()->getSide() )
                     - 1 / 2;
-  for (int i = - 1; i <= 1; i++){
-    for (int j = - 1; j <= 1; j++){
+  int leftL = -1, leftC = -1, rightL = 1, rightC = 1;
+  if (lPosition == 0){leftL = 0;}
+  if (cPosition == 0){leftC = 0;}
+  if (lPosition == map->getX() - 1){leftL = 0;}
+  if (cPosition == map->getY() - 1){leftC = 0;}
+  for (int i = leftL; i <= rightL; i++){
+    for (int j = leftC; j <= rightC; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
         toCheck.push_back(map->whichObstacle(lPosition + i, cPosition + j));
       }
