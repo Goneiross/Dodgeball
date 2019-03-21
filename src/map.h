@@ -37,8 +37,8 @@ public:
   int whichObstacle(double lPosition, double cPosition);
 
 private:
-  int **grid;
-  int xSize;
-  int ySize;
+  int **obstaclesGrid;
+  int lineNumber;
+  int columnNumber;
   std::vector<Obstacle *> obstacles;
 };

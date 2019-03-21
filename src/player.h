@@ -25,7 +25,6 @@ public:
   bool touchedAndDead();
 
 private:
-  double radius;
   int timeTouched;
   double count;
   double velocity;
