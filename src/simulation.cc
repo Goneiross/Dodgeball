@@ -84,6 +84,10 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
     cout << "Unable to open file " << inputFile << endl;
     exit(0);
   }
+  double ballRadius;
+  double ballVelocity;
+  double playerRadius;
+  double playerVelocity;
   while (flux >> inputData[0]) {
     if (inputData[0] == "#") {
       do {
@@ -92,6 +96,10 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
     } else if (parseType == 0) {
       parseData(mainMap, players, balls, nbCell, 
                 ingameMargin, parsingMargin, inputData[0]);
+      ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
+      ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
+      playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
+      playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
       parseType++;
     } else if (parseType == 1) {
       nbPlayer = stoi(inputData[0]);

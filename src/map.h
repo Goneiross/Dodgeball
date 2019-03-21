@@ -26,7 +26,7 @@ private:
 
 class Map {
 public:
-  Map(int lPosition, int cPosition);
+  Map(int l, int c);
   ~Map(){};
   double getX() const;
   double getY() const;

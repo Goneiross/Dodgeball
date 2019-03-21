@@ -23,9 +23,9 @@ double Obstacle::getX() const { return hitbox->getX(); }
 double Obstacle::getY() const { return hitbox->getY(); }
 Square *Obstacle::getHitbox() const { return hitbox; }
 
-Map::Map(int x, int y) {
-  lineNumber = x;
-  columnNumber = y;
+Map::Map(int l, int c) {
+  lineNumber = l;
+  columnNumber = c;
   obstaclesGrid = new int *[lineNumber];
   for (int i = 0; i < lineNumber; i++) {
     obstaclesGrid[i] = new int[columnNumber];
