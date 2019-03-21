@@ -22,7 +22,6 @@ public:
   void updatePosition();
 
 private:
-  double radius;
   double velocity;
   double angle;
   Circle *hitbox;

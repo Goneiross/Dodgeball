@@ -24,36 +24,37 @@ double Obstacle::getY() const { return hitbox->getY(); }
 Square *Obstacle::getHitbox() const { return hitbox; }
 
 Map::Map(int x, int y) {
-  xSize = x;
-  ySize = y;
-  grid = new int *[xSize];
-  for (int i = 0; i < xSize; i++) {
-    grid[i] = new int[ySize];
-    for (int j = 0; j < ySize; j++) {
-      grid[i][j] = -1;
+  lineNumber = x;
+  columnNumber = y;
+  obstaclesGrid = new int *[lineNumber];
+  for (int i = 0; i < lineNumber; i++) {
+    obstaclesGrid[i] = new int[columnNumber];
+    for (int j = 0; j < columnNumber; j++) {
+      obstaclesGrid[i][j] = -1;
     }
   }
 }
-double Map::getX() const { return xSize; }
-double Map::getY() const { return ySize; }
+double Map::getX() const { return lineNumber; }
+double Map::getY() const { return columnNumber; }
 vector<Obstacle *> Map::getObstacle() const { return obstacles; }
+
 void Map::addObstacle(int lPosition, int cPosition, int ID) {
-  grid[lPosition][cPosition] = ID;
-  double S = SIDE / xSize;
+  obstaclesGrid[lPosition][cPosition] = ID;
+  double S = SIDE / lineNumber;
   double X = (0.5 * S + cPosition * S) - (DIM_MAX);
   double Y = -(0.5 * S + lPosition * S) + (DIM_MAX);
   obstacles.push_back(new Obstacle(X, Y, S));
 }
 void Map::removeObstacle(int lPosition, int cPosition) {
-  grid[lPosition][cPosition] = -1;
+  obstaclesGrid[lPosition][cPosition] = -1;
 }
 bool Map::isObstacle(double lPosition, double cPosition) { 
-  if(grid[int(lPosition)][int(cPosition)] == -1){
+  if(obstaclesGrid[int(lPosition)][int(cPosition)] == -1){
     return false; 
   } else {
     return true;
   }
 }
 int Map::whichObstacle(double lPosition, double cPosition) {
-  return grid[int(lPosition)][int(cPosition)]; 
+  return obstaclesGrid[int(lPosition)][int(cPosition)]; 
 }
