@@ -35,7 +35,7 @@ private:
 class PlayerMap {
   public:
     PlayerMap(int l, int c);
-    void addPlayer(double x, double y, double angle, int nbCell, int ID);
+    void addPlayer(double x, double y, int t, double c, double r, double v, int ID);
     void reserveSpace(int nbPlayer);
     Player* getPlayer(int p) const;
   private:
