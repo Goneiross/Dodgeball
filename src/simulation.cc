@@ -169,8 +169,8 @@ static void largeCollisionCheck(vector<Player *> players, Map* map, int p,
   int leftL = -1, leftC = -1, rightL = 1, rightC = 1;
   if (lPosition == 0){leftL = 0;}
   if (cPosition == 0){leftC = 0;}
-  if (lPosition == map->getX() - 1){leftL = 0;}
-  if (cPosition == map->getY() - 1){leftC = 0;}
+  if (lPosition == map->getX() - 1){rightL = 0;}
+  if (cPosition == map->getY() - 1){rightC = 0;}
   for (int i = leftL; i <= rightL; i++){
     for (int j = leftC; j <= rightC; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
@@ -191,8 +191,8 @@ static void largeCollisionCheck(vector<Ball *> balls, Map* map, int b,
   int leftL = -1, leftC = -1, rightL = 1, rightC = 1;
   if (lPosition == 0){leftL = 0;}
   if (cPosition == 0){leftC = 0;}
-  if (lPosition == map->getX() - 1){leftL = 0;}
-  if (cPosition == map->getY() - 1){leftC = 0;}
+  if (lPosition == map->getX() - 1){rightL = 0;}
+  if (cPosition == map->getY() - 1){rightC = 0;}
   for (int i = leftL; i <= rightL; i++){
     for (int j = leftC; j <= rightC; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
