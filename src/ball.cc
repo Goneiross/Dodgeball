@@ -50,8 +50,8 @@ BallMap::BallMap(int l, int c){
   }
 }
 
-void BallMap::addBall(double x, double y, double angle, int nbCell, int ID){
-  balls.push_back(new Ball(x, y, angle, nbCell, ID));
+void BallMap::addBall(double x, double y, double a, double r, double v, int ID){
+  balls.push_back(new Ball(x, y, a, r, v, ID));
   int cPosition = ((x + DIM_MAX ) / columnNumber ) - 1 / 2;
   int lPosition = - ((y - DIM_MAX) / lineNumber ) - 1 / 2;
   if (ballGrid[lPosition][cPosition][0] == -1){
@@ -65,6 +65,6 @@ void BallMap::reserveSpace(int nbBall){
   balls.reserve(nbBall);
 }
 
-vector<Ball*> BallMap::getBall() const {
-  return balls;
+Ball* BallMap::getBall(int i) const {
+  return balls[i];
 }

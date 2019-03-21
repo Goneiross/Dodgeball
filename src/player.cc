@@ -68,8 +68,8 @@ PlayerMap::PlayerMap(int l, int c){
   }
 }
 
-void PlayerMap::addPlayer(double x, double y, double angle, int nbCell, int ID){
-  players.push_back(new Player(x, y, angle, nbCell, ID));
+void PlayerMap::addPlayer(double x, double y, int t, double c, double r, double v, int ID){
+  players.push_back(new Player(x, y, t, c, r, v));
   int cPosition = ((x + DIM_MAX ) / columnNumber ) - 1 / 2;
   int lPosition = - ((y - DIM_MAX) / lineNumber ) - 1 / 2;
   if (playerGrid[lPosition][cPosition][0] == -1){

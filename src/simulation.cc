@@ -361,8 +361,5 @@ static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap,
     for (int i = 0; i < nbPlayer; i++) {
       collisionCheck(players, balls, i, b, parsingMargin);
     }
-    for (int o = 0; o < nbObstacle; o++) {
-      collisionCheck(balls, mainMap, b, o, parsingMargin);
-    }
   }
 }
