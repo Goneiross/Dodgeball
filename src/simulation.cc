@@ -355,8 +355,8 @@ static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap,
     cout << BALL_OUT(b + 1) << endl;
     exit(1);
   } else {
-    balls.push_back(new Ball(stod(inputData0), stod(inputData1), stod(inputData2), 
-                              ballRadius, ballVelocity));
+    balls->addBall(stod(inputData0), stod(inputData1), stod(inputData2), 
+                              ballRadius, ballVelocity, b);
     collisionCheck(balls, b, b, parsingMargin);
     for (int i = 0; i < nbPlayer; i++) {
       collisionCheck(players, balls, i, b, parsingMargin);
