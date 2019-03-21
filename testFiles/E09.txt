@@ -8,11 +8,11 @@
 	 5	
 
 # position of players
-	0	 0	4 0	   # first player
+    0	 0	4 0	   # first player
   -90   20	3 0	   # second player
   290 -160	2 0	   # third player
  -270  220	1 0	   # fourth player
- -200  120  2 0	   # fifth player
+ -200  120      2 0	   # fifth player
 
 # number of obstacles
 	4
@@ -20,14 +20,14 @@
 8 5	    # first obstacle
 7 5	    # second obstacle
 6 5	    # third obstacle
-8 1	    # fourth obstacle
+8 1	    # fourth obstacle <--- this one collides with the ball
 
 # number of balls
 	4
-  200  100	0	# first ball
+  200  100  0	# first ball
  -100 -250 1.5	# second ball
  -280 270  -3	# third ball
- -325 -240  -3	# fourth ball <--- only the ball number is reported
+ -325 -240 -3	# fourth ball <--- only the ball number is reported
 
   #	 And that's all
 
