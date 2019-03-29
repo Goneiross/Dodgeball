@@ -163,25 +163,25 @@ static void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
   int n = 0;
   flux << nbCell << endl << endl;
   n = players->getNb();
-  cout << n << endl;
+  flux << n << endl;
   for (int i = 0; i < n; i ++){
     Player* p = players->getPlayer(i);
-    cout << p->getX() << " " << p->getY() << " " 
+    flux << p->getX() << " " << p->getY() << " " 
          << p->getTimeTouched() << " " << p->getCount() << endl;
     delete p;
   }
   n = mainMap->getNb();
-  cout << endl << n << endl;
+  flux << endl << n << endl;
   for (int i = 0; i < n; i ++){
     Obstacle* o = mainMap->getObstacle(i);
-    cout << o->getX() << " " << o->getY() << endl;
+    flux << o->getX() << " " << o->getY() << endl;
     delete o;
   }
   n = balls->getNb();
-  cout << endl << n << endl;
+  flux << endl << n << endl;
   for (int i = 0; i < n; i ++){
     Ball* b = balls->getBall(i);
-    cout << b->getX() << " " << b->getY() << " " 
+    flux << b->getX() << " " << b->getY() << " " 
          << b->getAngle() << endl;
     delete b;
   }
