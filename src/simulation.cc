@@ -184,7 +184,7 @@ static void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
          << b->getAngle() << endl;
     delete b;
   }
-  
+  flux.close();
 }
 
 static void largeCollisionCheck(PlayerMap* players, Map* map, int p, 
