@@ -16,12 +16,16 @@
 
 using namespace std;
 
-Obstacle::Obstacle(double x0, double y0, double s) {
+Obstacle::Obstacle(double x0, double y0, int l, int c, double s) {
   hitbox = new Square(x0, y0, s);
+  cPosition = c;
+  lPosition = l;
 }
 double Obstacle::getX() const { return hitbox->getX(); }
 double Obstacle::getY() const { return hitbox->getY(); }
-Square *Obstacle::getHitbox() const { return hitbox; }
+double Obstacle::getC() const { return cPosition; }
+double Obstacle::getL() const { return lPosition; }
+Square* Obstacle::getHitbox() const { return hitbox; }
 
 Map::Map(int l, int c) {
   lineNumber = l;
@@ -34,16 +38,17 @@ Map::Map(int l, int c) {
     }
   }
 }
-double Map::getX() const { return lineNumber; }
-double Map::getY() const { return columnNumber; }
-vector<Obstacle *> Map::getObstacle() const { return obstacles; }
+int Map::getLNb() const { return lineNumber; }
+int Map::getCNb() const { return columnNumber; }
+int Map::getNb() const {return obstacles.size(); }
+Obstacle* Map::getObstacle(int i) const { return obstacles[i]; }
 
 void Map::addObstacle(int lPosition, int cPosition, int ID) {
   obstaclesGrid[lPosition][cPosition] = ID;
   double S = SIDE / lineNumber;
   double X = (0.5 * S + cPosition * S) - (DIM_MAX);
   double Y = -(0.5 * S + lPosition * S) + (DIM_MAX);
-  obstacles.push_back(new Obstacle(X, Y, S));
+  obstacles.push_back(new Obstacle(X, Y, lPosition, cPosition, S));
 }
 void Map::removeObstacle(int lPosition, int cPosition) {
   obstaclesGrid[lPosition][cPosition] = -1;
