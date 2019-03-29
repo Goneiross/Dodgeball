@@ -21,6 +21,7 @@ public:
   double getC() const;
   double getRadius() const;
   Circle *getHitbox() const;
+  double getAngle() const;
   void updatePosition();
 
 private:
