@@ -47,6 +47,7 @@ class PlayerMap {
     bool isPlayer(int lPosition, int cPosition);
     std::vector<int> whichPlayer(int lPosition, int cPosition);
     Player* getPlayer(int p) const;
+    int getNb() const;
   private:
     int lineNumber;
     int columnNumber;

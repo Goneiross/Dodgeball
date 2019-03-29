@@ -46,7 +46,7 @@ double Player::getRadius() const { return hitbox->getRadius(); }
 double Player::getCount() const { return count; }
 double Player::getTimeTouched() const { return timeTouched; }
 
-Circle *Player::getHitbox() const { return hitbox; }
+Circle* Player::getHitbox() const { return hitbox; }
 
 PlayerMap::PlayerMap(int l, int c){
   lineNumber = l;
@@ -90,4 +90,7 @@ void PlayerMap::reserveSpace(int nbPlayer){
 
 Player* PlayerMap::getPlayer(int p) const {
   return players[p];
+}
+int PlayerMap::getNb() const{
+  return players.size();
 }
