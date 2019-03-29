@@ -158,7 +158,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
 }
 
 static void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
-  ofstream flux("save.txt", std::out);
+  ofstream flux("save.txt", std::ofstream::out);
   int n = 0;
   flux << nbCell << endl << endl;
   n = players->getNb();
@@ -172,8 +172,8 @@ static void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
   n = mainMap->getNb();
   cout << endl << n << endl;
   for (int i = 0; i < n; i ++){
-    Ball* o = mainMap->getObstacle(i);
-    cout << o->getL() << " " << o->getC() << endl;
+    Obstacle* o = mainMap->getObstacle(i);
+    cout << o->getX() << " " << o->getY() << endl;
     delete o;
   }
   n = balls->getNb();
@@ -190,16 +190,16 @@ static void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
 static void largeCollisionCheck(PlayerMap* players, Map* map, int p, 
                         vector<int> &toCheck){
   int cPosition = ((players->getPlayer(p)->getX() + DIM_MAX ) /
-                    map->getObstacle()[0]->getHitbox()->getSide() )
+                    map->getObstacle(0)->getHitbox()->getSide() )
                     - 1 / 2;
   int lPosition = - ((players->getPlayer(p)->getY() - DIM_MAX) /
-                    map->getObstacle()[0]->getHitbox()->getSide() )
+                    map->getObstacle(0)->getHitbox()->getSide() )
                     - 1 / 2;
   int leftL = -1, leftC = -1, rightL = 1, rightC = 1;
   if (lPosition == 0){leftL = 0;}
   if (cPosition == 0){leftC = 0;}
-  if (lPosition == map->getX() - 1){rightL = 0;}
-  if (cPosition == map->getY() - 1){rightC = 0;}
+  if (lPosition == map->getCNb() - 1){rightL = 0;}
+  if (cPosition == map->getLNb() - 1){rightC = 0;}
   for (int i = leftL; i <= rightL; i++){
     for (int j = leftC; j <= rightC; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
@@ -212,16 +212,16 @@ static void largeCollisionCheck(PlayerMap* players, Map* map, int p,
 static void largeCollisionCheck(BallMap* balls, Map* map, int b, 
                                 vector<int> &toCheck){
   int cPosition = ((balls->getBall(b)->getX() + DIM_MAX ) /
-                    map->getObstacle()[0]->getHitbox()->getSide() )
+                    map->getObstacle(0)->getHitbox()->getSide() )
                     - 1 / 2;
   int lPosition = - ((balls->getBall(b)->getY() - DIM_MAX) /
-                    map->getObstacle()[0]->getHitbox()->getSide() )
+                    map->getObstacle(0)->getHitbox()->getSide() )
                     - 1 / 2;
   int leftL = -1, leftC = -1, rightL = 1, rightC = 1;
   if (lPosition == 0){leftL = 0;}
   if (cPosition == 0){leftC = 0;}
-  if (lPosition == map->getX() - 1){rightL = 0;}
-  if (cPosition == map->getY() - 1){rightC = 0;}
+  if (lPosition == map->getCNb() - 1){rightL = 0;}
+  if (cPosition == map->getLNb() - 1){rightC = 0;}
   for (int i = leftL; i <= rightL; i++){
     for (int j = leftC; j <= rightC; j++){
       if(map->isObstacle(lPosition + i, cPosition + j)){
@@ -311,9 +311,9 @@ static void collisionCheck(PlayerMap* players, BallMap* balls, int p,
 
 static void collisionCheck(PlayerMap* players, Map *map, int p, int o, 
                             double delta) {
-  double d = distance(map->getObstacle()[o]->getHitbox(), players->getPlayer(p)->getHitbox());
-  double X = map->getObstacle()[o]->getX() - players->getPlayer(p)->getX();
-  double Y = map->getObstacle()[o]->getY() - players->getPlayer(p)->getY();
+  double d = distance(map->getObstacle(o)->getHitbox(), players->getPlayer(p)->getHitbox());
+  double X = map->getObstacle(o)->getX() - players->getPlayer(p)->getX();
+  double Y = map->getObstacle(o)->getY() - players->getPlayer(p)->getY();
   double angle;
   if (X == 0) {
     angle = M_PI_2;
@@ -322,7 +322,7 @@ static void collisionCheck(PlayerMap* players, Map *map, int p, int o,
   } else {
     angle = atan(Y / X);
   }
-  double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
+  double rayon = map->getObstacle(o)->getHitbox()->getSide() / 2;
   double squareRadius;
   if ((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)) {
     squareRadius = rayon;
@@ -345,9 +345,9 @@ static void collisionCheck(PlayerMap* players, Map *map, int p, int o,
 
 static void collisionCheck(BallMap* balls, Map *map, int b, int o, 
                             double delta) {
-  double d = distance(map->getObstacle()[o]->getHitbox(), balls->getBall(b)->getHitbox());
-  double X = map->getObstacle()[o]->getX() - balls->getBall(b)->getX();
-  double Y = map->getObstacle()[o]->getY() - balls->getBall(b)->getY();
+  double d = distance(map->getObstacle(o)->getHitbox(), balls->getBall(b)->getHitbox());
+  double X = map->getObstacle(o)->getX() - balls->getBall(b)->getX();
+  double Y = map->getObstacle(o)->getY() - balls->getBall(b)->getY();
   double angle;
   if (X == 0) {
     angle = M_PI_2;
@@ -356,7 +356,7 @@ static void collisionCheck(BallMap* balls, Map *map, int b, int o,
   } else {
     angle = atan(Y / X);
   }
-  double rayon = map->getObstacle()[o]->getHitbox()->getSide() / 2;
+  double rayon = map->getObstacle(o)->getHitbox()->getSide() / 2;
   double squareRadius;
   if ((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)) {
     squareRadius = rayon;
