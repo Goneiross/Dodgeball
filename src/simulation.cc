@@ -22,6 +22,7 @@ using namespace std;
 static void initialization(string inputFile, int &nbCell, int &nbPlayer,
                     PlayerMap* &players, int &nbObstacle, Map *&mainMap,
                     int &nbBall, BallMap* &balls) ;
+static void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls);
 static void largeCollisionCheck(PlayerMap* players, Map* map, int p, 
                         vector<int> &toCheck);
 static void largeCollisionCheck(BallMap* balls, Map* map, int b, 
