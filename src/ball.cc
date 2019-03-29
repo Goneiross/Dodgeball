@@ -33,6 +33,7 @@ double Ball::getL() const { return lPosition; }
 double Ball::getC() const { return cPosition; }
 double Ball::getRadius() const { return hitbox->getRadius(); }
 Circle *Ball::getHitbox() const { return hitbox; }
+double Ball::getAngle() const {return angle; }
 
 BallMap::BallMap(int l, int c){
   lineNumber = l;
