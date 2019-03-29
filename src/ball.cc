@@ -77,3 +77,6 @@ void BallMap::reserveSpace(int nbBall){
 Ball* BallMap::getBall(int i) const {
   return balls[i];
 }
+int BallMap::getNb() const{
+  return balls.size();
+}

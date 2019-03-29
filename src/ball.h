@@ -41,6 +41,7 @@ class BallMap {
     bool isBall(int lPosition, int cPosition);
     std::vector<int> whichBall(int lPosition, int cPosition);
     Ball* getBall(int index) const;
+    int getNb () const;
   private:
     int lineNumber;
     int columnNumber;
