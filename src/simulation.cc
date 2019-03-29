@@ -55,8 +55,11 @@ void simulation(std::string inputFile, int mode) {
   BallMap* balls;
   Map *mainMap;
 
-  initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap,
+  if (inputFile != ""){ // TO HANDLE
+    initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap,
                  nbBall, balls);
+  }
+  
   if (mode == 1) {
     cout << FILE_READING_SUCCESS << endl;
     delete mainMap;
