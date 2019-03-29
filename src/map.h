@@ -14,30 +14,35 @@
 
 class Obstacle {
 public:
-  Obstacle(double x0, double y0, double s);
+  Obstacle(double x0, double y0, int lPosition, int cPosition, double s);
   ~Obstacle(){};
   double getX() const;
   double getY() const;
-  Square *getHitbox() const;
+  double getL() const;
+  double getC() const;
+  Square* getHitbox() const;
 
 private:
-  Square *hitbox;
+  Square* hitbox;
+  int cPosition;
+  int lPosition;
 };
 
 class Map {
 public:
   Map(int l, int c);
   ~Map(){};
-  double getX() const;
-  double getY() const;
-  std::vector<Obstacle *> getObstacle() const;
+  int getLNb() const;
+  int getCNb() const;
+  int getNb() const;
+  Obstacle* getObstacle(int i) const;
   void addObstacle(int lPosition, int cPosition, int ID);
   void removeObstacle(int lPosition, int cPosition);
   bool isObstacle(double lPosition, double cPosition);
   int whichObstacle(double lPosition, double cPosition);
 
 private:
-  int **obstaclesGrid;
+  int** obstaclesGrid;
   int lineNumber;
   int columnNumber;
   std::vector<Obstacle *> obstacles;
