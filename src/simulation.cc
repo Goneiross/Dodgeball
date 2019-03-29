@@ -153,6 +153,36 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
   flux.close();
 }
 
+static void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
+  ofstream flux("save.txt", std::out);
+  int n = 0;
+  flux << nbCell << endl << endl;
+  n = players->getNb();
+  cout << n << endl;
+  for (int i = 0; i < n; i ++){
+    Player* p = players->getPlayer(i);
+    cout << p->getX() << " " << p->getY() << " " 
+         << p->getTimeTouched() << " " << p->getCount() << endl;
+    delete p;
+  }
+  n = mainMap->getNb();
+  cout << endl << n << endl;
+  for (int i = 0; i < n; i ++){
+    Ball* o = mainMap->getObstacle(i);
+    cout << o->getL() << " " << o->getC() << endl;
+    delete o;
+  }
+  n = balls->getNb();
+  cout << endl << n << endl;
+  for (int i = 0; i < n; i ++){
+    Ball* b = balls->getBall(i);
+    cout << b->getX() << " " << b->getY() << " " 
+         << b->getAngle() << endl;
+    delete b;
+  }
+  
+}
+
 static void largeCollisionCheck(PlayerMap* players, Map* map, int p, 
                         vector<int> &toCheck){
   int cPosition = ((players->getPlayer(p)->getX() + DIM_MAX ) /
