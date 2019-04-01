@@ -58,6 +58,21 @@ void BallMap::addBall(double x, double y, double a, double r, double v, int ID){
     ballGrid[lPosition][cPosition].push_back(ID);
   }
 }
+void BallMap::removeBall(int ID){
+  int l = balls[ID]->getL();
+  int c = balls[ID]->getC();
+  int posSize = ballGrid[l][c].size();
+  if (ballGrid[l][c][0] == ID){
+      ballGrid[l][c][0] = -1;
+  } else {
+    for (int i = 1; i < posSize; i++){
+      if (ballGrid[l][c][i] == ID){
+        ballGrid[l][c].erase(ballGrid[l][c].begin()+i);
+      }
+    }
+  }
+  balls.erase(balls.begin()+ ID );
+}
 
 bool BallMap::isBall(int lPosition, int cPosition){
   if (ballGrid[lPosition][cPosition][0] == -1){
