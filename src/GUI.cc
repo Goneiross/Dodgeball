@@ -42,61 +42,56 @@ void MyArea::refresh(){
 
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
   if(not empty) {
-    // ici dessin comme avant
     cr->set_line_width(50.0);
 
-  // E
-  cr->set_source_rgb(0.92, 0.0, 0.0);
-  cr->move_to(50, 50);
-  cr->line_to(50, 150);
-  cr->stroke();
-  cr->move_to(50, 200);
-  cr->line_to(50, 300);
-  cr->stroke();
-  cr->move_to(50, 275);
-  cr->line_to(190, 275);
-  cr->stroke();
-  cr->move_to(73, 175);//E milieu
-  cr->line_to(190, 175);
-  cr->stroke();
-  cr->move_to(75, 75);
-  cr->line_to(190, 75);
-  cr->stroke();
+    cr->set_source_rgb(0.92, 0.0, 0.0);
+    cr->move_to(50, 50);
+    cr->line_to(50, 150);
+    cr->stroke();
+    cr->move_to(50, 200);
+    cr->line_to(50, 300);
+    cr->stroke();
+    cr->move_to(50, 275);
+    cr->line_to(190, 275);
+    cr->stroke();
+    cr->move_to(73, 175);
+    cr->line_to(190, 175);
+    cr->stroke();
+    cr->move_to(75, 75);
+    cr->line_to(190, 75);
+    cr->stroke();
   
-  //P
-  cr->move_to(250, 50);
-  cr->line_to(250, 300);
-  cr->stroke();
-  cr->move_to(275, 75);
-  cr->line_to(325, 75);
-  cr->stroke();
-  cr->move_to(275, 175);
-  cr->line_to(325, 175);
-  cr->stroke();
-  cr->arc(325, 125, 50, -M_PI/2, M_PI/2);
-  cr->stroke();
+    cr->move_to(250, 50);
+    cr->line_to(250, 300);
+    cr->stroke();
+    cr->move_to(275, 75);
+    cr->line_to(325, 75);
+    cr->stroke();
+    cr->move_to(275, 175);
+    cr->line_to(325, 175);
+    cr->stroke();
+    cr->arc(325, 125, 50, -M_PI/2, M_PI/2);
+    cr->stroke();
   
-  //F
-  cr->move_to(450, 50);
-  cr->line_to(450, 150);
-  cr->stroke();
-  cr->move_to(450, 200);
-  cr->line_to(450, 300);
-  cr->stroke();
-  cr->move_to(450, 75);//F haut
-  cr->line_to(590, 75);
-  cr->stroke();
-  cr->move_to(473, 175);//F milieu
-  cr->line_to(575, 175);
-  cr->stroke();
+    cr->move_to(450, 50);
+    cr->line_to(450, 150);
+    cr->stroke();
+    cr->move_to(450, 200);
+    cr->line_to(450, 300);
+    cr->stroke();
+    cr->move_to(450, 75);
+    cr->line_to(590, 75);
+    cr->stroke();
+    cr->move_to(473, 175);
+    cr->line_to(575, 175);
+    cr->stroke();
 
-//L
-  cr->move_to(650, 50);
-  cr->line_to(650, 300);
-  cr->stroke();
-  cr->move_to(650, 275);
-  cr->line_to(790, 275);
-  cr->stroke();
+    cr->move_to(650, 50);
+    cr->line_to(650, 300);
+    cr->stroke();
+    cr->move_to(650, 275);
+    cr->line_to(790, 275);
+    cr->stroke();
   } else { std::cout << "Empty !" << std::endl; }
   return true;
 }
@@ -160,6 +155,7 @@ GUI::GUI():
    
   show_all_children();
 }
+
 GUI::~GUI(){}
 void GUI::on_button_clicked_exit(){ exit(0); }
 void GUI::on_button_clicked_open(){ exit(0); }
