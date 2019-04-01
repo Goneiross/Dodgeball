@@ -72,6 +72,22 @@ void PlayerMap::addPlayer(double x, double y, int t, double c, double r, double 
   }
 }
 
+void PlayerMap::removePlayer(int ID){
+  int l = players[ID]->getL();
+  int c = players[ID]->getC();
+  int posSize = playerGrid[l][c].size();
+  if (playerGrid[l][c][0] == ID){
+      playerGrid[l][c][0] = -1;
+  } else {
+    for (int i = 1; i < posSize; i++){
+      if (playerGrid[l][c][i] == ID){
+        playerGrid[l][c].erase(playerGrid[l][c].begin()+i);
+      }
+    }
+  }
+  players.erase(players.begin()+ ID );
+}
+
 bool PlayerMap::isPlayer(int lPosition, int cPosition){
   if (playerGrid[lPosition][cPosition][0] == -1){
     return false;
