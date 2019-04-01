@@ -43,6 +43,7 @@ class PlayerMap {
     ~PlayerMap(){};
     void addPlayer(double xPosition, double yPosition, int timeTouched, double counter,
                    double radius, double velocity, int ID);
+    void removePlayer(int ID);
     void reserveSpace(int nbPlayer);
     bool isPlayer(int lPosition, int cPosition);
     std::vector<int> whichPlayer(int lPosition, int cPosition);
