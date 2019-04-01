@@ -56,6 +56,12 @@ void Map::removeObstacle(int ID) {
   obstacles.erase(obstacles.begin() + ID);
   obstaclesGrid[l][c] = -1;
 }
+void Map::removeAll(){
+  int obstacleNb = obstacles.size();
+  for (int i = 0; i < obstacleNb; i++){
+    removeObstacle(0);
+  }
+}
 bool Map::isObstacle(double lPosition, double cPosition) { 
   if(obstaclesGrid[int(lPosition)][int(cPosition)] == -1){
     return false; 

@@ -38,6 +38,7 @@ public:
   Obstacle* getObstacle(int i) const;
   void addObstacle(int lPosition, int cPosition, int ID);
   void removeObstacle(int ID);
+  void removeAll();
   bool isObstacle(double lPosition, double cPosition);
   int whichObstacle(double lPosition, double cPosition);
 
