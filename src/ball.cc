@@ -74,6 +74,13 @@ void BallMap::removeBall(int ID){
   balls.erase(balls.begin()+ ID );
 }
 
+void BallMap::removeAll(){
+  int ballNb = balls.size();
+  for (int i = 0; i < ballNb; i++){
+    removeBall(0);
+  }
+}
+
 bool BallMap::isBall(int lPosition, int cPosition){
   if (ballGrid[lPosition][cPosition][0] == -1){
     return false;

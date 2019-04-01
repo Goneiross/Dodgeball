@@ -88,6 +88,13 @@ void PlayerMap::removePlayer(int ID){
   players.erase(players.begin()+ ID );
 }
 
+void PlayerMap::removeAll(){
+  int playerNb = players.size();
+  for (int i = 0; i < playerNb; i++){
+    removePlayer(0);
+  }
+}
+
 bool PlayerMap::isPlayer(int lPosition, int cPosition){
   if (playerGrid[lPosition][cPosition][0] == -1){
     return false;

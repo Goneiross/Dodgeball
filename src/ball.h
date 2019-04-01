@@ -39,6 +39,7 @@ class BallMap {
     void addBall(double xPosition, double yPosition, double angle, 
                 double radius, double velocity, int ID);
     void removeBall(int ID);
+    void removeAll();
     void reserveSpace(int nbBall);
     bool isBall(int lPosition, int cPosition);
     std::vector<int> whichBall(int lPosition, int cPosition);
