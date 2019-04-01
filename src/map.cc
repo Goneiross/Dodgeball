@@ -50,8 +50,11 @@ void Map::addObstacle(int lPosition, int cPosition, int ID) {
   double Y = -(0.5 * S + lPosition * S) + (DIM_MAX);
   obstacles.push_back(new Obstacle(X, Y, lPosition, cPosition, S));
 }
-void Map::removeObstacle(int lPosition, int cPosition) {
-  obstaclesGrid[lPosition][cPosition] = -1;
+void Map::removeObstacle(int ID) {
+  int l = obstacles[ID]->getL();
+  int c = obstacles[ID]->getC();
+  obstacles.erase(obstacles.begin() + ID);
+  obstaclesGrid[l][c] = -1;
 }
 bool Map::isObstacle(double lPosition, double cPosition) { 
   if(obstaclesGrid[int(lPosition)][int(cPosition)] == -1){
