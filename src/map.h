@@ -37,7 +37,7 @@ public:
   int getNb() const;
   Obstacle* getObstacle(int i) const;
   void addObstacle(int lPosition, int cPosition, int ID);
-  void removeObstacle(int lPosition, int cPosition);
+  void removeObstacle(int ID);
   bool isObstacle(double lPosition, double cPosition);
   int whichObstacle(double lPosition, double cPosition);
 
