@@ -20,8 +20,8 @@ public:
   double getY() const;
   double getL() const;
   double getC() const;
-  double getGX();
-  double getGY();
+  double getGX() const;
+  double getGY() const;
   void setGX(double x);
   void setGY(double y);
   Square* getHitbox() const;
