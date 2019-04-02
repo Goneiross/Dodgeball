@@ -18,8 +18,8 @@ public:
   ~Obstacle(){};
   double getX() const;
   double getY() const;
-  double getL() const;
-  double getC() const;
+  int getL() const;
+  int getC() const;
   double getGX() const;
   double getGY() const;
   void setGX(double x);

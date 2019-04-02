@@ -23,6 +23,8 @@ Obstacle::Obstacle(double x0, double y0, int l, int c, double s) {
   gXPosition = -1;
   gYPosition = -1;
 }
+int Obstacle::getL() const { return lPosition; }
+int Obstacle::getC() const { return cPosition; }
 double Obstacle::getX() const { return hitbox->getX(); }
 double Obstacle::getY() const { return hitbox->getY(); }
 double Obstacle::getGX() const { return gXPosition; }
