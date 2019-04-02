@@ -21,6 +21,8 @@ Ball::Ball(double x, double y, double a, double r, double v, int l, int c, int i
   velocity = v;
   lPosition = l;
   cPosition = c;
+  gXPosition = -1;
+  gYPosition = -1;
   hitbox = new Circle(x, y, r);
 }
 void Ball::updatePosition() {
@@ -31,6 +33,8 @@ double Ball::getX() const { return hitbox->getX(); }
 double Ball::getY() const { return hitbox->getY(); }
 double Ball::getL() const { return lPosition; }
 double Ball::getC() const { return cPosition; }
+double Ball::getGX() const { return gXPosition; }
+double Ball::getGY() const { return gYPosition; }
 double Ball::getRadius() const { return hitbox->getRadius(); }
 Circle *Ball::getHitbox() const { return hitbox; }
 double Ball::getAngle() const {return angle; }

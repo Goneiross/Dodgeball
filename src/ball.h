@@ -19,6 +19,8 @@ public:
   double getY() const;
   double getL() const;
   double getC() const;
+  double getGX() const;
+  double getGY() const;
   double getRadius() const;
   Circle *getHitbox() const;
   double getAngle() const;
@@ -29,8 +31,8 @@ private:
   double velocity;
   double angle;
   Circle *hitbox;
-  int lPosition;
-  int cPosition;
+  int lPosition, cPosition;
+  double gXPosition, gYPosition;
 };
 
 class BallMap {

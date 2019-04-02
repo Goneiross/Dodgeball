@@ -25,6 +25,8 @@ Player::Player(double x0, double y0, int t, double c, double r,
   velocity = v;
   lPosition = line;
   cPosition = column;
+  gXPosition = -1;
+  gYPosition = -1;
   hitbox = new Circle(x0, y0, r);
 }
 void Player::updatePosition(double angle) {
@@ -42,6 +44,8 @@ double Player::getX() const { return hitbox->getX(); }
 double Player::getY() const { return hitbox->getY(); }
 double Player::getL() const { return lPosition; }
 double Player::getC() const { return cPosition; }
+double Player::getGX() const { return gXPosition; }
+double Player::getGY() const { return gYPosition; }
 double Player::getRadius() const { return hitbox->getRadius(); }
 double Player::getCount() const { return count; }
 double Player::getTimeTouched() const { return timeTouched; }
