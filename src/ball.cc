@@ -35,8 +35,8 @@ double Ball::getL() const { return lPosition; }
 double Ball::getC() const { return cPosition; }
 double Ball::getGX() const { return gXPosition; }
 double Ball::getGY() const { return gYPosition; }
-double Ball::setGX(double gX) { gXPosition = gX; }
-double Ball::setGY(double gY) { gYPosition = gY; }
+void Ball::setGX(double gX) { gXPosition = gX; }
+void Ball::setGY(double gY) { gYPosition = gY; }
 double Ball::getRadius() const { return hitbox->getRadius(); }
 Circle *Ball::getHitbox() const { return hitbox; }
 double Ball::getAngle() const {return angle; }
