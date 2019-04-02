@@ -20,6 +20,8 @@ Obstacle::Obstacle(double x0, double y0, int l, int c, double s) {
   hitbox = new Square(x0, y0, s);
   cPosition = c;
   lPosition = l;
+  gXPosition = -1;
+  gYPosition = -1;
 }
 double Obstacle::getX() const { return hitbox->getX(); }
 double Obstacle::getY() const { return hitbox->getY(); }

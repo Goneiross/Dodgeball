@@ -26,6 +26,8 @@ private:
   Square* hitbox;
   int cPosition;
   int lPosition;
+  double gXPosition;
+  double gYPosition;
 };
 
 class Map {

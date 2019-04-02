@@ -20,6 +20,8 @@ public:
   double getY() const;
   double getL() const;
   double getC() const;
+  double getGX() const;
+  double getGY() const;
   double getRadius() const;
   double getCount() const;
   double getTimeTouched() const;
@@ -33,8 +35,8 @@ private:
   double count;
   double velocity;
   Circle *hitbox;
-  int lPosition;
-  int cPosition;
+  int lPosition, cPosition;
+  double gXPosition, gYPosition;
 };
 
 class PlayerMap {
@@ -51,8 +53,7 @@ class PlayerMap {
     Player* getPlayer(int p) const;
     int getNb() const;
   private:
-    int lineNumber;
-    int columnNumber;
+    int lineNumber, columnNumber;
     std::vector<Player *> players;
     std::vector<int>** playerGrid;
 };
