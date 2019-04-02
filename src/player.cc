@@ -46,6 +46,8 @@ double Player::getL() const { return lPosition; }
 double Player::getC() const { return cPosition; }
 double Player::getGX() const { return gXPosition; }
 double Player::getGY() const { return gYPosition; }
+double Player::setGX(double gX) { gXPosition = gX; }
+double Player::setGY(double gY) { gYPosition = gY; }
 double Player::getRadius() const { return hitbox->getRadius(); }
 double Player::getCount() const { return count; }
 double Player::getTimeTouched() const { return timeTouched; }

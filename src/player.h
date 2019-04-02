@@ -22,6 +22,8 @@ public:
   double getC() const;
   double getGX() const;
   double getGY() const;
+  double setGX(double gY);
+  double setGY(double gY);
   double getRadius() const;
   double getCount() const;
   double getTimeTouched() const;
