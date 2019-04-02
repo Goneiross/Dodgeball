@@ -25,8 +25,8 @@ Obstacle::Obstacle(double x0, double y0, int l, int c, double s) {
 }
 double Obstacle::getX() const { return hitbox->getX(); }
 double Obstacle::getY() const { return hitbox->getY(); }
-double Obstacle::getC() const { return cPosition; }
-double Obstacle::getL() const { return lPosition; }
+double Obstacle::getGX() const { return gXPosition; }
+double Obstacle::getGY() const { return gYPosition; }
 Square* Obstacle::getHitbox() const { return hitbox; }
 
 Map::Map(int l, int c) {
