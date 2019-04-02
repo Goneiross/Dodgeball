@@ -22,6 +22,8 @@ public:
   double getC() const;
   double getGX();
   double getGY();
+  void setGX(double x);
+  void setGY(double y);
   Square* getHitbox() const;
 
 private:
