@@ -11,7 +11,7 @@ clean:
 ball.o: ball.cc ball.h tools.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-GUI.o: GUI.cc GUI.h 
+GUI.o: GUI.cc GUI.h
 	$(CC) $(CFLAGS) `pkg-config gtkmm-3.0 --cflags --libs` -c $< -o $@
 
 main.o: main.cc GUI.h simulation.h
