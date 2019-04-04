@@ -12,10 +12,16 @@
 #include <vector>
 
 #include "simulation.h"
+
+#ifndef OBJECT_HEADER
+#define OBJECT_HEADER
+#include "player.h"
 #include "ball.h"
 #include "map.h"
-#include "player.h"
+#endif
+
 #include "error.h"
+#include "GUI.h"
 
 using namespace std;
 
@@ -51,9 +57,9 @@ static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap, int n
                string inputData1, string inputData2);
 void simulation(std::string inputFile, int mode) {
   int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
-  static PlayerMap* players;
-  static BallMap* balls;
-  static Map *mainMap;
+  PlayerMap* players;
+  BallMap* balls;
+  Map* mainMap;
 
   if (inputFile != ""){ // TO HANDLE
     initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap,
@@ -67,6 +73,7 @@ void simulation(std::string inputFile, int mode) {
     delete balls;
     return;
   } else {
+    draw(players, balls, mainMap);
     delete mainMap;
     delete players;
     delete balls;
