@@ -17,6 +17,9 @@ class MyArea: public Gtk::DrawingArea {
     virtual ~MyArea(){};
     void clear();
     void draw();
+    //void drawShape(Obstacle* obstacle);
+    //void drawShape(Player* player);
+    //void drawShape(Ball* ball);
   protected:
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
   private:
@@ -28,10 +31,12 @@ void MyArea::clear(){
   empty= true;
   refresh();
 }
+
 void MyArea::draw(){
   empty= false;
   refresh();
 }
+
 void MyArea::refresh(){
   auto win = get_window();
   if(win){
@@ -40,58 +45,38 @@ void MyArea::refresh(){
   }
 }
 
+/*
+void drawShape(Obstacle* obstacle){
+
+}
+
+void drawShape(Player* player){
+
+}
+
+void drawShape(Ball* ball){
+
+}
+*/
+
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
   if(not empty) {
-    cr->set_line_width(50.0);
+    Gtk::Allocation allocation = get_allocation();
+    const int width = allocation.get_width();
+    const int height = allocation.get_height();
+    const int lesser = MIN(width, height);
 
-    cr->set_source_rgb(0.92, 0.0, 0.0);
-    cr->move_to(50, 50);
-    cr->line_to(50, 150);
-    cr->stroke();
-    cr->move_to(50, 200);
-    cr->line_to(50, 300);
-    cr->stroke();
-    cr->move_to(50, 275);
-    cr->line_to(190, 275);
-    cr->stroke();
-    cr->move_to(73, 175);
-    cr->line_to(190, 175);
-    cr->stroke();
-    cr->move_to(75, 75);
-    cr->line_to(190, 75);
-    cr->stroke();
-  
-    cr->move_to(250, 50);
-    cr->line_to(250, 300);
-    cr->stroke();
-    cr->move_to(275, 75);
-    cr->line_to(325, 75);
-    cr->stroke();
-    cr->move_to(275, 175);
-    cr->line_to(325, 175);
-    cr->stroke();
-    cr->arc(325, 125, 50, -M_PI/2, M_PI/2);
-    cr->stroke();
-  
-    cr->move_to(450, 50);
-    cr->line_to(450, 150);
-    cr->stroke();
-    cr->move_to(450, 200);
-    cr->line_to(450, 300);
-    cr->stroke();
-    cr->move_to(450, 75);
-    cr->line_to(590, 75);
-    cr->stroke();
-    cr->move_to(473, 175);
-    cr->line_to(575, 175);
+    int xc, yc;
+    xc = width / 2;
+    yc = height / 2;
+
+    cr->save();
+    cr->arc(xc, yc, lesser / 4.0, 0.0, 2.0 * M_PI); // full circle
+    cr->set_source_rgba(0.0, 0.0, 0.8, 0.6);    // partially translucent
+    cr->fill_preserve();
+    cr->restore();  // back to opaque black
     cr->stroke();
 
-    cr->move_to(650, 50);
-    cr->line_to(650, 300);
-    cr->stroke();
-    cr->move_to(650, 275);
-    cr->line_to(790, 275);
-    cr->stroke();
   } else { std::cout << "Empty !" << std::endl; }
   return true;
 }
@@ -106,7 +91,7 @@ class GUI: public Window {
     void on_button_clicked_save();
     void on_button_clicked_start();
     void on_button_clicked_step();
-    Gtk::Box m_box_top, m_box1, m_box2;
+    Box m_box_top, m_box1, m_box2;
     Button m_button_exit;
     Button m_button_open;
     Button m_button_save;
@@ -128,24 +113,23 @@ GUI::GUI():
   m_label_status("Initiaization") {
   
   set_title("DodgeBall");
-  set_border_width(10);
-  maximize();
+  set_border_width(0);
 
-  m_box1.set_size_request(100, 100);
+  m_box1.set_size_request(10, 10);
 
   add(m_box_top);
-  m_box_top.pack_start(m_box1);
+  m_box_top.pack_start(m_box1, false, false);
   m_box_top.pack_start(m_box2);
 
   m_area.set_size_request(200,200);
-  m_box_top.pack_start(m_area);
+  m_box2.pack_start(m_area);
 
-  m_box1.pack_start(m_button_exit);
-  m_box1.pack_start(m_button_open);
-  m_box1.pack_start(m_button_save);
-  m_box1.pack_start(m_button_start);
-  m_box1.pack_start(m_button_step);
-  m_box1.pack_start(m_label_status);
+  m_box1.pack_start(m_button_exit, false, false);
+  m_box1.pack_start(m_button_open, false, false);
+  m_box1.pack_start(m_button_save, false, false);
+  m_box1.pack_start(m_button_start, false, false);
+  m_box1.pack_start(m_button_step, false, false);
+  m_box1.pack_start(m_label_status, false, false);
 
   m_button_exit.signal_clicked().connect(sigc::mem_fun(*this,&GUI::on_button_clicked_exit));
   m_button_open.signal_clicked().connect(sigc::mem_fun(*this,&GUI::on_button_clicked_open));
@@ -154,10 +138,12 @@ GUI::GUI():
   m_button_step.signal_clicked().connect(sigc::mem_fun(*this,&GUI::on_button_clicked_step));
    
   show_all_children();
+
+  maximize();
 }
 
 GUI::~GUI(){}
-void GUI::on_button_clicked_exit(){ exit(0); }
+void GUI::on_button_clicked_exit(){ hide(); }
 void GUI::on_button_clicked_open(){ exit(0); }
 void GUI::on_button_clicked_save(){ exit(0); }
 void GUI::on_button_clicked_start(){ exit(0); }
