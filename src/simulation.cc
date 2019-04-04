@@ -19,10 +19,6 @@
 
 using namespace std;
 
-void test(int i){
-  cout << i << endl;
-}
-
 static void initialization(string inputFile, int &nbCell, int &nbPlayer,
                     PlayerMap* &players, int &nbObstacle, Map *&mainMap,
                     int &nbBall, BallMap* &balls) ;

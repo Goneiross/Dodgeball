@@ -6,5 +6,3 @@
 */
 
 void simulation(std::string inputFile, int mode);
-
-void test(int i);

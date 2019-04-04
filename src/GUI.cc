@@ -27,7 +27,6 @@ class MyArea: public Gtk::DrawingArea {
   private:
     bool empty;
     void refresh();
-    int i;
 };
 
 void MyArea::clear(){
@@ -65,8 +64,6 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
     cr->fill_preserve();
     cr->restore();  // back to opaque black
     cr->stroke();
-    i++;
-    test(i);
 
   } else { std::cout << "Empty !" << std::endl; }
   return true;
