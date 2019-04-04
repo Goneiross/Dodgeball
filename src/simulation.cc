@@ -28,7 +28,6 @@ using namespace std;
 static void initialization(string inputFile, int &nbCell, int &nbPlayer,
                     PlayerMap* &players, int &nbObstacle, Map *&mainMap,
                     int &nbBall, BallMap* &balls) ;
-static void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls);
 static void largeCollisionCheck(PlayerMap* players, Map* map, int p, 
                         vector<int> &toCheck);
 static void largeCollisionCheck(BallMap* balls, Map* map, int b, 
@@ -164,7 +163,7 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
   flux.close();
 }
 
-static void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
+void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
   ofstream flux("save.txt", std::ofstream::out);
   int n = 0;
   flux << nbCell << endl << endl;
