@@ -10,23 +10,35 @@
 #include "GUI.h"
 #include <iostream>
 #include "simulation.h"
+#include "define.h"
+
+#ifndef OBJECT_HEADER
+#define OBJECT_HEADER
+#include "player.h"
+#include "ball.h"
+#include "map.h"
+#endif
 
 using namespace Gtk;
 
 class MyArea: public Gtk::DrawingArea {
   public:
-    MyArea(){i = 0;};
+    MyArea(PlayerMap* p, BallMap* b, Map* m){
+      players = p;
+      balls = b;
+      mainMap = m;
+    };
     virtual ~MyArea(){};
     void clear();
     void draw();
-    //void drawShape(Obstacle* obstacle);
-    //void drawShape(Player* player);
-    //void drawShape(Ball* ball);
   protected:
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
   private:
     bool empty;
     void refresh();
+    PlayerMap* players;
+    BallMap* balls;
+    Map* mainMap;
 };
 
 void MyArea::clear(){
@@ -57,21 +69,30 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
     int xc, yc;
     xc = width / 2;
     yc = height / 2;
+    
+    int nbPlayer = players->getNb();
+    for (int p = 0; p < nbPlayer; p++){
+      Player* player = players->getPlayer(p);
 
-    cr->save();
-    cr->arc(xc, yc, lesser / 4.0, 0.0, 2.0 * M_PI); // full circle
-    cr->set_source_rgba(0.0, 0.0, 0.8, 0.6);    // partially translucent
-    cr->fill_preserve();
-    cr->restore();  // back to opaque black
-    cr->stroke();
+      player->setGX(width / 2 + player->getX()); //PUT ELSEWHERE !
+      player->setGY(height / 2 - player->getY());
+      cr->save();
+      cr->arc(player->getGX(), player->getGY(), (player->getRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI); // full circle
+      cr->set_source_rgba(0.0, 0.0, 0.8, 0.6);    // partially translucent
+      cr->fill_preserve();
+      cr->restore();  // back to opaque black
+      cr->stroke();
+    }
 
+
+    
   } else { std::cout << "Empty !" << std::endl; }
   return true;
 }
 
 class GUI: public Window {
   public:
-    GUI();
+    GUI(PlayerMap* players, BallMap* balls, Map* mainMap);
     virtual ~GUI(); 
   protected: //Or private ?
     void on_button_clicked_exit();
@@ -90,7 +111,7 @@ class GUI: public Window {
     MyArea m_area;
 };
 
-GUI::GUI(): 
+GUI::GUI(PlayerMap* players, BallMap* balls, Map* mainMap): 
   m_box_top(Gtk::ORIENTATION_VERTICAL),
   m_box1(Gtk::ORIENTATION_HORIZONTAL, 10),
   m_box2(Gtk::ORIENTATION_HORIZONTAL, 10),
@@ -99,7 +120,8 @@ GUI::GUI():
   m_button_save("Save"),
   m_button_start("Start"),
   m_button_step("Step"),
-  m_label_status("Initiaization") {
+  m_label_status("Initiaization"),
+  m_area(players, balls, mainMap){
   
   set_title("DodgeBall");
   set_border_width(0);
@@ -151,11 +173,10 @@ bool GUI::on_timeout()
     return true;
 }
 
-int draw(){
+int draw(PlayerMap* players, BallMap* balls, Map* mainMap){
     auto app = Application::create();
 
-    GUI mainWindow;
+    GUI mainWindow(players, balls, mainMap);
     app->run(mainWindow);
   return 0;
 }
-
