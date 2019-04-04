@@ -156,8 +156,35 @@ GUI::GUI(PlayerMap* players, BallMap* balls, Map* mainMap):
 
 GUI::~GUI(){}
 void GUI::on_button_clicked_exit(){ hide(); }
-void GUI::on_button_clicked_open(){ exit(0); }
-void GUI::on_button_clicked_save(){ save(mainMap->getLNb(), players, mainMap, balls); }
+void GUI::on_button_clicked_open(){
+  Gtk::FileChooserDialog dialog("Please choose a file",
+          Gtk::FILE_CHOOSER_ACTION_OPEN);
+  dialog.set_transient_for(*this);
+  //Add response buttons the dialog:
+  dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+  dialog.add_button("_Open", Gtk::RESPONSE_OK);
+  //Show the dialog and wait for a user response:
+  int result = dialog.run();
+  //Handle the response:
+  switch(result) {
+    case(Gtk::RESPONSE_OK): {
+      std::cout << "Open clicked." << std::endl;
+      //Notice that this is a std::string, not a Glib::ustring.
+      std::string filename = dialog.get_filename();
+      std::cout << "File selected: " <<  filename << std::endl;
+      break;
+    }
+    case(Gtk::RESPONSE_CANCEL): {
+      std::cout << "Cancel clicked." << std::endl;
+      break;
+    }
+    default: {
+      std::cout << "Unexpected button clicked." << std::endl;
+      break;
+    }
+  }
+}
+void GUI::on_button_clicked_save(){ exit(0); }// save(mainMap->getLNb(), players, mainMap, balls); }
 void GUI::on_button_clicked_start(){ exit(0); }
 void GUI::on_button_clicked_step(){ exit(0); }
 bool GUI::on_timeout()
