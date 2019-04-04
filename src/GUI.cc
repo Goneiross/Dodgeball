@@ -157,7 +157,7 @@ GUI::GUI(PlayerMap* players, BallMap* balls, Map* mainMap):
 GUI::~GUI(){}
 void GUI::on_button_clicked_exit(){ hide(); }
 void GUI::on_button_clicked_open(){ exit(0); }
-void GUI::on_button_clicked_save(){ exit(0); }
+void GUI::on_button_clicked_save(){ save(mainMap->getLNb(), players, mainMap, balls); }
 void GUI::on_button_clicked_start(){ exit(0); }
 void GUI::on_button_clicked_step(){ exit(0); }
 bool GUI::on_timeout()
