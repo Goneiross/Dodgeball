@@ -6,14 +6,16 @@
 */
 
 #include <gtkmm.h>
+#include <glibmm/main.h>
 #include "GUI.h"
 #include <iostream>
+#include "simulation.h"
 
 using namespace Gtk;
 
 class MyArea: public Gtk::DrawingArea {
   public:
-    MyArea(){};
+    MyArea(){i = 0;};
     virtual ~MyArea(){};
     void clear();
     void draw();
@@ -25,6 +27,7 @@ class MyArea: public Gtk::DrawingArea {
   private:
     bool empty;
     void refresh();
+    int i;
 };
 
 void MyArea::clear(){
@@ -45,20 +48,6 @@ void MyArea::refresh(){
   }
 }
 
-/*
-void drawShape(Obstacle* obstacle){
-
-}
-
-void drawShape(Player* player){
-
-}
-
-void drawShape(Ball* ball){
-
-}
-*/
-
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
   if(not empty) {
     Gtk::Allocation allocation = get_allocation();
@@ -76,6 +65,8 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
     cr->fill_preserve();
     cr->restore();  // back to opaque black
     cr->stroke();
+    i++;
+    test(i);
 
   } else { std::cout << "Empty !" << std::endl; }
   return true;
@@ -91,6 +82,7 @@ class GUI: public Window {
     void on_button_clicked_save();
     void on_button_clicked_start();
     void on_button_clicked_step();
+    bool on_timeout();
     Box m_box_top, m_box1, m_box2;
     Button m_button_exit;
     Button m_button_open;
@@ -136,6 +128,7 @@ GUI::GUI():
   m_button_save.signal_clicked().connect(sigc::mem_fun(*this,&GUI::on_button_clicked_save));
   m_button_start.signal_clicked().connect(sigc::mem_fun(*this,&GUI::on_button_clicked_start));
   m_button_step.signal_clicked().connect(sigc::mem_fun(*this,&GUI::on_button_clicked_step));
+  Glib::signal_timeout().connect( sigc::mem_fun(*this, &GUI::on_timeout), 1000 );
    
   show_all_children();
 
@@ -148,12 +141,24 @@ void GUI::on_button_clicked_open(){ exit(0); }
 void GUI::on_button_clicked_save(){ exit(0); }
 void GUI::on_button_clicked_start(){ exit(0); }
 void GUI::on_button_clicked_step(){ exit(0); }
+bool GUI::on_timeout()
+{
+    // force our program to redraw the entire clock.
+    auto win = get_window();
+    if (win)
+    {
+        Gdk::Rectangle r(0, 0, get_allocation().get_width(),
+                get_allocation().get_height());
+        win->invalidate_rect(r, false);
+    }
+    return true;
+}
 
 int draw(){
     auto app = Application::create();
 
     GUI mainWindow;
-
-  return app->run(mainWindow);
+    app->run(mainWindow);
+  return 0;
 }
 
