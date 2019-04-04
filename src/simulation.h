@@ -5,4 +5,12 @@
   \brief  "Simulation" module header
 */
 
+#ifndef OBJECT_HEADER
+#define OBJECT_HEADER
+#include "player.h"
+#include "ball.h"
+#include "map.h"
+#endif
+
 void simulation(std::string inputFile, int mode);
+void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls);
