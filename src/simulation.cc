@@ -19,6 +19,10 @@
 
 using namespace std;
 
+void test(int i){
+  cout << i << endl;
+}
+
 static void initialization(string inputFile, int &nbCell, int &nbPlayer,
                     PlayerMap* &players, int &nbObstacle, Map *&mainMap,
                     int &nbBall, BallMap* &balls) ;
@@ -51,9 +55,9 @@ static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap, int n
                string inputData1, string inputData2);
 void simulation(std::string inputFile, int mode) {
   int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
-  PlayerMap* players;
-  BallMap* balls;
-  Map *mainMap;
+  static PlayerMap* players;
+  static BallMap* balls;
+  static Map *mainMap;
 
   if (inputFile != ""){ // TO HANDLE
     initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap,
