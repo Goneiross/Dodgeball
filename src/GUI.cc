@@ -82,10 +82,8 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
       cr->fill_preserve();
       cr->restore();  // back to opaque black
       cr->stroke();
-    }
-
-
-    
+      player = nullptr;
+    }    
   } else { std::cout << "Empty !" << std::endl; }
   return true;
 }
@@ -109,9 +107,12 @@ class GUI: public Window {
     Button m_button_step;
     Label m_label_status;
     MyArea m_area;
+    PlayerMap* players;
+    BallMap* balls;
+    Map* mainMap;
 };
 
-GUI::GUI(PlayerMap* players, BallMap* balls, Map* mainMap): 
+GUI::GUI(PlayerMap* p, BallMap* b, Map* m): 
   m_box_top(Gtk::ORIENTATION_VERTICAL),
   m_box1(Gtk::ORIENTATION_HORIZONTAL, 10),
   m_box2(Gtk::ORIENTATION_HORIZONTAL, 10),
@@ -121,7 +122,11 @@ GUI::GUI(PlayerMap* players, BallMap* balls, Map* mainMap):
   m_button_start("Start"),
   m_button_step("Step"),
   m_label_status("Initiaization"),
-  m_area(players, balls, mainMap){
+  m_area(p, b, m){
+  players = p;
+  balls = b;
+  mainMap = m;
+  
   
   set_title("DodgeBall");
   set_border_width(0);
@@ -160,31 +165,43 @@ void GUI::on_button_clicked_open(){
   Gtk::FileChooserDialog dialog("Please choose a file",
           Gtk::FILE_CHOOSER_ACTION_OPEN);
   dialog.set_transient_for(*this);
-  //Add response buttons the dialog:
   dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-  dialog.add_button("_Open", Gtk::RESPONSE_OK);
-  //Show the dialog and wait for a user response:
+  dialog.add_button("_Open", Gtk::RESPONSE_ACCEPT);
   int result = dialog.run();
-  //Handle the response:
   switch(result) {
-    case(Gtk::RESPONSE_OK): {
-      std::cout << "Open clicked." << std::endl;
-      //Notice that this is a std::string, not a Glib::ustring.
+    case(Gtk::RESPONSE_ACCEPT): {
       std::string filename = dialog.get_filename();
-      std::cout << "File selected: " <<  filename << std::endl;
       break;
     }
     case(Gtk::RESPONSE_CANCEL): {
-      std::cout << "Cancel clicked." << std::endl;
       break;
     }
     default: {
-      std::cout << "Unexpected button clicked." << std::endl;
       break;
     }
   }
 }
-void GUI::on_button_clicked_save(){ exit(0); }// save(mainMap->getLNb(), players, mainMap, balls); }
+void GUI::on_button_clicked_save(){
+  Gtk::FileChooserDialog dialog("Please choose a file",
+          Gtk::FILE_CHOOSER_ACTION_SAVE);
+  dialog.set_transient_for(*this);
+  dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+  dialog.add_button("_Save", Gtk::RESPONSE_ACCEPT);
+  int result = dialog.run();
+  switch(result) {
+    case(Gtk::RESPONSE_ACCEPT): {
+      std::string filename = dialog.get_filename();
+      save(filename, mainMap->getLNb(), players, mainMap, balls);
+      break;
+    }
+    case(Gtk::RESPONSE_CANCEL): {
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
 void GUI::on_button_clicked_start(){ exit(0); }
 void GUI::on_button_clicked_step(){ exit(0); }
 bool GUI::on_timeout()

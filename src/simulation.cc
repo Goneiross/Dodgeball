@@ -163,8 +163,8 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
   flux.close();
 }
 
-void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
-  ofstream flux("save.txt", std::ofstream::out);
+void save(string filename, int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
+  ofstream flux(filename, std::ofstream::out);
   int n = 0;
   flux << nbCell << endl << endl;
   n = players->getNb();
@@ -173,14 +173,14 @@ void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
     Player* p = players->getPlayer(i);
     flux << p->getX() << " " << p->getY() << " " 
          << p->getTimeTouched() << " " << p->getCount() << endl;
-    delete p;
+    p = nullptr;
   }
   n = mainMap->getNb();
   flux << endl << n << endl;
   for (int i = 0; i < n; i ++){
     Obstacle* o = mainMap->getObstacle(i);
     flux << o->getX() << " " << o->getY() << endl;
-    delete o;
+    o = nullptr;
   }
   n = balls->getNb();
   flux << endl << n << endl;
@@ -188,7 +188,7 @@ void save(int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
     Ball* b = balls->getBall(i);
     flux << b->getX() << " " << b->getY() << " " 
          << b->getAngle() << endl;
-    delete b;
+    b = nullptr; 
   }
   flux.close();
 }
