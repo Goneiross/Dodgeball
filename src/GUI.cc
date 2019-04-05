@@ -170,7 +170,10 @@ void GUI::on_button_clicked_open(){
   int result = dialog.run();
   switch(result) {
     case(Gtk::RESPONSE_ACCEPT): {
-      std::string filename = dialog.get_filename();
+      std::string inputFile = dialog.get_filename();
+      initialization(inputFile, players,  mainMap, balls); 
+      m_area.clear();
+      m_area.draw();
       break;
     }
     case(Gtk::RESPONSE_CANCEL): {

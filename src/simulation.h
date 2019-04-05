@@ -14,3 +14,4 @@
 
 void simulation(std::string inputFile, int mode);
 void save(std::string filename, int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls);
+void initialization(std::string inputFile, PlayerMap* &players, Map *&mainMap, BallMap* &balls) ;
