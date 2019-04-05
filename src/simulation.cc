@@ -25,9 +25,6 @@
 
 using namespace std;
 
-static void initialization(string inputFile, int &nbCell, int &nbPlayer,
-                    PlayerMap* &players, int &nbObstacle, Map *&mainMap,
-                    int &nbBall, BallMap* &balls) ;
 static void largeCollisionCheck(PlayerMap* players, Map* map, int p, 
                         vector<int> &toCheck);
 static void largeCollisionCheck(BallMap* balls, Map* map, int b, 
@@ -43,7 +40,7 @@ static void collisionCheck(PlayerMap* players, Map *map, int p, int o,
                             double delta);
 static void collisionCheck(BallMap* balls, Map *map, int b, int o, 
                             double delta);
-static void parseData(Map *&mainMap, PlayerMap* &players, BallMap* &balls, int &nbCell,
+static void parseData(Map *&mainMap, PlayerMap* &players, BallMap* &balls,
                       double &ingameMargin, double &parsingMargin, string inputData0);
 static void parseData(PlayerMap* &players, int p, int nbCell, double parsingMargin, 
                       double playerRadius, double playerVelocity, string inputData0, 
@@ -55,14 +52,12 @@ static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap, int n
                double ballRadius, double ballVelocity, string inputData0,
                string inputData1, string inputData2);
 void simulation(std::string inputFile, int mode) {
-  int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
   PlayerMap* players;
   BallMap* balls;
   Map* mainMap;
 
   if (inputFile != ""){ // TO HANDLE
-    initialization(inputFile, nbCell, nbPlayer, players, nbObstacle, mainMap,
-                 nbBall, balls);
+    initialization(inputFile, players, mainMap, balls);
   }
   
   if (mode == 1) {
@@ -80,9 +75,8 @@ void simulation(std::string inputFile, int mode) {
   }
 }
 
-static void initialization(string inputFile, int &nbCell, int &nbPlayer,
-                    PlayerMap* &players, int &nbObstacle, Map *&mainMap,
-                    int &nbBall, BallMap* &balls) {
+void initialization(string inputFile, PlayerMap* &players, Map *&mainMap, BallMap* &balls) {
+  int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
   string inputData[4];
   char charBin;
   int parseType = 0;
@@ -104,8 +98,12 @@ static void initialization(string inputFile, int &nbCell, int &nbPlayer,
         flux.get(charBin);
       } while (charBin != '\n');
     } else if (parseType == 0) {
-      parseData(mainMap, players, balls, nbCell, 
-                ingameMargin, parsingMargin, inputData[0]);
+      parseData(mainMap, players, balls, ingameMargin, parsingMargin, inputData[0]);
+      nbCell = mainMap->getLNb();
+      ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
+      ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
+      playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
+      playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
       parseType++;
     } else if (parseType == 1) {
       nbPlayer = stoi(inputData[0]);
@@ -383,9 +381,9 @@ static void collisionCheck(BallMap* balls, Map *map, int b, int o,
   }
 }
 
-static void parseData(Map* &mainMap, PlayerMap* &players, BallMap* &balls, int &nbCell,
+static void parseData(Map* &mainMap, PlayerMap* &players, BallMap* &balls,
                       double &ingameMargin, double &parsingMargin, string inputData0) {
-  nbCell = stoi(inputData0);
+  int nbCell = stoi(inputData0);
   mainMap = new Map(nbCell, nbCell);
   players =new PlayerMap(nbCell, nbCell);
   balls = new BallMap(nbCell, nbCell);
