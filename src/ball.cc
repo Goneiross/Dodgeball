@@ -25,10 +25,7 @@ Ball::Ball(double x, double y, double a, double r, double v, int l, int c, int i
   gYPosition = -1;
   hitbox = new Circle(x, y, r);
 }
-void Ball::updatePosition() {
-  hitbox->setX(hitbox->getX() + cos(angle) * velocity);
-  hitbox->setY(hitbox->getY() + sin(angle) * velocity);
-}
+
 double Ball::getX() const { return hitbox->getX(); }
 double Ball::getY() const { return hitbox->getY(); }
 double Ball::getL() const { return lPosition; }
@@ -40,6 +37,7 @@ void Ball::setGY(double gY) { gYPosition = gY; }
 double Ball::getRadius() const { return hitbox->getRadius(); }
 Circle *Ball::getHitbox() const { return hitbox; }
 double Ball::getAngle() const {return angle; }
+double Ball::getVelocity() const {return velocity; }
 
 BallMap::BallMap(int l, int c){
   lineNumber = l;
@@ -106,6 +104,16 @@ void BallMap::reserveSpace(int nbBall){
 Ball* BallMap::getBall(int i) const {
   return balls[i];
 }
+
 int BallMap::getNb() const{
   return balls.size();
+}
+
+void BallMap::updatePosition(){
+  int ballNb = balls.size();
+  for (int b = 0; b < ballNb; b++){
+    balls[b]->getHitbox()->setX(balls[b]->getHitbox()->getX() + cos(balls[b]->getAngle()) * balls[b]->getVelocity());
+    balls[b]->getHitbox()->setY(balls[b]->getHitbox()->getY() + sin(balls[b]->getAngle()) * balls[b]->getVelocity());
+    // Compute new Line and Column
+  }
 }

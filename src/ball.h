@@ -26,7 +26,7 @@ public:
   double getRadius() const;
   Circle *getHitbox() const;
   double getAngle() const;
-  void updatePosition();
+  double getVelocity() const;
 
 private:
   int ID;
@@ -49,6 +49,7 @@ class BallMap {
     std::vector<int> whichBall(int lPosition, int cPosition);
     Ball* getBall(int index) const;
     int getNb () const;
+    void updatePosition();
   private:
     int lineNumber;
     int columnNumber;
