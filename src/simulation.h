@@ -15,3 +15,6 @@
 void simulation(std::string inputFile, int mode);
 void save(std::string filename, int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls);
 void initialization(std::string inputFile, PlayerMap* &players, Map *&mainMap, BallMap* &balls) ;
+bool isOut(double xPosision, double yPosition);
+void check(BallMap* balls);
+//bool isOut(Obstacle* obstacle);
