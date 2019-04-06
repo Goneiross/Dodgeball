@@ -24,6 +24,7 @@ public:
   double getGY() const;
   void setGX(double x);
   void setGY(double y);
+  double getSide() const;
   Square* getHitbox() const;
 
 private:
