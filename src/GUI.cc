@@ -132,7 +132,7 @@ GUI::GUI(PlayerMap* p, BallMap* b, Map* m):
   m_box_top.pack_start(m_box1, false, false);
   m_box_top.pack_start(m_box2);
 
-  m_area.set_size_request(200,200);
+  m_area.set_size_request(SIDE,SIDE);
   m_box2.pack_start(m_area);
 
   m_box1.pack_start(m_button_exit, false, false);
