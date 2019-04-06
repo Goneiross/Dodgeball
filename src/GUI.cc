@@ -263,14 +263,24 @@ void GUI::on_button_clicked_start(){
   }
  }
 
-void GUI::on_button_clicked_step(){ exit(0); }
+void GUI::on_button_clicked_step(){ 
+  m_area.balls->updatePosition();
+  check(m_area.balls);
+  auto win = get_window();
+  if (win)
+  {
+      Gdk::Rectangle r(0, 0, get_allocation().get_width(),
+                        get_allocation().get_height());
+      win->invalidate_rect(r, false);
+  }
+ }
 bool GUI::on_timeout()
 {
   if(disconnect)
   {
-	  disconnect = false; // reset for next time a Timer is created
+	  disconnect = false;
 	  
-	  return false; // End of Timer 
+	  return false;
   } else {
     m_area.balls->updatePosition();
     check(m_area.balls);
