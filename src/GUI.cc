@@ -31,14 +31,15 @@ class MyArea: public Gtk::DrawingArea {
     virtual ~MyArea(){};
     void clear();
     void draw();
+    PlayerMap* players;
+    BallMap* balls;
+    Map* mainMap;
+
   protected:
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
   private:
     bool empty;
     void refresh();
-    PlayerMap* players;
-    BallMap* balls;
-    Map* mainMap;
 };
 
 void MyArea::clear(){
@@ -62,9 +63,9 @@ void MyArea::refresh(){
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
   if(not empty) {
     Gtk::Allocation allocation = get_allocation();
-    const int width = allocation.get_width();
-    const int height = allocation.get_height();
-    const int lesser = MIN(width, height);
+    int width = allocation.get_width();
+    int height = allocation.get_height();
+    int lesser = MIN(width, height);
 
     int xc, yc;
     xc = width / 2;
@@ -92,6 +93,7 @@ class GUI: public Window {
   public:
     GUI(PlayerMap* players, BallMap* balls, Map* mainMap);
     virtual ~GUI(); 
+    
   protected: //Or private ?
     void on_button_clicked_exit();
     void on_button_clicked_open();
@@ -107,9 +109,6 @@ class GUI: public Window {
     Button m_button_step;
     Label m_label_status;
     MyArea m_area;
-    PlayerMap* players;
-    BallMap* balls;
-    Map* mainMap;
 };
 
 GUI::GUI(PlayerMap* p, BallMap* b, Map* m): 
@@ -123,10 +122,6 @@ GUI::GUI(PlayerMap* p, BallMap* b, Map* m):
   m_button_step("Step"),
   m_label_status("Initiaization"),
   m_area(p, b, m){
-  players = p;
-  balls = b;
-  mainMap = m;
-  
   
   set_title("DodgeBall");
   set_border_width(0);
@@ -171,7 +166,7 @@ void GUI::on_button_clicked_open(){
   switch(result) {
     case(Gtk::RESPONSE_ACCEPT): {
       std::string inputFile = dialog.get_filename();
-      initialization(inputFile, players,  mainMap, balls); 
+      initialization(inputFile, m_area.players, m_area.mainMap, m_area.balls);
       m_area.clear();
       m_area.draw();
       break;
@@ -194,7 +189,7 @@ void GUI::on_button_clicked_save(){
   switch(result) {
     case(Gtk::RESPONSE_ACCEPT): {
       std::string filename = dialog.get_filename();
-      save(filename, mainMap->getLNb(), players, mainMap, balls);
+      save(filename, m_area.mainMap->getLNb(), m_area.players, m_area.mainMap, m_area.balls);
       break;
     }
     case(Gtk::RESPONSE_CANCEL): {
@@ -209,7 +204,6 @@ void GUI::on_button_clicked_start(){ exit(0); }
 void GUI::on_button_clicked_step(){ exit(0); }
 bool GUI::on_timeout()
 {
-    // force our program to redraw the entire clock.
     auto win = get_window();
     if (win)
     {
@@ -218,6 +212,10 @@ bool GUI::on_timeout()
         win->invalidate_rect(r, false);
     }
     return true;
+    /*
+    m_area.clear();
+    m_area.draw();
+    */
 }
 
 int draw(PlayerMap* players, BallMap* balls, Map* mainMap){
