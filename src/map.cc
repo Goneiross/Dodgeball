@@ -29,6 +29,7 @@ double Obstacle::getX() const { return hitbox->getX(); }
 double Obstacle::getY() const { return hitbox->getY(); }
 double Obstacle::getGX() const { return gXPosition; }
 double Obstacle::getGY() const { return gYPosition; }
+double Obstacle::getSide() const { return hitbox->getSide(); }
 void Obstacle::setGX(double gX) { gXPosition = gX; }
 void Obstacle::setGY(double gY) { gYPosition = gY; }
 Square* Obstacle::getHitbox() const { return hitbox; }
