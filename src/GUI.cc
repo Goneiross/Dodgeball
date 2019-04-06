@@ -72,54 +72,64 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
     yc = height / 2;
     
     int nbPlayer = players->getNb();
+    cr->save();
     for (int p = 0; p < nbPlayer; p++){
       Player* player = players->getPlayer(p);
-
       player->setGX(width / 2 + player->getX()); //PUT ELSEWHERE !
       player->setGY(height / 2 - player->getY());
-      cr->save();
-      cr->arc(player->getGX(), player->getGY(), (player->getRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI); // full circle
-      cr->set_source_rgba(0.0, 0.0, 0.8, 0.6);    // partially translucent
+      if (player->getTimeTouched() >= 4){ //Rename var //PUT IN A FUNCTION !!!
+        cr->set_source_rgba(0.0, 0.8, 0.0, 0.6);
+      } else if (player->getTimeTouched() == 3){
+        cr->set_source_rgba(0.8, 0.8, 0.0, 0.6);
+      } else if (player->getTimeTouched() == 2){
+        cr->set_source_rgba(1.0, 0.8, 0.0, 0.6);
+      } else {
+        cr->set_source_rgba(1.0, 0.0, 0.0, 0.6);
+      }
+      cr->arc(player->getGX(), player->getGY(), (player->getRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
       cr->fill_preserve();
-      cr->restore();  // back to opaque black
       cr->stroke();
       player = nullptr;
     }
+    cr->restore();
+
 
     int nbBall = balls->getNb();
+    cr->save();
+    cr->set_source_rgba(0.0, 0.0, 0.8, 0.6);
     for (int b = 0; b < nbBall; b++){
       Ball* ball = balls->getBall(b);
 
       ball->setGX(width / 2 + ball->getX()); //PUT ELSEWHERE !
       ball->setGY(height / 2 - ball->getY());
-      cr->save();
-      cr->arc(ball->getGX(), ball->getGY(), (ball->getRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI); // full circle
-      cr->set_source_rgba(0.0, 0.9, 0.0, 0.6);    // partially translucent
+      
+      cr->arc(ball->getGX(), ball->getGY(), (ball->getRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
       cr->fill_preserve();
-      cr->restore();  // back to opaque black
       cr->stroke();
       ball = nullptr;
     }
+    cr->restore();
 
     int nbObstacle = mainMap->getNb();
+    cr->save();
+    cr->set_source_rgba(1.0, 0.0, 0.0, 0.6);
     for (int o = 0; o < nbObstacle; o++){
       Obstacle* obstacle = mainMap->getObstacle(o);
       double side = obstacle->getSide();
 
-
       obstacle->setGX(width / 2 + obstacle->getX()); //PUT ELSEWHERE !
       obstacle->setGY(height / 2 - obstacle->getY());
-      cr->save();
       cr->move_to(obstacle->getGX() - side / 2 , obstacle->getGY() - side / 2);
       cr->rel_line_to(side, 0);
       cr->rel_line_to(0, side);
       cr->rel_line_to(-side, 0);
       cr->rel_line_to(0, - side);
       cr->fill_preserve();
-      cr->restore();
       cr->stroke();
       obstacle = nullptr;
     }
+    cr->restore();
+
 
 
 
