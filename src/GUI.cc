@@ -84,7 +84,45 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
       cr->restore();  // back to opaque black
       cr->stroke();
       player = nullptr;
-    }    
+    }
+
+    int nbBall = balls->getNb();
+    for (int b = 0; b < nbBall; b++){
+      Ball* ball = balls->getBall(b);
+
+      ball->setGX(width / 2 + ball->getX()); //PUT ELSEWHERE !
+      ball->setGY(height / 2 - ball->getY());
+      cr->save();
+      cr->arc(ball->getGX(), ball->getGY(), (ball->getRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI); // full circle
+      cr->set_source_rgba(0.0, 0.9, 0.0, 0.6);    // partially translucent
+      cr->fill_preserve();
+      cr->restore();  // back to opaque black
+      cr->stroke();
+      ball = nullptr;
+    }
+
+    int nbObstacle = mainMap->getNb();
+    for (int o = 0; o < nbObstacle; o++){
+      Obstacle* obstacle = mainMap->getObstacle(o);
+      double side = obstacle->getSide();
+
+
+      obstacle->setGX(width / 2 + obstacle->getX()); //PUT ELSEWHERE !
+      obstacle->setGY(height / 2 - obstacle->getY());
+      cr->save();
+      cr->move_to(obstacle->getGX() - side / 2 , obstacle->getGY() - side / 2);
+      cr->rel_line_to(side, 0);
+      cr->rel_line_to(0, side);
+      cr->rel_line_to(-side, 0);
+      cr->rel_line_to(0, - side);
+      cr->fill_preserve();
+      cr->restore();
+      cr->stroke();
+      obstacle = nullptr;
+    }
+
+
+
   } else { std::cout << "Empty !" << std::endl; }
   return true;
 }
@@ -101,6 +139,10 @@ class GUI: public Window {
     void on_button_clicked_start();
     void on_button_clicked_step();
     bool on_timeout();
+    bool timer_added;
+    bool disconnect;
+    const int timeoutValue;
+
     Box m_box_top, m_box1, m_box2;
     Button m_button_exit;
     Button m_button_open;
@@ -121,7 +163,10 @@ GUI::GUI(PlayerMap* p, BallMap* b, Map* m):
   m_button_start("Start"),
   m_button_step("Step"),
   m_label_status("Initiaization"),
-  m_area(p, b, m){
+  m_area(p, b, m),
+  timer_added(false),
+  disconnect(false),
+  timeoutValue(DELTA_T * 1000){
   
   set_title("DodgeBall");
   set_border_width(0);
@@ -147,7 +192,6 @@ GUI::GUI(PlayerMap* p, BallMap* b, Map* m):
   m_button_save.signal_clicked().connect(sigc::mem_fun(*this,&GUI::on_button_clicked_save));
   m_button_start.signal_clicked().connect(sigc::mem_fun(*this,&GUI::on_button_clicked_start));
   m_button_step.signal_clicked().connect(sigc::mem_fun(*this,&GUI::on_button_clicked_step));
-  Glib::signal_timeout().connect( sigc::mem_fun(*this, &GUI::on_timeout), 1000 );
    
   show_all_children();
 
@@ -155,7 +199,9 @@ GUI::GUI(PlayerMap* p, BallMap* b, Map* m):
 }
 
 GUI::~GUI(){}
+
 void GUI::on_button_clicked_exit(){ hide(); }
+
 void GUI::on_button_clicked_open(){
   Gtk::FileChooserDialog dialog("Please choose a file",
           Gtk::FILE_CHOOSER_ACTION_OPEN);
@@ -179,6 +225,7 @@ void GUI::on_button_clicked_open(){
     }
   }
 }
+
 void GUI::on_button_clicked_save(){
   Gtk::FileChooserDialog dialog("Please choose a file",
           Gtk::FILE_CHOOSER_ACTION_SAVE);
@@ -200,10 +247,33 @@ void GUI::on_button_clicked_save(){
     }
   }
 }
-void GUI::on_button_clicked_start(){ exit(0); }
+
+void GUI::on_button_clicked_start(){ 
+  if(not timer_added)
+  {	  
+	  Glib::signal_timeout().connect( sigc::mem_fun(*this, &GUI::on_timeout),
+									  timeoutValue );
+		
+	  timer_added = true;
+    m_button_start.set_label("Stop");
+  } else {
+    disconnect  = true;   
+    timer_added = false;
+    m_button_start.set_label("Start");
+  }
+ }
+
 void GUI::on_button_clicked_step(){ exit(0); }
 bool GUI::on_timeout()
 {
+  if(disconnect)
+  {
+	  disconnect = false; // reset for next time a Timer is created
+	  
+	  return false; // End of Timer 
+  } else {
+    m_area.balls->updatePosition();
+    check(m_area.balls);
     auto win = get_window();
     if (win)
     {
@@ -212,10 +282,7 @@ bool GUI::on_timeout()
         win->invalidate_rect(r, false);
     }
     return true;
-    /*
-    m_area.clear();
-    m_area.draw();
-    */
+  }
 }
 
 int draw(PlayerMap* players, BallMap* balls, Map* mainMap){
