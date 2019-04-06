@@ -177,7 +177,7 @@ void save(string filename, int nbCell, PlayerMap* players, Map* mainMap, BallMap
   flux << endl << n << endl;
   for (int i = 0; i < n; i ++){
     Obstacle* o = mainMap->getObstacle(i);
-    flux << o->getX() << " " << o->getY() << endl;
+    flux << o->getL() << " " << o->getC() << endl;
     o = nullptr;
   }
   n = balls->getNb();
