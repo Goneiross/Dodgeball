@@ -191,6 +191,41 @@ void save(string filename, int nbCell, PlayerMap* players, Map* mainMap, BallMap
   flux.close();
 }
 
+bool isOut(double xPosition, double yPosition){
+  if ((abs(xPosition) > DIM_MAX) || (abs(yPosition) > DIM_MAX)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void check(BallMap* balls){
+  int n = balls->getNb();
+  for (int b = 0; b < n; b++){
+    if (isOut(balls->getBall(b)->getX(), balls->getBall(b)->getY())){
+      balls->removeBall(b);
+    }
+  }
+}
+
+/*
+bool isOut(Obstacle* obstacle){
+  int lValue = obstacle->getL();
+  if (lValue >= nbCell) {
+    return true;
+  } else if (stoi(inputData1) >= nbCell) {
+    return true;
+  } else if (stoi(inputData0) < 0) {
+    return true;
+  } else if (stoi(inputData1) < 0) {
+    return true;
+  } else if (mainMap->isObstacle(stoi(inputData0), stoi(inputData1))) {
+    return true;
+  } else {
+    return false;
+  }
+}
+*/
 static void largeCollisionCheck(PlayerMap* players, Map* map, int p, 
                         vector<int> &toCheck){
   int cPosition = ((players->getPlayer(p)->getX() + DIM_MAX ) /
@@ -436,7 +471,7 @@ static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap, int n
                       int nbPlayer, int nbObstacle, double parsingMargin, int b, 
                       double ballRadius, double ballVelocity, string inputData0, 
                       string inputData1, string inputData2) {
-  if ((abs(stoi(inputData0)) > DIM_MAX) || (abs(stoi(inputData1)) > DIM_MAX)) {
+  if (isOut(stod(inputData0), stod(inputData1))) {
     cout << BALL_OUT(b + 1) << endl;
     exit(1);
   } else {
