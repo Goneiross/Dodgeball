@@ -50,6 +50,7 @@ void Player::setGX(double gX) { gXPosition = gX; }
 void Player::setGY(double gY) { gYPosition = gY; }
 double Player::getRadius() const { return hitbox->getRadius(); }
 double Player::getCount() const { return count; }
+void Player::setCount(int c) {count = c;}
 double Player::getTimeTouched() const { return timeTouched; }
 
 Circle* Player::getHitbox() const { return hitbox; }
@@ -57,7 +58,7 @@ Circle* Player::getHitbox() const { return hitbox; }
 PlayerMap::PlayerMap(int l, int c){
   lineNumber = l;
   columnNumber = c;
-
+  
   playerGrid = new vector<int>* [lineNumber];
   for (int i = 0; i < lineNumber; i++) {
     playerGrid[i] = new vector<int>[columnNumber];
@@ -122,4 +123,16 @@ Player* PlayerMap::getPlayer(int p) const {
 }
 int PlayerMap::getNb() const{
   return players.size();
+}
+
+void PlayerMap::updatePosition(){
+  for (int i = 0; i < players.size(); i++){
+    int c = players[i]->getCount();
+    if (c == MAX_COUNT){
+      players[i]->setCount(0);
+    } else {
+      players[i]->setCount(c+1);
+    }
+  }
+  //TO do
 }
