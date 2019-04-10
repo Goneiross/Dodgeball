@@ -70,7 +70,6 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
     int xc, yc;
     xc = width / 2;
     yc = height / 2;
-    
     int nbPlayer = players->getNb();
     cr->save();
     for (int p = 0; p < nbPlayer; p++){
@@ -133,10 +132,6 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
       obstacle = nullptr;
     }
     cr->restore();
-
-
-
-
   } else { std::cout << "Empty !" << std::endl; }
   return true;
 }
@@ -278,8 +273,8 @@ void GUI::on_button_clicked_start(){
  }
 
 void GUI::on_button_clicked_step(){ 
-  m_area.balls->updatePosition();
-  check(m_area.balls);
+  update(m_area.balls, m_area.players);
+  check(m_area.balls, m_area.players);
   auto win = get_window();
   if (win)
   {
@@ -296,8 +291,8 @@ bool GUI::on_timeout()
 	  
 	  return false;
   } else {
-    m_area.balls->updatePosition();
-    check(m_area.balls);
+    update(m_area.balls, m_area.players);
+    check(m_area.balls, m_area.players);
     auto win = get_window();
     if (win)
     {

@@ -52,11 +52,11 @@ static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap, int n
                double ballRadius, double ballVelocity, string inputData0,
                string inputData1, string inputData2);
 void simulation(std::string inputFile, int mode) {
-  PlayerMap* players;
-  BallMap* balls;
-  Map* mainMap;
+  PlayerMap* players = new PlayerMap(0,0);
+  BallMap* balls = new BallMap(0,0);
+  Map* mainMap = new Map(0,0);
 
-  if (inputFile != ""){ // TO HANDLE
+  if (inputFile != ""){
     initialization(inputFile, players, mainMap, balls);
   }
   
@@ -199,13 +199,21 @@ bool isOut(double xPosition, double yPosition){
   }
 }
 
-void check(BallMap* balls){
+void check(BallMap* balls, PlayerMap* &players){
   int n = balls->getNb();
   for (int b = 0; b < n; b++){
     if (isOut(balls->getBall(b)->getX(), balls->getBall(b)->getY())){
       balls->removeBall(b);
+    } /* else if (collision(balls->getBall(b))){
+      balls->removeBall(b);
     }
+    */
   }
+}
+
+void update(BallMap* &balls, PlayerMap* &players){
+  balls->updatePosition();
+  players->updatePosition();
 }
 
 /*

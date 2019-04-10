@@ -15,7 +15,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   int mode = 0;
-  string inputFile;
+  string inputFile = "";
   if (argc == 1) {
     cout << "Type '--help' for a list of commands" << endl;
   } else if (argc < 4) {
