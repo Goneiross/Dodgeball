@@ -12,34 +12,34 @@
 #endif
 
 class Player {
-public:
-  Player(double xPosition, double yPosition, int timeTouched, double counter,
-         double radius, int lPosition, int cPosition, double velocity, int ID); 
-  ~Player(){};
-  double getX() const;
-  double getY() const;
-  double getL() const;
-  double getC() const;
-  double getGX() const;
-  double getGY() const;
-  void setGX(double gY);
-  void setGY(double gY);
-  double getRadius() const;
-  double getCount() const;
-  void setCount(int c);
-  double getTimeTouched() const;
-  Circle *getHitbox() const;
-  void updatePosition(double angle);
-  bool touchedAndDead();
+  public:
+    Player(double xPosition, double yPosition, int timeTouched, double counter,
+           double radius, int lPosition, int cPosition, double velocity, int ID);
+    ~Player(){};
+    double getX() const;
+    double getY() const;
+    double getL() const;
+    double getC() const;
+    double getGX() const;
+    double getGY() const;
+    void setGX(double gY);
+    void setGY(double gY);
+    double getRadius() const;
+    double getCount() const;
+    void setCount(int c);
+    double getTimeTouched() const;
+    Circle* getHitbox() const;
+    void updatePosition(double angle);
+    bool touchedAndDead();
 
-private:
-  int timeTouched;
-  int ID;
-  double count;
-  double velocity;
-  Circle *hitbox;
-  int lPosition, cPosition;
-  double gXPosition, gYPosition;
+  private:
+    int timeTouched;
+    int ID;
+    double count;
+    double velocity;
+    Circle* hitbox;
+    int lPosition, cPosition;
+    double gXPosition, gYPosition;
 };
 
 class PlayerMap {
@@ -56,8 +56,9 @@ class PlayerMap {
     Player* getPlayer(int p) const;
     int getNb() const;
     void updatePosition();
+
   private:
     int lineNumber, columnNumber;
-    std::vector<Player *> players;
+    std::vector<Player*> players;
     std::vector<int>** playerGrid;
 };
