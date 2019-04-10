@@ -26,6 +26,7 @@ public:
   void setGY(double gY);
   double getRadius() const;
   double getCount() const;
+  void setCount(int c);
   double getTimeTouched() const;
   Circle *getHitbox() const;
   void updatePosition(double angle);
@@ -54,6 +55,7 @@ class PlayerMap {
     std::vector<int> whichPlayer(int lPosition, int cPosition);
     Player* getPlayer(int p) const;
     int getNb() const;
+    void updatePosition();
   private:
     int lineNumber, columnNumber;
     std::vector<Player *> players;
