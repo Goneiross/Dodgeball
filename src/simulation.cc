@@ -32,41 +32,47 @@ static void largeCollisionCheck(BallMap* balls, Map* map, int b,
 static void largeCollisionCheck(BallMap* balls, int b, vector<int> &toCheck, int lMax);
 static void largeCollisionCheck(PlayerMap* players, int b, 
                                 vector<int> &toCheck, int lMax);
-static void collisionCheck(PlayerMap* players, int p, int pmax, double delta);
-static void collisionCheck(BallMap* balls, int b, int bmax, double delta);
+static void collisionCheck(PlayerMap* players, int p, int pmax, double delta, bool &error);
+static void collisionCheck(BallMap* balls, int b, int bmax, double delta, bool &error);
 static void collisionCheck(PlayerMap* players, BallMap* balls, int p,
-                            int b, double delta);
+                            int b, double delta, bool &error);
 static void collisionCheck(PlayerMap* players, Map *map, int p, int o, 
-                            double delta);
+                            double delta, bool &error);
 static void collisionCheck(BallMap* balls, Map *map, int b, int o, 
-                            double delta);
+                            double delta, bool &error);
 static void parseData(Map *&mainMap, PlayerMap* &players, BallMap* &balls,
-                      double &ingameMargin, double &parsingMargin, string inputData0);
+                      double &ingameMargin, double &parsingMargin, string inputData0, bool &error);
 static void parseData(PlayerMap* &players, int p, int nbCell, double parsingMargin, 
                       double playerRadius, double playerVelocity, string inputData0, 
-                      string inputData1, string inputData2, string inputData3);
+                      string inputData1, string inputData2, string inputData3, bool &error);
 static void parseData(Map *&mainMap, int nbCell, int o, string inputData0, 
-                            string inputData1);
+                            string inputData1, bool &error);
 static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap, int nbCell,
                int nbPlayer, int nbObstacle, double parsingMargin, int b,
                double ballRadius, double ballVelocity, string inputData0,
-               string inputData1, string inputData2);
+               string inputData1, string inputData2, bool &error);
 void simulation(std::string inputFile, int mode) {
   PlayerMap* players = new PlayerMap(0,0);
   BallMap* balls = new BallMap(0,0);
   Map* mainMap = new Map(0,0);
+  bool success;
 
   if (inputFile != ""){
-    initialization(inputFile, players, mainMap, balls);
+    success = initialization(inputFile, players, mainMap, balls);
   }
   
   if (mode == 1) {
-    cout << FILE_READING_SUCCESS << endl;
+    if (success) { cout << FILE_READING_SUCCESS << endl; }
     delete mainMap;
     delete players;
     delete balls;
     return;
   } else {
+    if (not success){
+      PlayerMap* players = new PlayerMap(0,0);
+      BallMap* balls = new BallMap(0,0);
+      Map* mainMap = new Map(0,0);
+    }
     draw(players, balls, mainMap);
     delete mainMap;
     delete players;
@@ -75,7 +81,8 @@ void simulation(std::string inputFile, int mode) {
   }
 }
 
-void initialization(string inputFile, PlayerMap* &players, Map *&mainMap, BallMap* &balls) {
+bool initialization(string inputFile, PlayerMap* &players, Map *&mainMap, BallMap* &balls) {
+  bool error = false;
   int nbCell = 0, nbPlayer = 0, nbObstacle = 0, nbBall = 0;
   string inputData[4];
   char charBin;
@@ -98,7 +105,7 @@ void initialization(string inputFile, PlayerMap* &players, Map *&mainMap, BallMa
         flux.get(charBin);
       } while (charBin != '\n');
     } else if (parseType == 0) {
-      parseData(mainMap, players, balls, ingameMargin, parsingMargin, inputData[0]);
+      parseData(mainMap, players, balls, ingameMargin, parsingMargin, inputData[0], error);
       nbCell = mainMap->getLNb();
       ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
       ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
@@ -112,7 +119,7 @@ void initialization(string inputFile, PlayerMap* &players, Map *&mainMap, BallMa
     } else if (parseType == 2) {
       flux >> inputData[1] >> inputData[2] >> inputData[3];
       parseData(players, p, nbCell, parsingMargin, playerRadius, playerVelocity, inputData[0], 
-                inputData[1], inputData[2], inputData[3]);
+                inputData[1], inputData[2], inputData[3], error);
       p++;
       if (p == nbPlayer) {
         parseType++;
@@ -122,7 +129,7 @@ void initialization(string inputFile, PlayerMap* &players, Map *&mainMap, BallMa
       parseType++;
     } else if (parseType == 4) {
       flux >> inputData[1];
-      parseData(mainMap, nbCell, o, inputData[0], inputData[1]);
+      parseData(mainMap, nbCell, o, inputData[0], inputData[1], error);
       o++;
       if (o == nbObstacle) {
         for (int i = 0; i < nbPlayer; i++) {
@@ -130,7 +137,7 @@ void initialization(string inputFile, PlayerMap* &players, Map *&mainMap, BallMa
           largeCollisionCheck(players, mainMap, i, toCheck);
           int nbToCheck = toCheck.size();
           for (int j = 0; j < nbToCheck; j++){
-            collisionCheck(players, mainMap, i, toCheck[j], parsingMargin);
+            collisionCheck(players, mainMap, i, toCheck[j], parsingMargin, error);
           }
         }
         parseType++;
@@ -142,14 +149,14 @@ void initialization(string inputFile, PlayerMap* &players, Map *&mainMap, BallMa
     } else if (parseType == 6) {
       flux >> inputData[1] >> inputData[2];
       parseData(balls, players, mainMap,nbCell, nbPlayer, nbObstacle, parsingMargin, b, 
-                ballRadius, ballVelocity, inputData[0], inputData[1], inputData[2]);
+                ballRadius, ballVelocity, inputData[0], inputData[1], inputData[2], error);
       b++;
       if (b == nbBall) {
         for (int i = 0; i < nbBall; i++) {
           vector<int> toCheck;
           largeCollisionCheck(balls, mainMap, i, toCheck);
           for (auto o : toCheck){
-            collisionCheck(balls, mainMap, i, o, parsingMargin);
+            collisionCheck(balls, mainMap, i, o, parsingMargin , error);
           }
         }
         parseType++;
@@ -159,6 +166,11 @@ void initialization(string inputFile, PlayerMap* &players, Map *&mainMap, BallMa
     }
   }
   flux.close();
+  if (error){
+    return false;
+  } else { 
+    return true;
+  }
 }
 
 void save(string filename, int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls){
@@ -199,7 +211,7 @@ bool isOut(double xPosition, double yPosition){
   }
 }
 
-void check(BallMap* balls, PlayerMap* &players){
+void check(BallMap* &balls, PlayerMap* &players){
   int n = balls->getNb();
   for (int b = 0; b < n; b++){
     if (isOut(balls->getBall(b)->getX(), balls->getBall(b)->getY())){
@@ -327,37 +339,37 @@ static void largeCollisionCheck(PlayerMap* players, int p,
   }
 }
 
-static void collisionCheck(PlayerMap* players, int p, int pmax, double delta) {
+static void collisionCheck(PlayerMap* players, int p, int pmax, double delta, bool &error) {
   for (int i = 0; i <= pmax; i++) {
     if (i != p) {
       double d = distance(players->getPlayer(i)->getHitbox(), players->getPlayer(p)->getHitbox());
       if (d < (players->getPlayer(i)->getRadius() + players->getPlayer(p)->getRadius() + delta)) {
         cout << PLAYER_COLLISION(i + 1, p + 1) << endl;
-        exit(1);
+        error = true;
       }
     }
   }
 }
 
-static void collisionCheck(BallMap* balls, int b, int c, double delta) {
+static void collisionCheck(BallMap* balls, int b, int c, double delta, bool &error) {
   double d = distance(balls->getBall(c)->getHitbox(), balls->getBall(b)->getHitbox());
   if (d < (balls->getBall(c)->getRadius() + balls->getBall(b)->getRadius() + delta)) {
     cout << BALL_COLLISION(c + 1, b + 1) << endl;
-    exit(1);
+    error = true;
   }
 }
 
 static void collisionCheck(PlayerMap* players, BallMap* balls, int p,
-                     int b, double delta) {
+                     int b, double delta, bool &error) {
   double d = distance(players->getPlayer(p)->getHitbox(), balls->getBall(b)->getHitbox());
   if (d < (players->getPlayer(p)->getRadius() + balls->getBall(b)->getRadius() + delta)) {
     cout << PLAYER_BALL_COLLISION(p + 1, b + 1) << endl;
-    exit(1);
+    error = true;
   }
 }
 
 static void collisionCheck(PlayerMap* players, Map *map, int p, int o, 
-                            double delta) {
+                            double delta, bool &error) {
   double d = distance(map->getObstacle(o)->getHitbox(), players->getPlayer(p)->getHitbox());
   double X = map->getObstacle(o)->getX() - players->getPlayer(p)->getX();
   double Y = map->getObstacle(o)->getY() - players->getPlayer(p)->getY();
@@ -386,12 +398,12 @@ static void collisionCheck(PlayerMap* players, Map *map, int p, int o,
   }
   if (d < (players->getPlayer(p)->getRadius() + abs(squareRadius) + delta)) {
     cout << COLL_OBST_PLAYER(o + 1, p + 1) << endl;
-    exit(1);
+    error = true;
   }
 }
 
 static void collisionCheck(BallMap* balls, Map *map, int b, int o, 
-                            double delta) {
+                            double delta, bool &error) {
   double d = distance(map->getObstacle(o)->getHitbox(), balls->getBall(b)->getHitbox());
   double X = map->getObstacle(o)->getX() - balls->getBall(b)->getX();
   double Y = map->getObstacle(o)->getY() - balls->getBall(b)->getY();
@@ -420,12 +432,12 @@ static void collisionCheck(BallMap* balls, Map *map, int b, int o,
   }
   if (d < (balls->getBall(b)->getRadius() + abs(squareRadius) + delta)) {
     cout << COLL_BALL_OBSTACLE(b + 1) << endl;
-    exit(1);
+    error = true;
   }
 }
 
 static void parseData(Map* &mainMap, PlayerMap* &players, BallMap* &balls,
-                      double &ingameMargin, double &parsingMargin, string inputData0) {
+                      double &ingameMargin, double &parsingMargin, string inputData0, bool &error) {
   int nbCell = stoi(inputData0);
   mainMap = new Map(nbCell, nbCell);
   players =new PlayerMap(nbCell, nbCell);
@@ -436,11 +448,11 @@ static void parseData(Map* &mainMap, PlayerMap* &players, BallMap* &balls,
 
 static void parseData(PlayerMap* &players, int p, int nbCell, double parsingMargin, 
                       double playerRadius, double playerVelocity, string inputData0,
-                      string inputData1, string inputData2, string inputData3) {
+                      string inputData1, string inputData2, string inputData3, bool &error) {
   if (((abs(stod(inputData0)) > DIM_MAX) ||
        (abs(stod(inputData1)  > DIM_MAX)))) {
     cout << PLAYER_OUT(p + 1) << endl;
-    exit(1);
+    error = true;
   } else {
     players->addPlayer(stod(inputData0), stod(inputData1), stoi(inputData2), 
                     stod(inputData3), playerRadius, playerVelocity, p);
@@ -448,28 +460,28 @@ static void parseData(PlayerMap* &players, int p, int nbCell, double parsingMarg
     vector<int> toCheck;
     largeCollisionCheck(players, p, toCheck, nbCell);
     for (auto c : toCheck){
-      collisionCheck(players, p, c, parsingMargin);
+      collisionCheck(players, p, c, parsingMargin, error);
     }
   }
 }
 
 static void parseData(Map *&mainMap, int nbCell, int o, string inputData0, 
-                      string inputData1) {
+                      string inputData1, bool &error) {
   if (stoi(inputData0) >= nbCell) {
     cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData0)) << endl;
-    exit(1);
+    error = true;
   } else if (stoi(inputData1) >= nbCell) {
     cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData1)) << endl;
-    exit(1);
+    error = true;
   } else if (stoi(inputData0) < 0) {
     cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData0)) << endl;
-    exit(1);
+    error = true;
   } else if (stoi(inputData1) < 0) {
     cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData1)) << endl;
-    exit(1);
+    error = true;
   } else if (mainMap->isObstacle(stoi(inputData0), stoi(inputData1))) {
     cout << MULTI_OBSTACLE(stoi(inputData0), stoi(inputData1)) << endl;
-    exit(1);
+    error = true;
   } else {
     mainMap->addObstacle(stod(inputData0), stod(inputData1), o);
   }
@@ -478,20 +490,20 @@ static void parseData(Map *&mainMap, int nbCell, int o, string inputData0,
 static void parseData(BallMap* &balls, PlayerMap* &players, Map *&mainMap, int nbCell,
                       int nbPlayer, int nbObstacle, double parsingMargin, int b, 
                       double ballRadius, double ballVelocity, string inputData0, 
-                      string inputData1, string inputData2) {
+                      string inputData1, string inputData2, bool &error) {
   if (isOut(stod(inputData0), stod(inputData1))) {
     cout << BALL_OUT(b + 1) << endl;
-    exit(1);
+    error = true;
   } else {
     balls->addBall(stod(inputData0), stod(inputData1), stod(inputData2), 
                               ballRadius, ballVelocity, b);
     vector<int> toCheck;
     largeCollisionCheck(balls, b, toCheck, nbCell);
     for (auto c : toCheck){
-      collisionCheck(balls, b, c, parsingMargin);
+      collisionCheck(balls, b, c, parsingMargin, error);
     }
     for (int i = 0; i < nbPlayer; i++) {
-      collisionCheck(players, balls, i, b, parsingMargin);
+      collisionCheck(players, balls, i, b, parsingMargin, error);
     } 
   }
 }

@@ -171,7 +171,7 @@ GUI::GUI(PlayerMap* p, BallMap* b, Map* m):
   m_button_save("Save"),
   m_button_start("Start"),
   m_button_step("Step"),
-  m_label_status("Initiaization"),
+  m_label_status("No game to run"),
   m_area(p, b, m),
   timer_added(false),
   disconnect(false),
@@ -221,9 +221,15 @@ void GUI::on_button_clicked_open(){
   switch(result) {
     case(Gtk::RESPONSE_ACCEPT): {
       std::string inputFile = dialog.get_filename();
-      initialization(inputFile, m_area.players, m_area.mainMap, m_area.balls);
-      m_area.clear();
-      m_area.draw();
+      bool success = initialization(inputFile, m_area.players, m_area.mainMap, m_area.balls);
+      if (success) {
+        m_area.clear();
+        m_area.draw();
+        m_label_status.set_label("Game ready to run");
+      } else {
+        m_area.clear();
+        m_label_status.set_label("No game to run");
+      }
       break;
     }
     case(Gtk::RESPONSE_CANCEL): {
