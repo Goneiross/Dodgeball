@@ -14,44 +14,44 @@
 
 class Obstacle {
 public:
-  Obstacle(double x0, double y0, int lPosition, int cPosition, double s);
-  ~Obstacle(){};
-  double getX() const;
-  double getY() const;
-  int getL() const;
-  int getC() const;
-  double getGX() const;
-  double getGY() const;
-  void setGX(double x);
-  void setGY(double y);
-  double getSide() const;
-  Square* getHitbox() const;
+  	Obstacle(double x0, double y0, int lPosition, int cPosition, double s);
+  	~Obstacle(){};
+  	double getX() const;
+  	double getY() const;
+  	int getL() const;
+  	int getC() const;
+  	double getGX() const;
+  	double getGY() const;
+  	void setGX(double x);
+  	void setGY(double y);
+  	double getSide() const;
+  	Square* getHitbox() const;
 
 private:
-  Square* hitbox;
-  int cPosition;
-  int lPosition;
-  double gXPosition;
-  double gYPosition;
+  	Square* hitbox;
+  	int cPosition;
+  	int lPosition;
+  	double gXPosition;
+  	double gYPosition;
 };
 
 class Map {
 public:
-  Map(int l, int c);
-  ~Map(){};
-  int getLNb() const;
-  int getCNb() const;
-  int getNb() const;
-  Obstacle* getObstacle(int i) const;
-  void addObstacle(int lPosition, int cPosition, int ID);
-  void removeObstacle(int ID);
-  void removeAll();
-  bool isObstacle(double lPosition, double cPosition);
-  int whichObstacle(double lPosition, double cPosition);
+  	Map(int l, int c);
+  	~Map(){};
+  	int getLNb() const;
+  	int getCNb() const;
+  	int getNb() const;
+  	Obstacle* getObstacle(int i) const;
+  	void addObstacle(int lPosition, int cPosition, int ID);
+  	void removeObstacle(int ID);
+  	void removeAll();
+  	bool isObstacle(double lPosition, double cPosition);
+  	int whichObstacle(double lPosition, double cPosition);
 
 private:
-  int** obstaclesGrid;
-  int lineNumber;
-  int columnNumber;
-  std::vector<Obstacle *> obstacles;
+  	int** obstaclesGrid;
+  	int lineNumber;
+  	int columnNumber;
+  	std::vector<Obstacle *> obstacles;
 };
