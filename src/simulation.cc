@@ -211,22 +211,27 @@ bool isOut(double xPosition, double yPosition){
   	}
 }
 
-void check(BallMap* &balls, PlayerMap* &players){
+void check(BallMap* &balls, PlayerMap* &players, Map* mainMap){
   		int ballNb = balls->getNb();
   		int playerNb = players->getNb();
-  		for (int b = 0; b < ballNb; b++){
+		cout << mainMap->getLNb() << endl;
+		int delta = COEF_MARGE_JEU * (SIDE / mainMap->getLNb()); //Better not compute every time
+  		cout << delta << endl;
+		for (int b = 0; b < ballNb; b++){
     		if (isOut(balls->getBall(b)->getX(), balls->getBall(b)->getY())){
       			balls->removeBall(b);
     		} 
 			for (int p = 0; p < playerNb; p++){
-				bool error = false;
-				/*
-				collisionCheck(players, balls, p, b, delta, error);
-				if (error){
+				bool collision = false;
+				collisionCheck(players, balls, p, b, delta, collision);
+				//cout << p << " " << b << endl;
+				//cout << players->getPlayer(p)->getX() << " " << players->getPlayer(p)->getY() << " " <<
+				//		balls->getBall(b)->getX() << " " << balls->getBall(b)->getY() << endl; 
+				if (collision){
+					cout << "REMOVE" << endl;
 					balls->removeBall(b);
-					players->getPlayer(p)->setCount(players->getPlayer(p)->getCount() - 1)
+					players->getPlayer(p)->setCount(players->getPlayer(p)->getCount() - 1);
 				}
-				*/
 			}
 	
 			/* else if (collision(balls->getBall(b))){
