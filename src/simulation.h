@@ -14,7 +14,7 @@
 
 void simulation(std::string inputFile, int mode);
 void save(std::string filename);
-bool initialization(std::string inputFile) ;
+bool initialization(std::string inputFile, int mode) ;
 bool isOut(double xPosision, double yPosition);
 void check();
 void update();

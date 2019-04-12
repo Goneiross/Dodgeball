@@ -17,6 +17,8 @@
 #include "tools.h"
 #endif
 
+#define NORMAL_MODE 0 //PUT ELSEWHERE
+
 using namespace Gtk;
 
 class MyArea: public Gtk::DrawingArea {
@@ -209,7 +211,7 @@ void GUI::on_button_clicked_open(){
 	switch(result) {
     	case(Gtk::RESPONSE_ACCEPT): {
       		std::string inputFile = dialog.get_filename();
-      		bool success = initialization(inputFile);
+      		bool success = initialization(inputFile, NORMAL_MODE);
       		if (success) {
         		m_area.clear();
         		m_area.draw();
