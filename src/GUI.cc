@@ -90,7 +90,6 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
       cr->stroke();
       cr->set_source_rgba(0.0, 0.0, 1.0, 1);
       cr->arc(player->getGX(), player->getGY(), (player->getRadius() / SIDE) * lesser, 0.0, (player->getCount() / MAX_COUNT) * (2 * M_PI));
-      std::cout << (player->getCount() / MAX_COUNT) * (2 * M_PI) << std::endl;
       cr->stroke();
       player = nullptr;
     }
@@ -132,7 +131,7 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
       obstacle = nullptr;
     }
     cr->restore();
-  } else { std::cout << "Empty !" << std::endl; }
+  } else { }
   return true;
 }
 
