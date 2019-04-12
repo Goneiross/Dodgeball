@@ -11,7 +11,7 @@ clean:
 ball.o: ball.cc ball.h tools.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-GUI.o: GUI.cc GUI.h 
+GUI.o: GUI.cc GUI.h simulation.h define.h
 	$(CC) $(CFLAGS) `pkg-config gtkmm-3.0 --cflags --libs` -c $< -o $@
 
 main.o: main.cc GUI.h simulation.h
@@ -23,7 +23,7 @@ map.o: map.cc map.h tools.h define.h
 player.o: player.cc player.h tools.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-simulation.o: simulation.cc simulation.h ball.h map.h player.h error.h
+simulation.o: simulation.cc simulation.h ball.h map.h player.h error.h GUI.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 tools.o: tools.cc tools.h
