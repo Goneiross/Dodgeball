@@ -14,7 +14,7 @@
 class Player {
 public:
 	Player(double xPosition, double yPosition, int timeTouched, double counter,
-         	double radius, int lPosition, int cPosition, double velocity, int ID); 
+         	double radius, int lPosition, int cPosition, double velocity, int ID);
   	~Player(){};
   	double getX() const;
   	double getY() const;
@@ -55,6 +55,8 @@ public:
     std::vector<int> whichPlayer(int lPosition, int cPosition);
     Player* getPlayer(int p) const;
     int getNb() const;
+		int getLNb() const;
+		int getCNb() const;
     void updatePosition();
 private:
     int lineNumber, columnNumber;

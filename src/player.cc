@@ -17,7 +17,7 @@
 
 using namespace std;
 
-Player::Player(double x0, double y0, int t, double c, double r, 
+Player::Player(double x0, double y0, int t, double c, double r,
               	int line, int column, double v, int i) {
   	timeTouched = t;
   	ID = i;
@@ -58,7 +58,7 @@ Circle* Player::getHitbox() const { return hitbox; }
 PlayerMap::PlayerMap(int l, int c){
   	lineNumber = l;
   	columnNumber = c;
-  
+
   	playerGrid = new vector<int>* [lineNumber];
   	for (int i = 0; i < lineNumber; i++) {
     	playerGrid[i] = new vector<int>[columnNumber];
@@ -124,6 +124,9 @@ Player* PlayerMap::getPlayer(int p) const {
 int PlayerMap::getNb() const{
   	return players.size();
 }
+
+int getLNb() const {return lineNumber;}
+int getCNb() const {return columnNumber;}
 
 void PlayerMap::updatePosition(){
   	for (int i = 0; i < players.size(); i++){
