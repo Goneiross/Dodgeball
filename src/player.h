@@ -13,8 +13,8 @@
 
 class Player {
 public:
-		Player(double xPosition, double yPosition, int timeTouched, double counter,
-  	       	double radius, int lgnPos, int colPos, double velocity, int ID); 
+	Player(double xPosition, double yPosition, int timeTouched, double counter,
+         	double radius, int lPosition, int cPosition, double velocity, int ID);
   	~Player(){};
 
   	bool touchedAndDead();
@@ -60,6 +60,8 @@ public:
     std::vector<int> whichPlayer(int lgnPos, int colPos);
     Player* getPlayer(int p) const;
     int getNb() const;
+		int getLNb() const;
+		int getCNb() const;
     void updatePosition();
 
 private:
