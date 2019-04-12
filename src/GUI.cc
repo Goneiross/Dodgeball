@@ -277,7 +277,7 @@ void GUI::on_button_clicked_start(){
 
 void GUI::on_button_clicked_step(){ 
   	update(m_area.balls, m_area.players);
-  	check(m_area.balls, m_area.players);
+  	check(m_area.balls, m_area.players, m_area.mainMap);
   	auto win = get_window();
   	if (win) {
       	Gdk::Rectangle r(0, 0, get_allocation().get_width(),
@@ -292,7 +292,7 @@ bool GUI::on_timeout() {
 	  	return false;
   	} else {
     	update(m_area.balls, m_area.players);
-    	check(m_area.balls, m_area.players);
+    	check(m_area.balls, m_area.players, m_area.mainMap);
     	auto win = get_window();
     	if (win) {
         	Gdk::Rectangle r(0, 0, get_allocation().get_width(),
