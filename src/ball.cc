@@ -121,3 +121,6 @@ void BallMap::updatePosition(){
     // Compute new Line and Column
   	}
 }
+
+int BallMap::getLNb () const{return lineNumber;}
+int BallMap::getCNb ()const{return columnNumber;}
