@@ -68,7 +68,7 @@ void simulation(std::string inputFile, int mode) {
       		BallMap* balls = new BallMap(0,0);
       		Map* mainMap = new Map(0,0);
     	}
-    	draw();
+    	draw(success);
     	delete mainMap;
     	delete players;
     	delete balls;

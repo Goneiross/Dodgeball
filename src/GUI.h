@@ -5,4 +5,4 @@
   \brief  "GUI" module header
 */
 
-int draw();
+int draw(bool success);
