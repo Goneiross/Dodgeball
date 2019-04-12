@@ -12,7 +12,7 @@
 
 class Ball {
 public:
-    Ball(double xPosition, double yPosition, double angle, double radius, 
+    Ball(double xPosition, double yPosition, double angle, double radius,
     	double velocity, int lPosition, int cPosition, int ID);
     ~Ball(){};
 	double getX() const;
@@ -39,7 +39,7 @@ private:
 class BallMap {
 public:
     BallMap(int l, int c);
-    void addBall(double xPosition, double yPosition, double angle, 
+    void addBall(double xPosition, double yPosition, double angle,
             	double radius, double velocity, int ID);
     void removeBall(int ID);
     void removeAll();
@@ -48,6 +48,8 @@ public:
     std::vector<int> whichBall(int lPosition, int cPosition);
     Ball* getBall(int index) const;
     int getNb () const;
+    int getLNb () const;
+    int getCNb ()const;
     void updatePosition();
 private:
     int lineNumber;
