@@ -7,17 +7,15 @@
 
 #ifndef OBJECT_HEADER
 #define OBJECT_HEADER
+#include "player.h"
 #include "ball.h"
 #include "map.h"
-#include "player.h"
 #endif
 
 void simulation(std::string inputFile, int mode);
-void save(std::string filename, int nbCell, PlayerMap* players, Map* mainMap,
-          BallMap* balls);
-bool initialization(std::string inputFile, PlayerMap*& players, Map*& mainMap,
-                    BallMap*& balls);
+void save(std::string filename, int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls);
+bool initialization(std::string inputFile, PlayerMap* &players, Map *&mainMap, BallMap* &balls) ;
 bool isOut(double xPosision, double yPosition);
-void check(BallMap*& balls, PlayerMap*& players);
-void update(BallMap*& balls, PlayerMap*& players);
-// bool isOut(Obstacle* obstacle);
+void check(BallMap* &balls, PlayerMap* &players);
+void update(BallMap* &balls, PlayerMap* &players);
+//bool isOut(Obstacle* obstacle);

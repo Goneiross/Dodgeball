@@ -6,8 +6,8 @@
 */
 #ifndef OBJECT_HEADER
 #define OBJECT_HEADER
+#include "player.h"
 #include "ball.h"
 #include "map.h"
-#include "player.h"
 #endif
 int draw(PlayerMap* players, BallMap* balls, Map* mainMap);
