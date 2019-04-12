@@ -13,9 +13,25 @@
 #endif
 
 void simulation(std::string inputFile, int mode);
-void save(std::string filename, int nbCell, PlayerMap* players, Map* mainMap, BallMap* balls);
-bool initialization(std::string inputFile, PlayerMap* &players, Map *&mainMap, BallMap* &balls) ;
+void save(std::string filename);
+bool initialization(std::string inputFile) ;
 bool isOut(double xPosision, double yPosition);
-void check(BallMap* &balls, PlayerMap* &players, Map* mainMap);
-void update(BallMap* &balls, PlayerMap* &players);
+void check();
+void update();
+
+int getPlayerNb();
+int getPlayerTimeTouched(int p);
+double getPlayerRadius();
+int getPlayerCount(int p);
+Circle* getPlayerHitbox(int p);
+
+int getBallNb();
+double getBallRadius();
+Circle* getBallHitbox(int b);
+
+int getObstacleNb();
+double getObstacleSize();
+Square* getObstacleHitbox(int o);
+
+
 //bool isOut(Obstacle* obstacle);

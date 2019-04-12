@@ -12,28 +12,19 @@
 #include "simulation.h"
 #include "define.h"
 
-#ifndef OBJECT_HEADER
-#define OBJECT_HEADER
-#include "player.h"
-#include "ball.h"
-#include "map.h"
+#ifndef TOOLS_H
+#define TOOLS_H
+#include "tools.h"
 #endif
 
 using namespace Gtk;
 
 class MyArea: public Gtk::DrawingArea {
 public:
-    MyArea(PlayerMap* p, BallMap* b, Map* m){
-    	players = p;
-    	balls = b;
-    	mainMap = m;
-    };
+    MyArea(){};
     virtual ~MyArea(){};
     void clear();
     void draw();
-    PlayerMap* players;
-    BallMap* balls;
-    Map* mainMap;
 protected:
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 private:
@@ -66,61 +57,58 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
     	int height = allocation.get_height();
     	int lesser = MIN(width, height);
 
-    	int xc, yc;
-    	xc = width / 2;
-    	yc = height / 2;
-    	int nbPlayer = players->getNb();
+    	int nbPlayer = getPlayerNb();
     	cr->save();
     	for (int p = 0; p < nbPlayer; p++){
-     		Player* player = players->getPlayer(p);
-    		player->setGX(width / 2 + player->getX()); //PUT ELSEWHERE !
-    		player->setGY(height / 2 - player->getY());
-			if (player->getTimeTouched() >= 4){ //Rename var //PUT IN A FUNCTION !!!
+     		Circle* player = getPlayerHitbox(p);
+    		double GX = width / 2 + player->getX(); //PUT ELSEWHERE !
+    		double GY = height / 2 - player->getY();
+			if (getPlayerTimeTouched(p) >= 4){ //Rename var //PUT IN A FUNCTION !!!
     			cr->set_source_rgba(0.0, 1, 0.0, 1);
-    		} else if (player->getTimeTouched() == 3){
+    		} else if (getPlayerTimeTouched(p) == 3){
         		cr->set_source_rgba(1, 1, 0.0, 1);
-      		} else if (player->getTimeTouched() == 2){
+      		} else if (getPlayerTimeTouched(p) == 2){
         		cr->set_source_rgba(1.0, 1, 0.0, 1);
       		} else {
         		cr->set_source_rgba(1.0, 0.0, 0.0, 1);
     		}
-      			cr->arc(player->getGX(), player->getGY(), (player->getRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
+      			cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
       			cr->fill_preserve();
       			cr->stroke();
       			cr->set_source_rgba(0.0, 0.0, 1.0, 1);
-      			cr->arc(player->getGX(), player->getGY(), (player->getRadius() / SIDE) * lesser, 0.0, (player->getCount() / MAX_COUNT) * (2 * M_PI));
+      			cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0, (getPlayerCount(p) / MAX_COUNT) * (2 * M_PI));
       			cr->stroke();
       			player = nullptr;
     	}
     	cr->restore();
 
 
-    	int nbBall = balls->getNb();
+    	int nbBall = getBallNb();
     	cr->save();
     	cr->set_source_rgba(0.0, 0.0, 1, 1);
     	for (int b = 0; b < nbBall; b++){
-      		Ball* ball = balls->getBall(b);
+      		Circle* ball = getBallHitbox(b);
 
-      		ball->setGX(width / 2 + ball->getX()); //PUT ELSEWHERE !
-      		ball->setGY(height / 2 - ball->getY());
+      		double GX = width / 2 + ball->getX();
+      		double GY = height / 2 - ball->getY();
       
-      		cr->arc(ball->getGX(), ball->getGY(), (ball->getRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
+      		cr->arc(GX, GY, (getBallRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
       		cr->fill_preserve();
       		cr->stroke();
       		ball = nullptr;
     	}
     	cr->restore();
 
-    	int nbObstacle = mainMap->getNb();
+    	int nbObstacle = getObstacleNb();
     	cr->save();
     	cr->set_source_rgba(1.0, 0.0, 0.0, 1);
     	for (int o = 0; o < nbObstacle; o++){
-    		Obstacle* obstacle = mainMap->getObstacle(o);
-    		double side = obstacle->getSide();
+    		Square* obstacle = getObstacleHitbox(o);
+    		double side = getObstacleSize();
 
-      		obstacle->setGX(width / 2 + obstacle->getX()); //PUT ELSEWHERE !
-    		obstacle->setGY(height / 2 - obstacle->getY());
-    		cr->move_to(obstacle->getGX() - side / 2 , obstacle->getGY() - side / 2);
+      		double GX = width / 2 + obstacle->getX();
+    		double GY = height / 2 - obstacle->getY();
+    		cr->move_to(GX - side / 2 , GY - side / 2);
     		cr->rel_line_to(side, 0);
     		cr->rel_line_to(0, side);
     		cr->rel_line_to(-side, 0);
@@ -136,7 +124,7 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 
 class GUI: public Window {
 public:
-    GUI(PlayerMap* players, BallMap* balls, Map* mainMap);
+    GUI();
     virtual ~GUI(); 
     
 protected: //Or private ?
@@ -160,7 +148,7 @@ protected: //Or private ?
     MyArea m_area;
 };
 
-GUI::GUI(PlayerMap* p, BallMap* b, Map* m): 
+GUI::GUI(): 
 	m_box_top(Gtk::ORIENTATION_VERTICAL),
 	m_box1(Gtk::ORIENTATION_HORIZONTAL, 10),
 	m_box2(Gtk::ORIENTATION_HORIZONTAL, 10),
@@ -170,11 +158,10 @@ GUI::GUI(PlayerMap* p, BallMap* b, Map* m):
 	m_button_start("Start"),
 	m_button_step("Step"),
 	m_label_status("No game to run"),
-	m_area(p, b, m),
+	m_area(),
 	timer_added(false),
 	disconnect(false),
 	timeoutValue(DELTA_T * 1000){
-  	
 		set_title("DodgeBall");
 		set_border_width(0);
 	
@@ -219,7 +206,7 @@ void GUI::on_button_clicked_open(){
 	switch(result) {
     	case(Gtk::RESPONSE_ACCEPT): {
       		std::string inputFile = dialog.get_filename();
-      		bool success = initialization(inputFile, m_area.players, m_area.mainMap, m_area.balls);
+      		bool success = initialization(inputFile);
       		if (success) {
         		m_area.clear();
         		m_area.draw();
@@ -249,7 +236,7 @@ void GUI::on_button_clicked_save(){
   	switch(result) {
     	case(Gtk::RESPONSE_ACCEPT): {
       		std::string filename = dialog.get_filename();
-      		save(filename, m_area.mainMap->getLNb(), m_area.players, m_area.mainMap, m_area.balls);
+      		save(filename);
       		break;
     	}
     	case(Gtk::RESPONSE_CANCEL): {
@@ -276,8 +263,8 @@ void GUI::on_button_clicked_start(){
 }
 
 void GUI::on_button_clicked_step(){ 
-  	update(m_area.balls, m_area.players);
-  	check(m_area.balls, m_area.players, m_area.mainMap);
+  	update();
+  	check();
   	auto win = get_window();
   	if (win) {
       	Gdk::Rectangle r(0, 0, get_allocation().get_width(),
@@ -291,8 +278,8 @@ bool GUI::on_timeout() {
 	  
 	  	return false;
   	} else {
-    	update(m_area.balls, m_area.players);
-    	check(m_area.balls, m_area.players, m_area.mainMap);
+    	update();
+    	check();
     	auto win = get_window();
     	if (win) {
         	Gdk::Rectangle r(0, 0, get_allocation().get_width(),
@@ -303,10 +290,10 @@ bool GUI::on_timeout() {
   	}
 }
 
-int draw(PlayerMap* players, BallMap* balls, Map* mainMap){
+int draw(){
     auto app = Application::create();
 
-    GUI mainWindow(players, balls, mainMap);
+    GUI mainWindow;
     app->run(mainWindow);
   	return 0;
 }
