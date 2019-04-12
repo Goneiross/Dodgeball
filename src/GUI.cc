@@ -127,6 +127,7 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 class GUI: public Window {
 public:
     GUI();
+	void setLabelStatus(std::string label){m_label_status.set_label(label);};
     virtual ~GUI(); 
     
 protected: //Or private ?
@@ -292,10 +293,11 @@ bool GUI::on_timeout() {
   	}
 }
 
-int draw(){
+int draw(bool success){
     auto app = Application::create();
 
     GUI mainWindow;
+	if (success) {mainWindow.setLabelStatus("Game ready to run");}
     app->run(mainWindow);
   	return 0;
 }
