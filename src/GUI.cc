@@ -72,13 +72,14 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
       		} else {
         		cr->set_source_rgba(1.0, 0.0, 0.0, 1);
     		}
-      			cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
-      			cr->fill_preserve();
-      			cr->stroke();
-      			cr->set_source_rgba(0.0, 0.0, 1.0, 1);
-      			cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0, (getPlayerCount(p) / MAX_COUNT) * (2 * M_PI));
-      			cr->stroke();
-      			player = nullptr;
+      		cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
+      		cr->fill_preserve();
+      		cr->stroke();
+      		cr->set_source_rgba(0.0, 0.0, 1.0, 1);
+			cr->set_line_width(0.2*getPlayerRadius());
+      		cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0, ((double) getPlayerCount(p) / MAX_COUNT) * (2 * M_PI));
+      		cr->stroke();
+      		player = nullptr;
     	}
     	cr->restore();
 
