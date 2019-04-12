@@ -61,14 +61,15 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
     	cr->save();
     	for (int p = 0; p < nbPlayer; p++){
      		Circle* player = getPlayerHitbox(p);
-    		double GX = width / 2 + player->getX(); //PUT ELSEWHERE !
+    		double GX = width / 2 + player->getX();
     		double GY = height / 2 - player->getY();
+
 			if (getPlayerTimeTouched(p) >= 4){ //Rename var //PUT IN A FUNCTION !!!
     			cr->set_source_rgba(0.0, 1, 0.0, 1);
     		} else if (getPlayerTimeTouched(p) == 3){
-        		cr->set_source_rgba(1, 1, 0.0, 1);
+        		cr->set_source_rgba(1, 1, 0, 1);
       		} else if (getPlayerTimeTouched(p) == 2){
-        		cr->set_source_rgba(1.0, 1, 0.0, 1);
+        		cr->set_source_rgba(0.8745, 0.42745, 0.07843, 1);
       		} else {
         		cr->set_source_rgba(1.0, 0.0, 0.0, 1);
     		}
@@ -102,7 +103,7 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 
     	int nbObstacle = getObstacleNb();
     	cr->save();
-    	cr->set_source_rgba(1.0, 0.0, 0.0, 1);
+    	cr->set_source_rgba(0.4745, 0.11372549, 0.972549, 1);
     	for (int o = 0; o < nbObstacle; o++){
     		Square* obstacle = getObstacleHitbox(o);
     		double side = getObstacleSize();
