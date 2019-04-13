@@ -17,21 +17,19 @@
 #include "tools.h"
 #endif
 
-#define NORMAL_MODE 0 //PUT ELSEWHERE
-
 using namespace Gtk;
 
-class MyArea: public Gtk::DrawingArea {
-public:
-    MyArea(){};
-    virtual ~MyArea(){};
-    void clear();
-    void draw();
-protected:
-    bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
-private:
-    bool empty;
-    void refresh();
+class MyArea: public DrawingArea {
+	public:
+    	MyArea(){};
+    	virtual ~MyArea(){};
+    	void clear();
+    	void draw();
+	protected:
+    	bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
+	private:
+    	bool empty;
+    	void refresh();
 };
 
 void MyArea::clear(){
@@ -54,7 +52,7 @@ void MyArea::refresh(){
 
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
   	if(not empty) {
-    	Gtk::Allocation allocation = get_allocation();
+    	Allocation allocation = get_allocation();
     	int width = allocation.get_width();
     	int height = allocation.get_height();
     	int lesser = MIN(width, height);
@@ -130,36 +128,36 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	}
 
 class GUI: public Window {
-public:
-    GUI();
-	void setLabelStatus(std::string label){m_label_status.set_label(label);};
-    virtual ~GUI(); 
+	public:
+    	GUI();
+		void setLabelStatus(std::string label){m_label_status.set_label(label);};
+    	virtual ~GUI(); 
     
-protected: //Or private ?
-    void on_button_clicked_exit();
-    void on_button_clicked_open();
-    void on_button_clicked_save();
-    void on_button_clicked_start();
-    void on_button_clicked_step();
-    bool on_timeout();
-    bool timer_added;
-    bool disconnect;
-    const int timeoutValue;
+	protected:
+    	void on_button_clicked_exit();
+    	void on_button_clicked_open();
+    	void on_button_clicked_save();
+    	void on_button_clicked_start();
+   		void on_button_clicked_step();
+   		bool on_timeout();
+   		bool timer_added;
+    	bool disconnect;
+    	const int timeoutValue;
 
-    Box m_box_top, m_box1, m_box2;
-    Button m_button_exit;
-    Button m_button_open;
-    Button m_button_save;
-    Button m_button_start;
-    Button m_button_step;
-    Label m_label_status;
-    MyArea m_area;
+    	Box m_box_top, m_box1, m_box2;
+    	Button m_button_exit;
+    	Button m_button_open;
+    	Button m_button_save;
+    	Button m_button_start;
+    	Button m_button_step;
+    	Label m_label_status;
+    	MyArea m_area;
 };
 
 GUI::GUI(): 
-	m_box_top(Gtk::ORIENTATION_VERTICAL),
-	m_box1(Gtk::ORIENTATION_HORIZONTAL, 10),
-	m_box2(Gtk::ORIENTATION_HORIZONTAL, 10),
+	m_box_top(ORIENTATION_VERTICAL),
+	m_box1(ORIENTATION_HORIZONTAL, 10),
+	m_box2(ORIENTATION_HORIZONTAL, 10),
 	m_button_exit("Exit"),
 	m_button_open("Open"),
 	m_button_save("Save"),
@@ -205,54 +203,36 @@ GUI::~GUI(){}
 void GUI::on_button_clicked_exit(){ hide(); }
 
 void GUI::on_button_clicked_open(){
-	Gtk::FileChooserDialog dialog("Please choose a file",
-        	Gtk::FILE_CHOOSER_ACTION_OPEN);
+	FileChooserDialog dialog("Please choose a file",
+        	FILE_CHOOSER_ACTION_OPEN);
 	dialog.set_transient_for(*this);
-	dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-	dialog.add_button("_Open", Gtk::RESPONSE_ACCEPT);
+	dialog.add_button("_Cancel", RESPONSE_CANCEL);
+	dialog.add_button("_Open", RESPONSE_ACCEPT);
 	int result = dialog.run();
-	switch(result) {
-    	case(Gtk::RESPONSE_ACCEPT): {
-      		std::string inputFile = dialog.get_filename();
-      		bool success = initialization(inputFile, NORMAL_MODE);
-      		if (success) {
-        		m_area.clear();
-        		m_area.draw();
-        		m_label_status.set_label("Game ready to run");
-      		} else {
+	if (result == RESPONSE_ACCEPT){
+    	std::string inputFile = dialog.get_filename();
+      	bool success = initialization(inputFile, NORMAL_MODE);
+      	if (success) {
+        	m_area.clear();
+        	m_area.draw();
+        	m_label_status.set_label("Game ready to run");
+      	} else {
         	m_area.clear();
         	m_label_status.set_label("No game to run");
-      		}
-      		break;
-    	}
-    case(Gtk::RESPONSE_CANCEL): {
-      	break;
-    }
-    default: {
-      	break;
-    }
-  }
+      	}
+  	}
 }
 
 void GUI::on_button_clicked_save(){
-  	Gtk::FileChooserDialog dialog("Please choose a file",
-          	Gtk::FILE_CHOOSER_ACTION_SAVE);
+  	FileChooserDialog dialog("Please choose a file",
+          	FILE_CHOOSER_ACTION_SAVE);
   	dialog.set_transient_for(*this);
-  	dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-  	dialog.add_button("_Save", Gtk::RESPONSE_ACCEPT);
+  	dialog.add_button("_Cancel", RESPONSE_CANCEL);
+  	dialog.add_button("_Save", RESPONSE_ACCEPT);
   	int result = dialog.run();
-  	switch(result) {
-    	case(Gtk::RESPONSE_ACCEPT): {
-      		std::string filename = dialog.get_filename();
-      		save(filename);
-      		break;
-    	}
-    	case(Gtk::RESPONSE_CANCEL): {
-      		break;
-    	}
-    	default: {
-      		break;
-    	}
+  	if (result == RESPONSE_ACCEPT) {
+    	std::string filename = dialog.get_filename();
+    	save(filename);
   	}
 }
 
@@ -260,7 +240,6 @@ void GUI::on_button_clicked_start(){
   	if(not timer_added) {	  
 	  	Glib::signal_timeout().connect( sigc::mem_fun(*this, &GUI::on_timeout),
 									  timeoutValue );
-		
 	  	timer_added = true;
     	m_button_start.set_label("Stop");
   	} else {
@@ -283,7 +262,6 @@ void GUI::on_button_clicked_step(){
 bool GUI::on_timeout() {
   	if(disconnect) {
 	  	disconnect = false;
-	  
 	  	return false;
   	} else {
     	update();
