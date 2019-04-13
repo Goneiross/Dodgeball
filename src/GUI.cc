@@ -108,7 +108,7 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 
     	int nbObstacle = getObstacleNb();
     	cr->save();
-    	cr->set_source_rgba(0.4745, 0.11372549, 0.972549, 1);
+    	cr->set_source_rgba(0.4, 0, 0.6, 1);
     	for (int o = 0; o < nbObstacle; o++){
     		Square* obstacle = getObstacleHitbox(o);
     		double side = getObstacleSize();
