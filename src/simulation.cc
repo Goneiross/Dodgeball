@@ -82,99 +82,112 @@ bool initialization(string inputFile, int mode) {
   	string inputData[4];
   	char charBin;
   	int parseType = 0;
+	enum parseType {cellParsing = 0, playerNumberParsing, playerParsing, obstacleNumberParsing, obstacleParsing, ballNumberParsing, ballParsing, };
   	int p = 0, o = 0, b = 0;  // ID of the currently selected object/player/ball
-  	double ingameMargin, parsingMargin;
+  	double ingameMargin = 0, parsingMargin = 0;
+  	double ballRadius = 0, ballVelocity = 0, playerRadius = 0, playerVelocity = 0;
+
 
   	ifstream flux(inputFile, ios::in);
   	if (!flux) {
     	cout << "Unable to open file " << inputFile << endl;
     	exit(0);
   	}
-  	double ballRadius;
-  	double ballVelocity;
-  	double playerRadius;
-  	double playerVelocity;
   	while (flux >> inputData[0]) {
 		if((mode == 1) && (error)){
 			exit(1);
 		} else if (error){
 			return false;
 		}
-
     	if (inputData[0] == "#") {
       		do {
         		flux.get(charBin);
       		} while (charBin != '\n');
-    	} else if (parseType == 0) {
-      		parseData(ingameMargin, parsingMargin, inputData[0], error);
-      		nbCell = mainMap->getLNb();
-      		ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
-      		ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
-      		playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
-      		playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
-      		parseType++;
-    	} else if (parseType == 1) {
-      		nbPlayer = stoi(inputData[0]);
-      		players->reserveSpace(nbPlayer);
-      		parseType++;
-    	} else if (parseType == 2) {
-      		flux >> inputData[1] >> inputData[2] >> inputData[3];
-      		parsePlayer(p, nbCell, parsingMargin, playerRadius, playerVelocity, inputData[0], 
-                		inputData[1], inputData[2], inputData[3], error, mode);
-      		p++;
-      		if (p == nbPlayer) {
-        		parseType++;
-      		}
-    	} else if (parseType == 3) {
-      		nbObstacle = stoi(inputData[0]);
-      		parseType++;
-    	} else if (parseType == 4) {
-      		flux >> inputData[1];
-      		parseObstacle(nbCell, o, inputData[0], inputData[1], error, mode);
-      		o++;
-      		if (o == nbObstacle && not error) {
-        		for (int i = 0; i < nbPlayer; i++) {
-          			vector<int> toCheck;
-          			largeCollisionCheckPO(i, toCheck);
-          			int nbToCheck = toCheck.size();
-          			for (int j = 0; j < nbToCheck; j++){
-            			collisionCheckPO(i, toCheck[j], parsingMargin, error, mode);
-						if (error){return false;}
-          			}
-					if (error){return false;}					
-        		}
-        		parseType++;
-      		}
-    	} else if (parseType == 5) {
-      		nbBall = stoi(inputData[0]);
-      		balls->reserveSpace(nbBall + nbPlayer);
-      		parseType++;
-    	} else if (parseType == 6) {
-      		flux >> inputData[1] >> inputData[2];
-      		parseBall(nbCell, nbPlayer, nbObstacle, parsingMargin, b, 
-                ballRadius, ballVelocity, inputData[0], inputData[1], inputData[2], error, mode);
+    	} else { 
+			switch (parseType) {
+			case cellParsing:
+				parseData(ingameMargin, parsingMargin, inputData[0], error);
+      			nbCell = mainMap->getLNb();
+      			ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
+      			ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
+      			playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
+      			playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
+      			parseType++;
+				break;
+
+			case playerNumberParsing:
+				nbPlayer = stoi(inputData[0]);
+      			players->reserveSpace(nbPlayer);
+      			parseType++;
+				break;
+
+			case playerParsing:
+				flux >> inputData[1] >> inputData[2] >> inputData[3];
+      			parsePlayer(p, nbCell, parsingMargin, playerRadius, playerVelocity, inputData[0], 
+            	    		inputData[1], inputData[2], inputData[3], error, mode);
+      			p++;
+      			if (p == nbPlayer) {
+        			parseType++;
+      			}
+				break;
+
+			case obstacleNumberParsing:
+				nbObstacle = stoi(inputData[0]);
+      			parseType++;
+				break;
+
+			case obstacleParsing:
+				flux >> inputData[1];
+      			parseObstacle(nbCell, o, inputData[0], inputData[1], error, mode);
+      			o++;
+      			if (o == nbObstacle && not error) {
+        			for (int i = 0; i < nbPlayer; i++) {
+          				vector<int> toCheck;
+          				largeCollisionCheckPO(i, toCheck);
+          				int nbToCheck = toCheck.size();
+          				for (int j = 0; j < nbToCheck; j++){
+            				collisionCheckPO(i, toCheck[j], parsingMargin, error, mode);
+							if (error){return false;}
+          				}
+						if (error){return false;}					
+        			}
+        			parseType++;
+      			}
+				break;
 			
-      		b++;
-      		if (b == nbBall && not error) {
-        		for (int i = 0; i < nbBall; i++) {
-          			vector<int> toCheck;
-          			largeCollisionCheckBO(i, toCheck);
-          			for (auto o : toCheck){
-            			collisionCheckBO(i, o, parsingMargin , error, mode);
-          			}
-        		}
-        		parseType++;
-      		}
-    	} else {
-      		flux.get(charBin);
-    	}
+			case ballNumberParsing:
+				nbBall = stoi(inputData[0]);
+      			balls->reserveSpace(nbBall + nbPlayer);
+      			parseType++;
+				break;
+
+			case ballParsing:
+				flux >> inputData[1] >> inputData[2];
+      			parseBall(nbCell, nbPlayer, nbObstacle, parsingMargin, b, 
+            	    ballRadius, ballVelocity, inputData[0], inputData[1], inputData[2], error, mode);
+
+      			b++;
+      			if (b == nbBall && not error) {
+        			for (int i = 0; i < nbBall; i++) {
+          				vector<int> toCheck;
+          				largeCollisionCheckBO(i, toCheck);
+          				for (auto o : toCheck){
+            				collisionCheckBO(i, o, parsingMargin , error, mode);
+          				}
+        			}
+        			parseType++;
+				}
+				break;
+
+			default:
+				flux.get(charBin);
+				break;
+			}
+		}
   	}
   	flux.close();
-  	if (error){
-    	return false;
-  	} else { 
-    	return true;
-  	}
+  	if (error){ return false; }
+	else { return true; }
 }
 
 void save(string filename){
