@@ -227,23 +227,12 @@ void check(){
 			for (int p = 0; p < playerNb; p++){
 				bool collision = false;
 				collisionCheckPB(p, b, delta, collision, 0);
-				//cout << p << " " << b << endl;
-				//cout << players->getPlayer(p)->getX() << " " << players->getPlayer(p)->getY() << " " <<
-				//		balls->getBall(b)->getX() << " " << balls->getBall(b)->getY() << " " << 
-				//		distance(players->getPlayer(p)->getHitbox(), balls->getBall(b)->getHitbox()) << endl;
 				if (collision){
 					cout << "REMOVE" << endl;
 					balls->removeBall(b);
-					//cout << players->getPlayer(p)->getTimeTouched() << endl;
 					players->getPlayer(p)->setTimeTouched(players->getPlayer(p)->getTimeTouched() - 1);
-					//cout << players->getPlayer(p)->getTimeTouched() << endl;
 				}
 			}
-	
-			/* else if (collision(balls->getBall(b))){
-      
-    		}
-    		*/
   		}
 	}
 
@@ -251,25 +240,6 @@ void update(){
   	balls->updatePosition();
   	players->updatePosition();
 }
-
-/*
-bool isOut(Obstacle* obstacle){
-  	int lValue = obstacle->getL();
-  	if (lValue >= nbCell) {
-    	return true;
-  	} else if (stoi(inputData1) >= nbCell) {
-    	return true;
-  	} else if (stoi(inputData0) < 0) {
-    	return true;
-  	} else if (stoi(inputData1) < 0) {
-    	return true;
-  	} else if (mainMap->isObstacle(stoi(inputData0), stoi(inputData1))) {
-    	return true;
-  	} else {
-    	return false;
-  	}
-}
-*/
 static void largeCollisionCheckPO(int p, vector<int> &toCheck){
   	int cPosition = ((players->getPlayer(p)->getX() + DIM_MAX ) /
                     mainMap->getObstacle(0)->getHitbox()->getSide() )
