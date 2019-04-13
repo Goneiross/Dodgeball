@@ -18,27 +18,27 @@
 #include "tools.h"
 #endif
 
-typedef square int[2];
+typedef tile int[2];
 
 double pathAngle (PlayerMap* players, int index, Map* obstacles )
 {
   int nearest = nearestPlayer(players,index);
   double scoreGrid[players->getLNb()][players->getCNb()]
     = {players->getLNb()*sqrt(2)};
-  bool openGrid[players->getLNb()][players->getCNb()] = {};
-  bool closedGrid[players->getLNb()][players->getCNb()] = {};
-  square me;
+  bool openGrid[players->getLNb()][players->getCNb()] = {true};
+  tile me;
   me[0] = players->getPlayer(index)->getL();
   me[1] = players->getPlayer(index)->getC();
-  square enemy[2];
+  tile enemy[2];
   enemy[0] = players->getPlayer(nearest)->getL();
   enemy[1] = players->getPlayer(nearest)->getC();
 
   setupClosedGrid(closedGrid,mainMap);
-  closedGrid[me[0]][me[1]] = true;
+  opengridGrid[me[0]][me[1]] = false;
 
   do{
     // A* algorithm under construction
+    
   }while(!openGrid.empty())
 
   return angle;
@@ -63,16 +63,52 @@ int nearestPlayer (PlayerMap* players, int index)
   return nearest;
 }
 
+tile lowestScoreTile(double[][] scoreGrid, tile lastTile)
+{
+  int gridSize = scoreGrid.size();
+  double lowestScore = scoreGrid*sqrt(2);
+  tile lowest = {-1,-1};
+  double value;
+  for (int radius = 1; radius < gridSize; radius++) {
+    for (int i = 0; i < (2*radius)-1 ; i++) {
+      if(isInGrid(scoreGrid,l+radius,i)){       //sensé éviter le seg fault.
+        value = scoreGrid[l+radius][i];
+        if(value < lowestScore){
+          lowest[0] = l+radius;
+          lowest[1] = i;
+        }
+      if(isInGrid(scoreGrid,i,l+radius)){       //sensé éviter le seg fault.
+        value = scoreGrid[i][l+radius];
+        if(value < lowestScore){
+          lowest[0] = i;
+          lowest[1] = l+radius;
+        }
+      }
+    }
+  }
+  return lowest;
+}
+
+bool isInGrid(double[][] scoreGrid,int l, int c)
+{
+  int height = scoreGrid.size();
+  int width = scoreGrid[].size();
+  if((l < heigt) and (c < width)){
+    return true;
+  }
+  return false;
+}
+
 bool openGridArea (bool[][] openGrid, bool[][] closedGrid, int l,int c)
 {
 
 }
-void setupClosedGrid(bool[][] closedGrid , Map* mainMap)
+void setupOpenGrid(bool[][] openGrid , Map* mainMap)
 {
-  for(auto line : closedGrid){
+  for(auto line : openGrid){
     for(auto column : line){
       if(mainMap->isObstacle(line,column)){
-        openGrid[line][column] = true;
+        openGrid[line][column] = false;
       }
     }
   }
