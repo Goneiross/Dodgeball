@@ -61,6 +61,9 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 
     	int nbPlayer = getPlayerNb();
     	cr->save();
+		cr->set_source_rgb(1, 1, 1);
+        cr->rectangle(0, 0, get_width(), get_height());
+        cr->fill();
     	for (int p = 0; p < nbPlayer; p++){
      		Circle* player = getPlayerHitbox(p);
     		double GX = width / 2 + player->getX();
