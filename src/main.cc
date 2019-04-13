@@ -10,20 +10,21 @@
 
 #include "GUI.h"
 #include "simulation.h"
+#include "define.h"
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  	int mode = 0;
+  	int mode = NORMAL_MODE;
   	string inputFile = "";
   	if (argc == 1) {
     	//cout << "Type '--help' for a list of commands" << endl;
   	} else if (argc < 4) {
     	for (int i = 1; i < argc; i++) {
       		if (string(argv[i]) == "Error") {
-        		mode = 1;
+        		mode = ERROR_MODE;
       		} else if (string(argv[i]) == "Step") {
-        		mode = 2;
+        		mode = STEP_MODE;
       		} else if (string(argv[i]) == "--help") {
         		cout << "Type :" << endl
              		<< "'Error' to check input file" << endl
