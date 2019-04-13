@@ -64,9 +64,9 @@ void simulation(std::string inputFile, int mode) {
     	return;
   	} else {
     	if (not success){
-      		PlayerMap* players = new PlayerMap(0,0);
-      		BallMap* balls = new BallMap(0,0);
-      		Map* mainMap = new Map(0,0);
+      		players = new PlayerMap(0,0);
+      		balls = new BallMap(0,0);
+      		mainMap = new Map(0,0);
     	}
     	draw(success);
     	delete mainMap;
@@ -97,6 +97,8 @@ bool initialization(string inputFile, int mode) {
   	while (flux >> inputData[0]) {
 		if((mode == 1) && (error)){
 			exit(1);
+		} else if (error){
+			return false;
 		}
 
     	if (inputData[0] == "#") {
@@ -130,14 +132,16 @@ bool initialization(string inputFile, int mode) {
       		flux >> inputData[1];
       		parseObstacle(nbCell, o, inputData[0], inputData[1], error, mode);
       		o++;
-      		if (o == nbObstacle) {
+      		if (o == nbObstacle && not error) {
         		for (int i = 0; i < nbPlayer; i++) {
           			vector<int> toCheck;
           			largeCollisionCheckPO(i, toCheck);
           			int nbToCheck = toCheck.size();
           			for (int j = 0; j < nbToCheck; j++){
             			collisionCheckPO(i, toCheck[j], parsingMargin, error, mode);
+						if (error){return false;}
           			}
+					if (error){return false;}					
         		}
         		parseType++;
       		}
@@ -149,8 +153,9 @@ bool initialization(string inputFile, int mode) {
       		flux >> inputData[1] >> inputData[2];
       		parseBall(nbCell, nbPlayer, nbObstacle, parsingMargin, b, 
                 ballRadius, ballVelocity, inputData[0], inputData[1], inputData[2], error, mode);
+			
       		b++;
-      		if (b == nbBall) {
+      		if (b == nbBall && not error) {
         		for (int i = 0; i < nbBall; i++) {
           			vector<int> toCheck;
           			largeCollisionCheckBO(i, toCheck);
@@ -470,6 +475,7 @@ static void parsePlayer(int p, int nbCell, double parsingMargin, double playerRa
     		cout << PLAYER_OUT(p + 1) << endl;
     		error = true;
 			if (mode == 1){exit(1);}
+			return;
   	} else {
     	players->addPlayer(stod(inputData0), stod(inputData1), stoi(inputData2), 
                     		stod(inputData3), playerRadius, playerVelocity, p);
@@ -477,7 +483,8 @@ static void parsePlayer(int p, int nbCell, double parsingMargin, double playerRa
     	vector<int> toCheck;
     	largeCollisionCheckPP(p, toCheck, nbCell);
     	for (auto c : toCheck){
-      	collisionCheckPP(p, c, parsingMargin, error, mode);
+      		collisionCheckPP(p, c, parsingMargin, error, mode);
+			if (error){return;}
     	}
   	}
 }
@@ -487,22 +494,27 @@ static void parseObstacle(int nbCell, int o, string inputData0, string inputData
     	cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData0)) << endl;
     	error = true;
 		if (mode == 1){exit(1);}
+		return;
   	} else if (stoi(inputData1) >= nbCell) {
     	cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData1)) << endl;
     	error = true;
 		if (mode == 1){exit(1);}
+		return;
   	} else if (stoi(inputData0) < 0) {
     	cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData0)) << endl;
     	error = true;
 		if (mode == 1){exit(1);}
+		return;
   	} else if (stoi(inputData1) < 0) {
     	cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData1)) << endl;
     	error = true;
 		if (mode == 1){exit(1);}
+		return;
   	} else if (mainMap->isObstacle(stoi(inputData0), stoi(inputData1))) {
     	cout << MULTI_OBSTACLE(stoi(inputData0), stoi(inputData1)) << endl;
     	error = true;
 		if (mode == 1){exit(1);}
+		return;
   	} else {
     	mainMap->addObstacle(stod(inputData0), stod(inputData1), o);
   	}
@@ -515,6 +527,7 @@ static void parseBall(int nbCell, int nbPlayer, int nbObstacle, double parsingMa
     	cout << BALL_OUT(b + 1) << endl;
     	error = true;
 		if (mode == 1){exit(1);}
+		return;
   	} else {
     	balls->addBall(stod(inputData0), stod(inputData1), stod(inputData2), 
                         ballRadius, ballVelocity, b);
@@ -522,9 +535,11 @@ static void parseBall(int nbCell, int nbPlayer, int nbObstacle, double parsingMa
     	largeCollisionCheckBB(b, toCheck, nbCell);
     	for (auto c : toCheck){
       		collisionCheckBB(b, c, parsingMargin, error, mode);
+			if (error){return;}
     	}
     	for (int i = 0; i < nbPlayer; i++) {
       		collisionCheckPB(i, b, parsingMargin, error, mode);
+			if (error){return;}
     	} 
   	}
 }
