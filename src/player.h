@@ -28,6 +28,7 @@ public:
   	double getCount() const;
   	void setCount(int c);
   	double getTimeTouched() const;
+	void setTimeTouched(int t);
   	Circle *getHitbox() const;
   	void updatePosition(double angle);
   	bool touchedAndDead();

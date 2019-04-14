@@ -52,6 +52,7 @@ double Player::getRadius() const { return hitbox->getRadius(); }
 double Player::getCount() const { return count; }
 void Player::setCount(int c) {count = c;}
 double Player::getTimeTouched() const { return timeTouched; }
+void Player::setTimeTouched(int t) {timeTouched = t;}
 
 Circle* Player::getHitbox() const { return hitbox; }
 
