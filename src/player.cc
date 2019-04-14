@@ -140,5 +140,4 @@ void PlayerMap::updatePosition(){
       		players[i]->setCount(c+1);
     	}
   	}
-  	//TO do
 }
