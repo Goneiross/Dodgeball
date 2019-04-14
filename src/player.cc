@@ -143,9 +143,4 @@ void PlayerMap::updatePosition(){
       		players[i]->setCount(c+1);
     	}
   	}
-<<<<<<< HEAD
 }
-=======
-  	//TO do
-}
->>>>>>> Add method getLNb and getCNb to get size of PlayerMap
