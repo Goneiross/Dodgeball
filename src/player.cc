@@ -131,8 +131,8 @@ int PlayerMap::getNb() const{
   	return players.size();
 }
 
-int getLNb() const {return lineNumber;}
-int getCNb() const {return columnNumber;}
+int PlayerMap::getLNb() const {return lineNumber;}
+int PlayerMap::getCNb() const {return columnNumber;}
 
 void PlayerMap::updatePosition(){
   	for (int i = 0; i < players.size(); i++){

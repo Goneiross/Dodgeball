@@ -60,8 +60,8 @@ public:
     std::vector<int> whichPlayer(int lgnPos, int colPos);
     Player* getPlayer(int p) const;
     int getNb() const;
-		int getLNb() const;
-		int getCNb() const;
+	int getLNb() const;
+	int getCNb() const;
     void updatePosition();
 
 private:
