@@ -5,6 +5,8 @@
   \brief  Ball module implementation
 */
 
+// GOOD LUCK CORRECTING MY CODE
+
 #include<vector>
 #include<math.h>
 #ifndef OBJECT_HEADER
@@ -20,6 +22,20 @@
 
 typedef tile int[2];
 
+class Path {
+public:
+  Path(){
+    path = {-1};
+  }
+  int getParent(int child);
+  tile getTile(int tileIndex);
+
+private:
+//voulais: int[taille map n^2][], pas sûr de mon code.
+//logique: path[n]=>(parent,coord l,coord c)
+  int[(Map*->getLNb())*(Map*->getLNb())][3] path;
+}
+
 double pathAngle (PlayerMap* players, int index, Map* obstacles )
 {
   int nearest = nearestPlayer(players,index);
@@ -32,13 +48,15 @@ double pathAngle (PlayerMap* players, int index, Map* obstacles )
   tile enemy[2];
   enemy[0] = players->getPlayer(nearest)->getL();
   enemy[1] = players->getPlayer(nearest)->getC();
+  tile current;
+  current[0] = me[0];
+  current[1] = me[1];
+  tile last;
 
   setupClosedGrid(closedGrid,mainMap);
-  opengridGrid[me[0]][me[1]] = false;
 
-  do{
-    // A* algorithm under construction
-    
+  do{                                       // A* algorithm under construction
+
   }while(!openGrid.empty())
 
   return angle;
