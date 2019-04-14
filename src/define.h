@@ -26,4 +26,8 @@
 
 #define MAXLINE 80
 
+#define NORMAL_MODE 0
+#define ERROR_MODE 1
+#define STEP_MODE 2
+
 #endif

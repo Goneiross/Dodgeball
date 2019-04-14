@@ -18,13 +18,14 @@ using namespace std;
 
 Obstacle::Obstacle(double x0, double y0, int l, int c, double s) {
   	hitbox = new Square(x0, y0, s);
-  	cPosition = c;
-  	lPosition = l;
+  	colPos = c;
+  	lgnPos = l;
   	gXPosition = -1;
   	gYPosition = -1;
 }
-int Obstacle::getL() const { return lPosition; }
-int Obstacle::getC() const { return cPosition; }
+
+int Obstacle::getL() const { return lgnPos; }
+int Obstacle::getC() const { return colPos; }
 double Obstacle::getX() const { return hitbox->getX(); }
 double Obstacle::getY() const { return hitbox->getY(); }
 double Obstacle::getGX() const { return gXPosition; }
@@ -45,37 +46,42 @@ Map::Map(int l, int c) {
     	}
   	}
 }
+
 int Map::getLNb() const { return lineNumber; }
 int Map::getCNb() const { return columnNumber; }
 int Map::getNb() const {return obstacles.size(); }
 Obstacle* Map::getObstacle(int i) const { return obstacles[i]; }
 
-void Map::addObstacle(int lPosition, int cPosition, int ID) {
-  	obstaclesGrid[lPosition][cPosition] = ID;
+void Map::addObstacle(int lgnPos, int colPos, int ID) {
+  	obstaclesGrid[lgnPos][colPos] = ID;
   	double S = SIDE / lineNumber;
-  	double X = (0.5 * S + cPosition * S) - (DIM_MAX);
-  	double Y = -(0.5 * S + lPosition * S) + (DIM_MAX);
-  	obstacles.push_back(new Obstacle(X, Y, lPosition, cPosition, S));
+  	double X = (0.5 * S + colPos * S) - (DIM_MAX);
+  	double Y = -(0.5 * S + lgnPos * S) + (DIM_MAX);
+  	obstacles.push_back(new Obstacle(X, Y, lgnPos, colPos, S));
 }
+
 void Map::removeObstacle(int ID) {
   	int l = obstacles[ID]->getL();
   	int c = obstacles[ID]->getC();
   	obstacles.erase(obstacles.begin() + ID);
   	obstaclesGrid[l][c] = -1;
 }
+
 void Map::removeAll(){
   	int obstacleNb = obstacles.size();
   	for (int i = 0; i < obstacleNb; i++){
     	removeObstacle(0);
   	}
 }
-bool Map::isObstacle(double lPosition, double cPosition) { 
-  	if(obstaclesGrid[int(lPosition)][int(cPosition)] == -1){
+
+bool Map::isObstacle(double lgnPos, double colPos) { 
+  	if(obstaclesGrid[int(lgnPos)][int(colPos)] == -1){
     	return false; 
   	} else {
     	return true;
   	}
 }
-int Map::whichObstacle(double lPosition, double cPosition) {
-  	return obstaclesGrid[int(lPosition)][int(cPosition)]; 
+
+int Map::whichObstacle(double lgnPos, double colPos) {
+  	return obstaclesGrid[int(lgnPos)][int(colPos)]; 
 }

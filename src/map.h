@@ -14,7 +14,7 @@
 
 class Obstacle {
 public:
-  	Obstacle(double x0, double y0, int lPosition, int cPosition, double s);
+  	Obstacle(double x0, double y0, int lgnPos, int colPos, double s);
   	~Obstacle(){};
   	double getX() const;
   	double getY() const;
@@ -29,8 +29,8 @@ public:
 
 private:
   	Square* hitbox;
-  	int cPosition;
-  	int lPosition;
+  	int colPos;
+  	int lgnPos;
   	double gXPosition;
   	double gYPosition;
 };
@@ -43,11 +43,11 @@ public:
   	int getCNb() const;
   	int getNb() const;
   	Obstacle* getObstacle(int i) const;
-  	void addObstacle(int lPosition, int cPosition, int ID);
+  	void addObstacle(int lgnPos, int colPos, int ID);
   	void removeObstacle(int ID);
   	void removeAll();
-  	bool isObstacle(double lPosition, double cPosition);
-  	int whichObstacle(double lPosition, double cPosition);
+  	bool isObstacle(double lgnPos, double colPos);
+  	int whichObstacle(double lgnPos, double colPos);
 
 private:
   	int** obstaclesGrid;
