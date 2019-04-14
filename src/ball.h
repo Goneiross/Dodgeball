@@ -13,7 +13,7 @@
 class Ball {
 public:
     Ball(double xPosition, double yPosition, double angle, double radius, 
-    	double velocity, int lPosition, int cPosition, int ID);
+        	double velocity, int lgnPos, int colPos, int ID);
     ~Ball(){};
 	double getX() const;
 	double getY() const;
@@ -27,12 +27,13 @@ public:
     Circle *getHitbox() const;
     double getAngle() const;
     double getVelocity() const;
+
 private:
     int ID;
 	double velocity;
 	double angle;
 	Circle *hitbox;
-	int lPosition, cPosition;
+	int lgnPos, colPos;
 	double gXPosition, gYPosition;
 };
 
@@ -44,11 +45,12 @@ public:
     void removeBall(int ID);
     void removeAll();
     void reserveSpace(int nbBall);
-    bool isBall(int lPosition, int cPosition);
-    std::vector<int> whichBall(int lPosition, int cPosition);
+    bool isBall(int lgnPos, int colPos);
+    std::vector<int> whichBall(int lgnPos, int colPos);
     Ball* getBall(int index) const;
     int getNb () const;
     void updatePosition();
+
 private:
     int lineNumber;
     int columnNumber;

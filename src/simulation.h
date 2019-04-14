@@ -33,5 +33,4 @@ int getObstacleNb();
 double getObstacleSize();
 Square* getObstacleHitbox(int o);
 
-
 //bool isOut(Obstacle* obstacle);

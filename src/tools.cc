@@ -15,6 +15,7 @@ Circle::Circle(double x, double y, double r) {
   	yPosition = y;
   	radius = r;
 }
+
 double Circle::getRadius() const { return radius; }
 double Circle::getX() const { return xPosition; }
 double Circle::getY() const { return yPosition; }
@@ -26,6 +27,7 @@ Square::Square(double x, double y, double s) {
   	yPosition = y;
   	side = s;
 }
+
 double Square::getSide() const { return side; }
 double Square::getX() const { return xPosition; }
 double Square::getY() const { return yPosition; }
