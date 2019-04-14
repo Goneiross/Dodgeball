@@ -131,13 +131,8 @@ int PlayerMap::getNb() const{
   	return players.size();
 }
 
-<<<<<<< HEAD
-int getLNb() const {return lineNumber;}
-int getCNb() const {return columnNumber;}
-=======
 int PlayerMap::getLNb() const {return lineNumber;}
 int PlayerMap::getCNb() const {return columnNumber;}
->>>>>>> 24bbf58a6ea07a1c6217372d50a97a83a87871d1
 
 void PlayerMap::updatePosition(){
   	for (int i = 0; i < players.size(); i++){
@@ -148,8 +143,4 @@ void PlayerMap::updatePosition(){
       		players[i]->setCount(c+1);
     	}
   	}
-<<<<<<< HEAD
-  	//TO do
-=======
->>>>>>> 24bbf58a6ea07a1c6217372d50a97a83a87871d1
 }
