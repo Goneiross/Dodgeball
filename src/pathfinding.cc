@@ -20,12 +20,12 @@
 #include "tools.h"
 #endif
 
-typedef tile int[2];
+typedef int[2] tile;
 
 class Path {
 public:
-  Path(){
-    path = {-1};
+  Path(int nbCell){
+    path_[nbCell*nbCell][3] = {-1};
   }
   int getParent(int child);
   tile getTile(int tileIndex);
@@ -33,8 +33,17 @@ public:
 private:
 //voulais: int[taille map n^2][], pas sûr de mon code.
 //logique: path[n]=>(parent,coord l,coord c)
-  int[(Map*->getLNb())*(Map*->getLNb())][3] path;
-}
+  int[][] path_;
+};
+
+int nearestPlayer (PlayerMap* players, int index);
+bool openGridArea (bool[][] openGrid, bool[][] closedGrid, int l,int c);
+void setupOpenGrid(bool[][] openGrid , Map* mainMap);
+tile lowestScoreTile(double[][] scoreGrid);
+bool isInGrid(double[][] scoreGrid,int l, int c);
+double tileScore(Player* players, int index, int enemyIndex, bool[][] openGrid)
+double distanceCost(PlayerMap* players, int index);
+double distanceApprox(PlayerMap* players, int enemyIndex);
 
 double pathAngle (PlayerMap* players, int index, Map* obstacles )
 {
@@ -53,7 +62,7 @@ double pathAngle (PlayerMap* players, int index, Map* obstacles )
   current[1] = me[1];
   tile last;
 
-  setupClosedGrid(closedGrid,mainMap);
+  setupOpenGrid(closedGrid,mainMap);
 
   do{                                       // A* algorithm under construction
 
