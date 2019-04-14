@@ -13,50 +13,55 @@
 
 class Player {
 public:
-	Player(double xPosition, double yPosition, int timeTouched, double counter,
-         	double radius, int lPosition, int cPosition, double velocity, int ID); 
+		Player(double xPosition, double yPosition, int timeTouched, double counter,
+  	       	double radius, int lgnPos, int colPos, double velocity, int ID); 
   	~Player(){};
+
+  	bool touchedAndDead();
+
   	double getX() const;
   	double getY() const;
   	double getL() const;
- 	double getC() const;
+ 		double getC() const;
   	double getGX() const;
   	double getGY() const;
-  	void setGX(double gY);
-  	void setGY(double gY);
   	double getRadius() const;
   	double getCount() const;
-  	void setCount(int c);
   	double getTimeTouched() const;
-	void setTimeTouched(int t);
-  	Circle *getHitbox() const;
+	  Circle *getHitbox() const;
+
+  	void setGX(double gY);
+  	void setGY(double gY);
+  	void setCount(int c);
+		void setTimeTouched(int t);
+
   	void updatePosition(double angle);
-  	bool touchedAndDead();
 
 private:
   	int timeTouched;
   	int ID;
+  	int lgnPos, colPos;
   	double count;
   	double velocity;
-  	Circle *hitbox;
-  	int lPosition, cPosition;
   	double gXPosition, gYPosition;
+  	Circle *hitbox;
 };
 
 class PlayerMap {
 public:
-    PlayerMap(int lPosition, int cPosition);
+    PlayerMap(int lgnPos, int colPos);
     ~PlayerMap(){};
     void addPlayer(double xPosition, double yPosition, int timeTouched, double counter,
                    	double radius, double velocity, int ID);
     void removePlayer(int ID);
     void removeAll();
     void reserveSpace(int nbPlayer);
-    bool isPlayer(int lPosition, int cPosition);
-    std::vector<int> whichPlayer(int lPosition, int cPosition);
+    bool isPlayer(int lgnPos, int colPos);
+    std::vector<int> whichPlayer(int lgnPos, int colPos);
     Player* getPlayer(int p) const;
     int getNb() const;
     void updatePosition();
+
 private:
     int lineNumber, columnNumber;
     std::vector<Player *> players;

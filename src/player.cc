@@ -23,16 +23,18 @@ Player::Player(double x0, double y0, int t, double c, double r,
   	ID = i;
   	count = c;
   	velocity = v;
-  	lPosition = line;
-  	cPosition = column;
+  	lgnPos = line;
+  	colPos = column;
   	gXPosition = -1;
   	gYPosition = -1;
   	hitbox = new Circle(x0, y0, r);
 }
+
 void Player::updatePosition(double angle) {
   	hitbox->setX(hitbox->getX() + cos(angle) * velocity);
   	hitbox->setY(hitbox->getY() + sin(angle) * velocity);
 }
+
 bool Player::touchedAndDead() {
   	timeTouched += 1;
   	if (timeTouched == MAX_TOUCH) { // Dead when equal or sup ? //#askBoulic
@@ -40,10 +42,11 @@ bool Player::touchedAndDead() {
   	}
   	return (false);
 }
+
 double Player::getX() const { return hitbox->getX(); }
 double Player::getY() const { return hitbox->getY(); }
-double Player::getL() const { return lPosition; }
-double Player::getC() const { return cPosition; }
+double Player::getL() const { return lgnPos; }
+double Player::getC() const { return colPos; }
 double Player::getGX() const { return gXPosition; }
 double Player::getGY() const { return gYPosition; }
 void Player::setGX(double gX) { gXPosition = gX; }
@@ -69,14 +72,15 @@ PlayerMap::PlayerMap(int l, int c){
   	}
 }
 
-void PlayerMap::addPlayer(double x, double y, int t, double c, double r, double v, int ID){
-  	int cPosition = ((x + DIM_MAX ) / (SIDE / lineNumber) ) - 1 / 2;
-  	int lPosition = - ((y - DIM_MAX) / (SIDE / lineNumber) ) - 1 / 2;
-  	players.push_back(new Player(x, y, t, c, r, lPosition, cPosition, v, ID));
-  	if (playerGrid[lPosition][cPosition][0] == -1){
-    	playerGrid[lPosition][cPosition][0] = ID;
+void PlayerMap::addPlayer(double x, double y, int t, double c, double r, double v, 
+							int ID){
+  	int colPos = ((x + DIM_MAX ) / (SIDE / lineNumber) ) - 1 / 2;
+  	int lgnPos = - ((y - DIM_MAX) / (SIDE / lineNumber) ) - 1 / 2;
+  	players.push_back(new Player(x, y, t, c, r, lgnPos, colPos, v, ID));
+  	if (playerGrid[lgnPos][colPos][0] == -1){
+    	playerGrid[lgnPos][colPos][0] = ID;
   	} else {
-    	playerGrid[lPosition][cPosition].push_back(ID);
+    	playerGrid[lgnPos][colPos].push_back(ID);
   	}
 }
 
@@ -103,16 +107,16 @@ void PlayerMap::removeAll(){
   	}
 }
 
-bool PlayerMap::isPlayer(int lPosition, int cPosition){
-  	if (playerGrid[lPosition][cPosition][0] == -1){
+bool PlayerMap::isPlayer(int lgnPos, int colPos){
+  	if (playerGrid[lgnPos][colPos][0] == -1){
     	return false;
   	} else {
     	return true;
   	}
 }
 
-vector<int> PlayerMap::whichPlayer(int lPosition, int cPosition){
-  	return playerGrid[lPosition][cPosition];
+vector<int> PlayerMap::whichPlayer(int lgnPos, int colPos){
+  	return playerGrid[lgnPos][colPos];
 }
 
 void PlayerMap::reserveSpace(int nbPlayer){
@@ -122,6 +126,7 @@ void PlayerMap::reserveSpace(int nbPlayer){
 Player* PlayerMap::getPlayer(int p) const {
   	return players[p];
 }
+
 int PlayerMap::getNb() const{
   	return players.size();
 }
