@@ -55,7 +55,7 @@ double pathAngle (PlayerMap* players, int index, Map* obstacles )
   tile me;
   me[0] = players->getPlayer(index)->getL();
   me[1] = players->getPlayer(index)->getC();
-  tile enemy[2];
+  tile enemy;
   enemy[0] = players->getPlayer(nearest)->getL();
   enemy[1] = players->getPlayer(nearest)->getC();
   tile current;
