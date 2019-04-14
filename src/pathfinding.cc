@@ -47,6 +47,7 @@ double distanceApprox(PlayerMap* players, int enemyIndex);
 
 double pathAngle (PlayerMap* players, int index, Map* obstacles )
 {
+  double angle = 0;
   int nearest = nearestPlayer(players,index);
   double scoreGrid[players->getLNb()][players->getCNb()]
     = {players->getLNb()*sqrt(2)};
@@ -62,7 +63,7 @@ double pathAngle (PlayerMap* players, int index, Map* obstacles )
   current[1] = me[1];
   tile last;
 
-  setupOpenGrid(closedGrid,mainMap);
+  setupOpenGrid(openGrid,obstacles);
 
   do{                                       // A* algorithm under construction
 
