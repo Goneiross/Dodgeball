@@ -115,9 +115,9 @@ void BallMap::updatePosition(){
     int ballNb = balls.size();
     for (int b = 0; b < ballNb; b++){
 		balls[b]->getHitbox()->setX(balls[b]->getHitbox()->getX() + cos(balls[b]
-            ->getAngle()) * balls[b]->getVelocity());
+            ->getAngle()) * balls[b]->getVelocity() * DELTA_T);
 		balls[b]->getHitbox()->setY(balls[b]->getHitbox()->getY() + sin(balls[b]
-            ->getAngle()) * balls[b]->getVelocity());
+            ->getAngle()) * balls[b]->getVelocity() * DELTA_T);
     // Compute new Line and Column
   	}
 }
