@@ -5,6 +5,10 @@
   \brief  "Tools" module header
 */
 
+#ifndef TOOLS_H
+#define TOOLS_H
+
+
 class Circle {
 public:
   	Circle(double x, double y, double r);
@@ -43,3 +47,5 @@ double distance(Circle *c1, Circle *c2);
 double distance(Square *s1, Square *s2);
 double distance(Square *s, Circle *c);
 double distance(Circle *c, Square *s);
+
+#endif

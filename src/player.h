@@ -6,10 +6,10 @@
 */
 
 #include <vector>
-#ifndef TOOLS_H
-#define TOOLS_H
+#ifndef PLAYER_H
+#define PLAYER_H
 #include "tools.h"
-#endif
+
 
 class Player {
 public:
@@ -67,3 +67,5 @@ private:
     std::vector<Player *> players;
     std::vector<int>** playerGrid;
 };
+
+#endif

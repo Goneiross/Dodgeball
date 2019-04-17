@@ -5,10 +5,10 @@
   \brief  "Ball" module header
 */
 
-#ifndef TOOLS_H
-#define TOOLS_H
+#ifndef BALL_H
+#define BALL_H
 #include "tools.h"
-#endif
+
 
 class Ball {
 public:
@@ -57,3 +57,5 @@ private:
     std::vector<Ball *> balls;
     std::vector<int>** ballGrid;
 };
+
+#endif

@@ -12,13 +12,9 @@
 #include <vector>
 
 #include "simulation.h"
-
-#ifndef OBJECT_HEADER
-#define OBJECT_HEADER
 #include "player.h"
 #include "ball.h"
 #include "map.h"
-#endif
 
 #include "error.h"
 #include "GUI.h"

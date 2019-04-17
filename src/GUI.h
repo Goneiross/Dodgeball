@@ -5,4 +5,9 @@
   \brief  "GUI" module header
 */
 
+#ifndef GUI_H
+#define GUI_H
+
 int draw(bool success);
+
+#endif

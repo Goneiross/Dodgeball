@@ -9,10 +9,7 @@
 #include <iostream>
 #include <vector>
 #include "player.h"
-#ifndef TOOLS_H
-#define TOOLS_H
 #include "tools.h"
-#endif
 #include "define.h"
 
 using namespace std;

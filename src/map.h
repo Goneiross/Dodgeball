@@ -7,10 +7,10 @@
 
 #include <vector>
 
-#ifndef TOOLS_H
-#define TOOLS_H
+#ifndef MAP_H
+#define MAP_H
 #include "tools.h"
-#endif
+
 
 class Obstacle {
 public:
@@ -55,3 +55,5 @@ private:
   	int columnNumber;
   	std::vector<Obstacle *> obstacles;
 };
+
+#endif

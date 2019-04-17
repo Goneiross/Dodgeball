@@ -11,11 +11,7 @@
 #include <iostream>
 #include "simulation.h"
 #include "define.h"
-
-#ifndef TOOLS_H
-#define TOOLS_H
 #include "tools.h"
-#endif
 
 using namespace Gtk;
 
