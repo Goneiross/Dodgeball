@@ -5,12 +5,11 @@
   \brief  "Simulation" module header
 */
 
-#ifndef OBJECT_HEADER
-#define OBJECT_HEADER
+#ifndef SIMULATION_H
+#define SIMULATION_H
 #include "player.h"
 #include "ball.h"
 #include "map.h"
-#endif
 
 void simulation(std::string inputFile, int mode);
 void save(std::string filename);
@@ -32,3 +31,5 @@ Circle* getBallHitbox(int b);
 int getObstacleNb();
 double getObstacleSize();
 Square* getObstacleHitbox(int o);
+
+#endif

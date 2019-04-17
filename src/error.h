@@ -1,5 +1,5 @@
-#ifndef HEADER_ERROR_H
-#define HEADER_ERROR_H
+#ifndef ERROR_H
+#define ERROR_H
 
 // ce fichier fourni des "macros" paramétrées destinées à être appelées pour les
 // erreurs à détecter. Chaque symbole s'utilise dans une commande d'affichage

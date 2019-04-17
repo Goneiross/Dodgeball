@@ -9,10 +9,7 @@
 #include <iostream>
 #include "define.h"
 #include "map.h"
-#ifndef TOOLS_H
-#define TOOLS_H
 #include "tools.h"
-#endif
 
 using namespace std;
 
