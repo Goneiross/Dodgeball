@@ -59,6 +59,7 @@ bool isInGrid(double** scoreGrid,int l, int c);
 double TileScore(Player* players, int index, int enemyIndex, bool** openGrid);
 double distanceCost(PlayerMap* players, int index);
 double distanceApprox(PlayerMap* players, int enemyIndex);
+bool emptyOpenGrid(bool** openGrid,int tabsize);
 
 double pathAngle (PlayerMap* players, int index, Map* obstacles ) {
     double angle = 0;
@@ -100,6 +101,19 @@ double pathAngle (PlayerMap* players, int index, Map* obstacles ) {
     return angle;
 }
 
+
+bool emptyOpenGrid(bool** openGrid, int tabsize)
+  {
+  bool isempty = true;
+  for(int i = 0; i < tabsize ; i++){  
+    for(int j = 0; j < tabsize ; j++){
+      if(!openGrid[i][j]){isempty=false;}
+    }
+  }
+
+  return isempty;
+  }
+
 int nearestPlayer (PlayerMap* players, int index) {
   int nearest(-1);
   double distance = players->getLNb()*sqrt(2);
@@ -118,9 +132,9 @@ int nearestPlayer (PlayerMap* players, int index) {
   return nearest;
 }
 
-Tile lowestScoreTile(double** scoreGrid, Tile lastTile) {
+Tile lowestScoreTile(double** scoreGrid, Tile lastTile,int tabsize) {
   int gridSize = scoreGrid.size();
-  double lowestScore = scoreGrid*sqrt(2);
+  double lowestScore = tabsize*sqrt(2);
   Tile lowest = {-1,-1};
   double value;
   for (int radius = 1; radius < gridSize; radius++) {
