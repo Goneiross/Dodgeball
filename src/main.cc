@@ -17,9 +17,10 @@ using namespace std;
 int main(int argc, char *argv[]) {
   	int mode = NORMAL_MODE;
   	string inputFile = "";
+	string saveFile = "";
   	if (argc == 1) {
     	//cout << "Type '--help' for a list of commands" << endl;
-  	} else if (argc < 4) {
+  	} else if (argc <= 4) {
     	for (int i = 1; i < argc; i++) {
       		if (string(argv[i]) == "Error" && mode == 0) {
         		mode = ERROR_MODE;
@@ -32,12 +33,17 @@ int main(int argc, char *argv[]) {
              		<< "'filename.extension' to use this input file" << endl;
         		exit(1);
       		} else {
-        		inputFile = argv[i];
+				if (inputFile == "") {inputFile = argv[i];}
+        		else {saveFile = argv[i];}
       		}
     	}
   	} else {
    		cout << "Error, too many arguments, type '--help' for help" << endl;
   	}
-  	simulation(inputFile, mode);
+	if (saveFile == ""){
+		simulation(inputFile, mode);
+	} else {
+		simulation(inputFile, saveFile, mode);
+	}  	
   	return 0;
 }

@@ -12,6 +12,7 @@
 #include "map.h"
 
 void simulation(std::string inputFile, int mode);
+void simulation(std::string inputFile, std::string saveFile, int mode);
 void save(std::string filename);
 bool initialization(std::string inputFile, int mode) ;
 bool isOut(double xPosision, double yPosition);
