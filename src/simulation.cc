@@ -50,6 +50,42 @@ static PlayerMap *players;
 static BallMap *balls;
 static Map *mainMap;
 
+void simulation(std::string inputFile, std::string saveFile, int mode) {
+    players = new PlayerMap(0, 0);
+    balls = new BallMap(0, 0);
+    mainMap = new Map(0, 0);
+    bool success = false;
+
+    if (inputFile != "") {success = initialization(inputFile, mode);}
+
+    if (mode == ERROR_MODE) {
+        if (success) {cout << FILE_READING_SUCCESS << endl;}
+        delete mainMap;
+        delete players;
+        delete balls;
+        return;
+    } else if (mode == STEP_MODE) {
+        update();
+        check();
+        save(saveFile);
+        delete mainMap;
+        delete players;
+        delete balls;
+        return;
+    } else {
+        if (not success) {
+        players = new PlayerMap(0, 0);
+        balls = new BallMap(0, 0);
+        mainMap = new Map(0, 0);
+        }
+        draw(success);
+        delete mainMap;
+        delete players;
+        delete balls;
+        return;
+    }
+}
+
 void simulation(std::string inputFile, int mode) {
     players = new PlayerMap(0, 0);
     balls = new BallMap(0, 0);
@@ -58,7 +94,7 @@ void simulation(std::string inputFile, int mode) {
 
     if (inputFile != "") {success = initialization(inputFile, mode);}
 
-    if (mode == 1) {
+    if (mode == ERROR_MODE) {
         if (success) {cout << FILE_READING_SUCCESS << endl;}
         delete mainMap;
         delete players;
