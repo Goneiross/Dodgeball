@@ -21,9 +21,9 @@ int main(int argc, char *argv[]) {
     	//cout << "Type '--help' for a list of commands" << endl;
   	} else if (argc < 4) {
     	for (int i = 1; i < argc; i++) {
-      		if (string(argv[i]) == "Error") {
+      		if (string(argv[i]) == "Error" && mode == 0) {
         		mode = ERROR_MODE;
-      		} else if (string(argv[i]) == "Step") {
+      		} else if (string(argv[i]) == "Step" && mode == 0) {
         		mode = STEP_MODE;
       		} else if (string(argv[i]) == "--help") {
         		cout << "Type :" << endl
