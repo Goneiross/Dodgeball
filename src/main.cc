@@ -39,7 +39,8 @@ int main(int argc, char *argv[]) {
     	}
   	} else {
    		cout << "Error, too many arguments, type '--help' for help" << endl;
-  	}
+  	exit(1);
+	}
 	if (saveFile == ""){
 		simulation(inputFile, mode);
 	} else {
