@@ -1,8 +1,8 @@
 /*!
-  \file   ball.cc
+  \file   aStar.cc
   \author Guillaume Pellerin & Vincent Miche
-  \date   March 2019
-  \brief  Ball module implementation
+  \date   May 2019
+  \brief  add description
 */
 
 // GOOD LUCK CORRECTING MY CODE

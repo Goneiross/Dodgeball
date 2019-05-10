@@ -1,8 +1,8 @@
 /*!
-  \file   pathfinding.h
+  \file   aStar.h
   \author Guillaume Pellerin & Vincent Miche
-  \date   April 2019
-  \brief  Pathfinding module implementation
+  \date   May 2019
+  \brief  add description
 */
 
 #ifndef OBJECT_HEADER
