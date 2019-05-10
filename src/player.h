@@ -5,10 +5,11 @@
   \brief  "Player" module header
 */
 
-#include <vector>
 #ifndef PLAYER_H
 #define PLAYER_H
+#include <vector>
 #include "tools.h"
+#include "map.h"
 
 
 class Player {
@@ -47,7 +48,7 @@ private:
   	Circle *hitbox;
 };
 
-class PlayerMap {
+class PlayerMap : public Map {
 public:
     PlayerMap(int lgnPos, int colPos);
     ~PlayerMap(){};
@@ -63,7 +64,6 @@ public:
     void updatePosition();
 
 private:
-    int lineNumber, columnNumber;
     std::vector<Player *> players;
     std::vector<int>** playerGrid;
 };

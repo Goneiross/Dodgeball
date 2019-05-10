@@ -33,9 +33,8 @@ void Obstacle::setGX(double gX) { gXPosition = gX; }
 void Obstacle::setGY(double gY) { gYPosition = gY; }
 Square* Obstacle::getHitbox() const { return hitbox; }
 
-ObstacleMap::ObstacleMap(int l, int c) {
-  	lineNumber = l;
-  	columnNumber = c;
+ObstacleMap::ObstacleMap(int l, int c)
+  	: Map(l, c) {
   	obstaclesGrid = new int *[lineNumber];
   	for (int i = 0; i < lineNumber; i++) {
     	obstaclesGrid[i] = new int[columnNumber];
@@ -45,8 +44,6 @@ ObstacleMap::ObstacleMap(int l, int c) {
   	}
 }
 
-int ObstacleMap::getLNb() const { return lineNumber; }
-int ObstacleMap::getCNb() const { return columnNumber; }
 int ObstacleMap::getNb() const {return obstacles.size(); }
 Obstacle* ObstacleMap::getObstacle(int i) const { return obstacles[i]; }
 
