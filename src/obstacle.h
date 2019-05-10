@@ -39,8 +39,6 @@ class ObstacleMap: public Map {
 public:
   	ObstacleMap(int l, int c);
   	~ObstacleMap(){};
-  	int getLNb() const;
-  	int getCNb() const;
   	int getNb() const;
   	Obstacle* getObstacle(int i) const;
   	void addObstacle(int lgnPos, int colPos, int ID);
@@ -51,8 +49,6 @@ public:
 
 private:
   	int** obstaclesGrid;
-  	int lineNumber;
-  	int columnNumber;
   	std::vector<Obstacle *> obstacles;
 };
 

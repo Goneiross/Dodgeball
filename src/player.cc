@@ -56,10 +56,8 @@ void Player::setTimeTouched(int t) {timeTouched = t;}
 
 Circle* Player::getHitbox() const { return hitbox; }
 
-PlayerMap::PlayerMap(int l, int c){
-  	lineNumber = l;
-  	columnNumber = c;
-  
+PlayerMap::PlayerMap(int l, int c)
+	: Map(l,c) {
   	playerGrid = new vector<int>* [lineNumber];
   	for (int i = 0; i < lineNumber; i++) {
     	playerGrid[i] = new vector<int>[columnNumber];

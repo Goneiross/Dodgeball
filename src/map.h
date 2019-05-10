@@ -9,8 +9,15 @@
 #define MAP_H
 
 class Map {
-	public :
-		Map();
+public:
+	Map(int l, int c);
+	virtual ~Map(){};
+	int getLNb() const;
+	int getCNb() const; 
+	// virtual int getNb() const {};
+protected:
+	int lineNumber;
+	int columnNumber;
 };
 
 #endif

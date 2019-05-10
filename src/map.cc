@@ -7,6 +7,13 @@
 
 #include "map.h"
 
-Map::Map(){
+using namespace std;
 
+Map::Map(int l, int c) {
+	columnNumber = c;
+	lineNumber = l;
 }
+
+
+int Map::getLNb() const { return lineNumber; }
+int Map::getCNb() const { return columnNumber; }
