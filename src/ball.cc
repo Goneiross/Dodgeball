@@ -126,7 +126,6 @@ int BallMap::getNewID() const {
 
 void BallMap::updatePosition(){
     int ballNb = balls.size();
-    std::cout << ballNb << std::endl;
     for (int b = 0; b < ballNb; b++){
         int xPos = balls[b]->getHitbox()->getX() + cos(balls[b]->getAngle()) * balls[b]->getVelocity() * DELTA_T;
         int yPos = balls[b]->getHitbox()->getY() + sin(balls[b]->getAngle()) * balls[b]->getVelocity() * DELTA_T;
