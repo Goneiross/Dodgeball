@@ -66,7 +66,6 @@ void BallMap::addBall(double x, double y, double a, double r, double v, int ID){
 }
 
 void BallMap::removeBall(int ID){
-    cout << "Erase " << ID << endl;
     int l = balls[ID]->getL();
     int c = balls[ID]->getC();
     int posSize = ballGrid[l][c].size();
@@ -80,7 +79,6 @@ void BallMap::removeBall(int ID){
         }
     }
     balls.erase(balls.begin()+ ID );
-    cout << "done" << endl;
 }
 
 void BallMap::removeAll(){
