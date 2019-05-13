@@ -114,6 +114,16 @@ int BallMap::getNb() const{
     return balls.size();
 }
 
+int BallMap::getNewID() const {
+    int maxID = 0;
+    for (int b = 0; b < balls.size(); b++) {
+        if (balls[b]->getID() > b) {
+            maxID = balls[b]->getID();
+        }
+    }
+    return maxID + 1;
+}
+
 void BallMap::updatePosition(){
     int ballNb = balls.size();
     std::cout << ballNb << std::endl;
