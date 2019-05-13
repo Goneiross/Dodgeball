@@ -30,54 +30,7 @@ vector<size_t> targetting(){
 	vector<double> minDistance(nbPlayer);
 	vector<size_t> target(nbPlayer);
 	
-	for (int i=0; bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
-	/* Case 1 : same line
-	*  Case 2 : same column
-	*  Case 3 : different line and column
-	*/
-	if (l1 == l2) {
-		if (c1 < c2){
-			for (int c = c1; c <= c2; c++){ if (mainMap->isObstacle(l2, c)) { return true; } }
-			return false;
-		} else {
-			for (int c = c2; c <= c1; c++){ if (mainMap->isObstacle(l2, c)) { return true; } }
-			return false;
-		}
-	} else if (c1 == c2) {
-		if (l1 < l2){
-			for (int l = l1; l <= l2; l++){ if (mainMap->isObstacle(l, c2)) { return true; } }
-			return false;
-		} else {
-			for (int l = l2; l <= l1; l++){ if (mainMap->isObstacle(l, c2)) { return true; } }
-			return false;
-		}
-	} else {
-		enum direction {line = 0, column = 1};
-		bool direction = line;
-		int l = l1, c = c1; 
-		while ((l != l2) && (c != c2)){
-			if (direction == line){
-				if (l < l2){ l ++; } 
-				else if (l > l2){ l--; }
-				else {
-					direction = column;
-					continue;
-				}
-				if (mainMap->isObstacle(l, c)) { return true; }
-				direction = column;
-			} else {
-				if (c < c2){ l ++; } 
-				else if (c > c2){ l--; } 
-				else {	
-					direction = line;
-					continue;
-				}
-				if (mainMap->isObstacle(l, c)) { return true; }
-				direction = line;
-			}
-		}
-	}
-}i < nbPlayer; i++) {
+	for (int i=0; i < nbPlayer; i++) {
 		if (i == (nbPlayer - 1)) {
 			minDistance[i] = dBP[i][i-1];
 			target[i] = i - 1;
