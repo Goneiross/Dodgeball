@@ -46,8 +46,11 @@ double Player::getL() const { return lgnPos; }
 double Player::getC() const { return colPos; }
 double Player::getGX() const { return gXPosition; }
 double Player::getGY() const { return gYPosition; }
+int Player::getID() const { return ID; }
 void Player::setGX(double gX) { gXPosition = gX; }
 void Player::setGY(double gY) { gYPosition = gY; }
+void Player::setL(int l) { lgnPos = l; }
+void Player::setC(int c) { colPos = c; }
 double Player::getRadius() const { return hitbox->getRadius(); }
 double Player::getCount() const { return count; }
 void Player::setCount(int c) {count = c;}
@@ -127,12 +130,32 @@ int PlayerMap::getNb() const{
 }
 
 void PlayerMap::updatePosition(){
-  	for (int i = 0; i < players.size(); i++){
-    	int c = players[i]->getCount();
+  	for (int p = 0; p < players.size(); p++){
+    	int c = players[p]->getCount();
+		double angle = nearestPlayerAngle();
+		players[p]->updatePosition(angle);
+		int colPos = ((players[p]->getX() + DIM_MAX ) / (SIDE / lineNumber) ) - 1 / 2;
+        int lgnPos = - ((players[p]->getY() - DIM_MAX) / (SIDE / lineNumber) ) - 1 / 2;
+		if (lgnPos < lineNumber && lgnPos >= 0 && colPos < columnNumber && colPos >= 0){
+            players[p]->setL(lgnPos);
+            players[p]->setC(colPos);
+            int ID = players[p]->getID();
+            if (playerGrid[lgnPos][colPos][0] == ID){ playerGrid[lgnPos][colPos][0] = -1; }
+            else {
+                for (int i = 1; i < playerGrid[lgnPos][colPos].size(); i++){
+                    if (playerGrid[lgnPos][colPos][i] == ID){
+                        playerGrid[lgnPos][colPos].erase(playerGrid[lgnPos][colPos].begin()+i);
+                    }
+                }
+            }
+            if (playerGrid[lgnPos][colPos][0] == -1) { playerGrid[lgnPos][colPos][0] = ID; }
+            else { playerGrid[lgnPos][colPos].push_back(ID); }
+        }
     	if (c == MAX_COUNT){
-      		players[i]->setCount(0);
+      		players[p]->setCount(0);
+			// FIRE if ready !!!
     	} else {
-      		players[i]->setCount(c+1);
+      		players[p]->setCount(c+1);
     	}
   	}
 }

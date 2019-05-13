@@ -26,11 +26,14 @@ public:
  		double getC() const;
   	double getGX() const;
   	double getGY() const;
+		int getID() const;
   	double getRadius() const;
   	double getCount() const;
   	double getTimeTouched() const;
 	  Circle *getHitbox() const;
-
+		
+    void setL(int l);
+    void setC(int c);
   	void setGX(double gY);
   	void setGY(double gY);
   	void setCount(int c);
