@@ -52,7 +52,7 @@ public:
     std::vector<int> whichBall(int lgnPos, int colPos);
     Ball* getBall(int index) const;
     int getNb () const;
-    int BallMap::getNewID() const;
+    int getNewID() const;
     void updatePosition();
 
 private:
