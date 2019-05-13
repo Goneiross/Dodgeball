@@ -21,8 +21,11 @@ public:
     double getC() const;
     double getGX() const;
     double getGY() const;
+    int getID() const;
     void setGX(double gY);
     void setGY(double gY);
+    void setL(int l);
+    void setC(int c);
     double getRadius() const;
     Circle *getHitbox() const;
     double getAngle() const;
