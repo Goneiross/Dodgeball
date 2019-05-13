@@ -10,6 +10,8 @@
 #include "define.h"
 #include "ball.h"
 
+#include <iostream>
+
 using namespace std;
 
 Ball::Ball(double x, double y, double a, double r, double v, int l, int c, int i) {
@@ -29,8 +31,11 @@ double Ball::getL() const { return lgnPos; }
 double Ball::getC() const { return colPos; }
 double Ball::getGX() const { return gXPosition; }
 double Ball::getGY() const { return gYPosition; }
+int Ball::getID() const { return ID; }
 void Ball::setGX(double gX) { gXPosition = gX; }
 void Ball::setGY(double gY) { gYPosition = gY; }
+void Ball::setL(int l) { lgnPos = l; }
+void Ball::setC(int c) { colPos = c; }
 double Ball::getRadius() const { return hitbox->getRadius(); }
 Circle *Ball::getHitbox() const { return hitbox; }
 double Ball::getAngle() const {return angle; }
@@ -61,6 +66,7 @@ void BallMap::addBall(double x, double y, double a, double r, double v, int ID){
 }
 
 void BallMap::removeBall(int ID){
+    cout << "Erase " << ID << endl;
     int l = balls[ID]->getL();
     int c = balls[ID]->getC();
     int posSize = ballGrid[l][c].size();
@@ -74,6 +80,7 @@ void BallMap::removeBall(int ID){
         }
     }
     balls.erase(balls.begin()+ ID );
+    cout << "done" << endl;
 }
 
 void BallMap::removeAll(){
@@ -109,11 +116,28 @@ int BallMap::getNb() const{
 
 void BallMap::updatePosition(){
     int ballNb = balls.size();
+    std::cout << ballNb << std::endl;
     for (int b = 0; b < ballNb; b++){
-		balls[b]->getHitbox()->setX(balls[b]->getHitbox()->getX() + cos(balls[b]
-            ->getAngle()) * balls[b]->getVelocity() * DELTA_T);
-		balls[b]->getHitbox()->setY(balls[b]->getHitbox()->getY() + sin(balls[b]
-            ->getAngle()) * balls[b]->getVelocity() * DELTA_T);
-    // Compute new Line and Column
+        int xPos = balls[b]->getHitbox()->getX() + cos(balls[b]->getAngle()) * balls[b]->getVelocity() * DELTA_T;
+        int yPos = balls[b]->getHitbox()->getY() + sin(balls[b]->getAngle()) * balls[b]->getVelocity() * DELTA_T;
+		balls[b]->getHitbox()->setX(xPos);
+		balls[b]->getHitbox()->setY(yPos);
+        int colPos = ((balls[b]->getX() + DIM_MAX ) / (SIDE / lineNumber) ) - 1 / 2;
+        int lgnPos = - ((balls[b]->getY() - DIM_MAX) / (SIDE / lineNumber) ) - 1 / 2;
+        if (lgnPos < lineNumber && lgnPos >= 0 && colPos < columnNumber && colPos >= 0){
+            balls[b]->setL(lgnPos);
+            balls[b]->setC(colPos);
+            int ID = balls[b]->getID();
+            if (ballGrid[lgnPos][colPos][0] == ID){ ballGrid[lgnPos][colPos][0] = -1; }
+            else {
+                for (int i = 1; i < ballGrid[lgnPos][colPos].size(); i++){
+                    if (ballGrid[lgnPos][colPos][i] == ID){
+                        ballGrid[lgnPos][colPos].erase(ballGrid[lgnPos][colPos].begin()+i);
+                    }
+                }
+            }
+            if (ballGrid[lgnPos][colPos][0] == -1) { ballGrid[lgnPos][colPos][0] = ID; }
+            else { ballGrid[lgnPos][colPos].push_back(ID); }
+        }
   	}
 }
