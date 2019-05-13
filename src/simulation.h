@@ -16,6 +16,7 @@ bool initialization(std::string inputFile, int mode) ;
 bool isOut(double xPosision, double yPosition);
 void check();
 void update();
+void dracarys();
 
 int getPlayerNb();
 int getPlayerTimeTouched(int p);

@@ -67,6 +67,7 @@ void simulation(std::string inputFile, std::string saveFile, int mode) {
     } else if (mode == STEP_MODE) {
         update();
         check();
+        dracarys();
         save(saveFile);
         delete obstacles;
         delete players;
@@ -266,6 +267,23 @@ void check() {
 void update() {
     balls->updatePosition();
     players->updatePosition();
+}
+
+void dracarys(){
+    double ballRadius = COEF_RAYON_BALLE * (SIDE / obstacles->getLNb()); // Changer ca !
+    double playerRadius = COEF_RAYON_JOUEUR * (SIDE / obstacles->getLNb()); //Ca aussi !
+    double ballVelocity = COEF_VITESSE_BALLE * (SIDE / obstacles->getLNb()); //Et aussi lui !
+    for (int p = 0; p < players->getNb(); p++){
+        if (players->getPlayer(p)->getCount() == MAX_COUNT){
+            double xPos = players->getPlayer(p)->getX();
+            double yPos = players->getPlayer(p)->getY();
+            double delta = ballRadius + playerRadius;
+            // double angle = nearestPlayerAngle();
+            double angle = 0; //TO delete
+            balls->addBall(xPos + cos(angle) * delta, yPos + sin(angle) * delta, angle, ballRadius, ballVelocity, balls->getNewID());
+            players->getPlayer(p)->setCount(0);
+        }
+    }
 }
 
 static void largeCollisionCheckPO(int p, vector<int> &toCheck) {
