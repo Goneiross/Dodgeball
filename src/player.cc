@@ -152,8 +152,6 @@ void PlayerMap::updatePosition(){
             else { playerGrid[lgnPos][colPos].push_back(ID); }
         }
     	if (c == MAX_COUNT){
-      		players[p]->setCount(0);
-			// FIRE if ready !!!
     	} else {
       		players[p]->setCount(c+1);
     	}

@@ -280,8 +280,7 @@ void dracarys(){
             double xPos = players->getPlayer(p)->getX();
             double yPos = players->getPlayer(p)->getY();
             double delta = ballRadius + playerRadius;
-            // double angle = nearestPlayerAngle();
-            double angle = 0; //TO delete
+            double angle = nearestPlayerAngle();
             balls->addBall(xPos + cos(angle) * delta, yPos + sin(angle) * delta, angle, ballRadius, ballVelocity, balls->getNewID());
             players->getPlayer(p)->setCount(0);
         }
