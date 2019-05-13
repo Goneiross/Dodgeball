@@ -8,12 +8,10 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <define.h>
+#include "define.h"
+#include "tools.h"
 
 using namespace std;
-
-#define INFINITY_INIT(nbCell**2 + 1);
-#define INFINITY_DIST(nbCell^2);
 
 vector<size_t> targetting(){
 	vector<vector<double> > dBP(nbPlayer); //dBP = distance between players
@@ -51,11 +49,7 @@ vector<size_t> targetting(){
 }
 
 bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
-	/* Case 1 : same line
-	*  Case 2 : same column
-	*  Case 3 : different line and column
-	*/
-	if (l1 == l2) {
+	if (l1 == l2) {									// Case 1 : same line
 		if (c1 < c2){
 			for (int c = c1; c <= c2; c++){ if (mainMap->isObstacle(l2, c)) { return true; } }
 			return false;
@@ -63,7 +57,7 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
 			for (int c = c2; c <= c1; c++){ if (mainMap->isObstacle(l2, c)) { return true; } }
 			return false;
 		}
-	} else if (c1 == c2) {
+	} else if (c1 == c2) {					// Case 2 : same column
 		if (l1 < l2){
 			for (int l = l1; l <= l2; l++){ if (mainMap->isObstacle(l, c2)) { return true; } }
 			return false;
@@ -71,7 +65,7 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
 			for (int l = l2; l <= l1; l++){ if (mainMap->isObstacle(l, c2)) { return true; } }
 			return false;
 		}
-	} else {
+	} else {												// Case 3 : different line and column
 		enum direction {line = 0, column = 1};
 		bool direction = line;
 		int l = l1, c = c1; 
@@ -99,61 +93,46 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
 	}
 }
 
-void whichPath() {
-    /*ajouter les arguments: 2 Players et les tableaux nécessaires
-    à isThereObstacle (obstacle et joueurs), simplePath (idem),
-    complexPath, floyd, diagonalDist et shortestindirectPath*/
-	if (isThereObstacle(Player start, Player target)) {
+void whichPath(Player* start, Player* target) {
+// ajouter en argument tout ce qui serait nécessaire à complexPath, floyd, diagonalDist, shortestindirectDist
+	if (isThereObstacleBetween(start->getL(), start->getC(), target->getL(), target->getC())) {
 		complexPath(start, target);
 	} else {simplePath(start, target);}
 }
 
-void simplePath() {
-	//avec start et target des Players/positions
-	double pathAngle = atan(distance(start.getL())
-						/ distance(target.getL()));
-	start.updatePosition(pathAngle);
+void simplePath(Player* start, Player* target) {
+	return angle(start->getL(), start->getC(), target->getL(), target->getC());
 }
 
-void complexPath(){
-	//avec start et target des Players/positions
-	/* demande à Floyd de définir le chemin à suivre.
-	 * Floyd rend la prochaine position
-	 * complexPath appelle simplePath du Player start
-	 * à la position target.*/
-	double pathAngle = floyd();	//ajouter les arguments nécessaires à Floyd
-	//pathAngle est l'angle du PREMIER morceau de chemin
-	start.updatePosition(pathAngle);
+
+void complexPath(Player* start, Player* target){
+	//ajouter les arguments de floyd, diagonalDist, shortestIndirectDist
+	/* Description of Floyd's algorithm's implementation */
+	floyd(start, target);	//ajouter les arguments nécessaires à floyd, diagonalDist, shortestIndirectDist
 }
 
-double floyd() {
+double floyd(Player* start, Player* target) {
 	//avec start et target des Players/positions
-	/* ajouter un "pathAngle" de valeur de retour correspondant à 
-	 * l'angle dans lequel start doit partir
-	 * Plus tard, shortestindirectDist cherchera mieux
-	 * IL FAUT REUSSIR A SPECIFIER QUE pathAngle = angle entre start et la première
-	 * position à atteindre
+	/* "pathAngle" = angle *de départ*, shortestindirectDist cherchera mieux
 	 * Faut-il que tabCellDist soit static ou pas ?
-	 * S'il l'est, ne faudrait-il pas faire un tabPathAngle plutôt qu'un pathAngle unique ?
-	 * 	car si on enregistre uniquement un pathAngle, alors comment fait-on pour connaitre
-	 * 	celui d'un autre chemin si on ne recalcule pas le meilleur chemin pour tout ?*/
-	
+	 * S'il l'est, ne faudrait-il pas faire un tabPathAngle plutôt qu'un pathAngle unique ?*/
+
 	//initialisation d'un tableau de distances
-	vector <vector<double> > tabCellDist (nbCell**2);
-	for (int i(0); i < nbCell**2; i++) {
-		for (int j(0); j < nbCell**2; j++) {
+	vector <vector<double> > tabCellDist (pow(nbCell, 2));
+	for (int i(0); i < pow(nbCell, 2); i++) {
+		for (int j(0); j < pow(nbCell, 2); j++) {
 			tabCellDist[i][j] = INFINITY_INIT;
 		}
-/*		if (la case correspondant à la colonne i est un obstacle) {
-			for (int j(0); j < nbCell**2; j++) {
-			* 	tabCellDist[i][j] = INFINITY_DIST;
-			* 	tabCellDist[j][i] = INFINITY_DIST;
-		*	}
-		* }
-*/		
-		tabCellDist[i][i] = 0;
+		if (Obstacles->isObstacle(i%nbCell, i/nbCell)) {
+			for (int j(0); j < pow(nbCell, 2); j++) {
+			 	tabCellDist[i][j] = INFINITY_DIST;
+				tabCellDist[j][i] = INFINITY_DIST;
+			}
+		}
 		
-		for (int j(0); j < nbCell**2; j++) {
+		tabCellDist[i][i] = 0;
+
+		for (int j(0); j < pow(nbCell, 2); j++) {
 			if (((j = i + 1) || (j = i - 1))	//si les cases sont adjacentes
 					&& !(((j%nbCell = 0) && ((i + 1)%nbCell = 0))
 					|| ((i%nbCell = 0) && (j + 1)%nbCell = 0))) {
@@ -161,7 +140,7 @@ double floyd() {
 				tabCellDist[j][i] = 1;
 			}			
 		}
-}
+	}
 
 	for (int k(0); k < nbCell; k++) {
 		for (int i(0); i < nbCell - 1; i++) {	//déterminer les distances diagonales
@@ -190,12 +169,7 @@ void shortestIndirectDist() {
 				int tmpDist(distance(i, k) + distance(k, j));
 				if (tmpDist < tabCellDiste[i][j]) {
 					tabCellDist[i][j] = tmpDist;
-					//pathAngle = l'angle entre i et k;
-					double iXPos = i/nbCell;
-					double iYPos = i%nbCell;
-					double kXPos = k/nbCell;
-					double kYPos = k%nbCell;
-					double pathAngle = atan(vabs(kYPos-iYPos)/vabs(kXPos-iXPos));
+					pathAngle = angle(i/nbCell, i%nbCell, k/nbCell, k%nbCell);
 			}
 		}
 	}

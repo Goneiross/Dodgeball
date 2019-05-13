@@ -30,4 +30,7 @@
 #define ERROR_MODE 1
 #define STEP_MODE 2
 
+#define INFINITY_INIT(nbCell**2 + 1);
+#define INFINITY_DIST(nbCell^2);
+
 #endif
