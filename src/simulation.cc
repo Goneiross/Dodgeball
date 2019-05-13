@@ -414,15 +414,15 @@ static void collisionCheckPO(int p, int o, double delta, bool &error,
     double rayon = obstacles->getObstacle(o)->getHitbox()->getSide() / 2;
     double squareRadius;
 
-    if ((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)) {
+    if ((abs(angle) == M_PI) || (abs(angle) == M_PI_2) || (angle == 0)) {
         squareRadius = rayon;
-    } else if ((abs(angle) == M_PI / 4) || (abs(angle) == 2 * M_PI / 4)) {
+    } else if ((abs(angle) == M_PI_4) || (abs(angle) == M_PI_2)) {
         squareRadius = sqrt(2) * rayon;
-    } else if ((2 * M_PI / 4 < angle) && (angle < M_PI)) {
+    } else if ((M_PI_2 < angle) && (angle < M_PI)) {
         squareRadius = (rayon / X) * d;
-    } else if ((-M_PI / 4 < angle) && (angle < M_PI / 4)) {
+    } else if ((- M_PI_4< angle) && (angle < M_PI_4)) {
         squareRadius = (rayon / X) * d;
-    } else if ((-2 * M_PI / 4 > angle) && (angle > -M_PI)) {
+    } else if ((- M_PI_2 > angle) && (angle > -M_PI)) {
         squareRadius = (rayon / X) * d;
     } else {
         squareRadius = (rayon / Y) * d;
@@ -448,15 +448,15 @@ static void collisionCheckBO(int b, int o, double delta, bool &error, int mode) 
     double rayon = obstacles->getObstacle(o)->getHitbox()->getSide() / 2;
     double squareRadius;
 
-    if ((abs(angle) == M_PI) || (abs(angle) == M_PI / 2) || (angle == 0)) {
+    if ((abs(angle) == M_PI) || (abs(angle) == M_PI_2) || (angle == 0)) {
         squareRadius = rayon;
-    } else if ((abs(angle) == M_PI / 4) || (abs(angle) == 2 * M_PI / 4)) {
+    } else if ((abs(angle) == M_PI_4) || (abs(angle) == M_PI_2)) {
         squareRadius = sqrt(2) * rayon;
-    } else if ((2 * M_PI / 4 < angle) && (angle < M_PI)) {
+    } else if ((M_PI_2 < angle) && (angle < M_PI)) {
         squareRadius = (rayon / X) * d;
-    } else if ((-M_PI / 4 < angle) && (angle < M_PI / 4)) {
+    } else if ((- M_PI_4< angle) && (angle < M_PI_4)) {
         squareRadius = (rayon / X) * d;
-    } else if ((-2 * M_PI / 4 > angle) && (angle > -M_PI)) {
+    } else if ((- M_PI_2 > angle) && (angle > -M_PI)) {
         squareRadius = (rayon / X) * d;
     } else {
         squareRadius = (rayon / Y) * d;}
