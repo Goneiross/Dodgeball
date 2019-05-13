@@ -48,4 +48,6 @@ double distance(Square *s1, Square *s2);
 double distance(Square *s, Circle *c);
 double distance(Circle *c, Square *s);
 
+double angle(double x1, double y1, double x2, double y2);
+
 #endif
