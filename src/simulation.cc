@@ -257,8 +257,10 @@ void check() {
             collisionCheckPB(p, b, delta, collision, 0);
             if (collision) {
                 balls->removeBall(b);
-                players->getPlayer(p)
-                       ->setTimeTouched(players->getPlayer(p)->getTimeTouched() - 1);
+                players->getPlayer(p)->setTimeTouched(players->getPlayer(p)->getTimeTouched() - 1);
+                if (players->getPlayer(p)->getTimeTouched() == 0) { // RENOMER OU VERIFIER DANS LE BON SENS !!!!!
+                    players->removePlayer(p);
+                }
             }
         }
     }
