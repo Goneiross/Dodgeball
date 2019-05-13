@@ -5,4 +5,11 @@
   \brief  pathfinding, with the Roy-Floyd-Warschall algorithm
 */
 
+#ifndef FLOYD_H
+#define FLOYD_H
 
+#include "player.h"
+
+double floyd(Player* start, Player* target);
+
+#endif
