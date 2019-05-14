@@ -13,14 +13,14 @@
 
 using namespace std;
 
-vector<size_t> targetting(){
+vector<size_t> targetting(PlayerMap* players){
 	vector<vector<double> > dBP(nbPlayer); //dBP = distance between players
 
 	for (int i=0; i < nbPlayer; i++) {dBP[i][i] = 0;}
 	
 	for (int i=0; i < nbPlayer; i++) {
 		for (int j=0; j < i; j++) {
-			dBP[i][j] = distance(Player start, Player target);
+			dBP[i][j] = distance(players[i], players[0]);
 			dBP[j][i] = dBP[i][j];
 		}
 	}
@@ -29,13 +29,8 @@ vector<size_t> targetting(){
 	vector<size_t> target(nbPlayer);
 	
 	for (int i=0; i < nbPlayer; i++) {
-		if (i == (nbPlayer - 1)) {
-			minDistance[i] = dBP[i][i-1];
-			target[i] = i - 1;
-		} else {
-			minDistance[i] = dBP[i][i+1];
-			target[i] = i + 1;
-		}
+		minDistance[i] = INFINITY_DIST;
+
 		for (int j=0; j < nbPlayer; j++) {
 			if (i != j) {
 				if (dBP[i][j] < minDistance[i]) {
@@ -45,7 +40,7 @@ vector<size_t> targetting(){
 			}
 		}
 	}
-	return target;
+	return target; //rend donc l'indice correspondant à players
 }
 
 bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
@@ -151,19 +146,27 @@ double floyd(Player* start, Player* target) {
 		}
 }
 
-//on essaie de trouver de meilleures distances
-	for (int i(0); i < pow(nbCell, 2); i++) {			 
-			nbFloyd = INFINITY_DIST;
-			do {
-				if (tabCellDist[i][j] = INFINITY_INIT) {
+	while (areThereUninitialisedCases(tabCellDist)) {
+		for (int i(0); i < pow(nbCell, 2); i++) {
+			for (int j(0); j < i; j++) {
 				shortestIndirectDist(i, j);
-				}
-				nbFloyd -= 1;
-			} while (nbFloyd > 0);
-	}
+			}
+		}
+
+	return pathAngle;
 }
 
-void shortestIndirectDist() {
+bool areThereUninitialisedCases (vector <vector<double> > tab2D) {
+	//considers an inferior triangular matrix, with a null-diagonal
+	for (int i(0); i < tab2D.size(); i++) {
+		for (int j(0); j < i; j++) {
+			if (tab2D[i][j] == INFINITY_INIT) { return true;}
+		}
+	}
+	return false;
+}
+
+void shortestIndirectDist(Player start, Player target) {
 	for (int k(0); k < pow(nbCell, 2); k++) {
 		if ((tabCellDist[i][k] < pow(nbCell, 2)) && (tabCellDist[k][j] < pow(nbCell, 2))) {
 				int tmpDist(distance(i, k) + distance(k, j));
