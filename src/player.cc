@@ -132,7 +132,8 @@ int PlayerMap::getNb() const{
 void PlayerMap::updatePosition(){
   	for (int p = 0; p < players.size(); p++){
     	int c = players[p]->getCount();
-		double angle = nearestPlayerAngle();
+		// double angle = nearestPlayerAngle();
+		double angle = 0;
 		players[p]->updatePosition(angle);
 		int colPos = ((players[p]->getX() + DIM_MAX ) / (SIDE / lineNumber) ) - 1 / 2;
         int lgnPos = - ((players[p]->getY() - DIM_MAX) / (SIDE / lineNumber) ) - 1 / 2;
