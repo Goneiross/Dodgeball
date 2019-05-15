@@ -92,32 +92,27 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
 	}
 }
 
-void whichPath(Player* start, Player* target) {
-// ajouter en argument tout ce qui serait nécessaire à complexPath, floyd, diagonalDist, shortestindirectDist
+double whichPath(Player* start, Player* target) {
 	if (isThereObstacleBetween(start->getL(), start->getC(), target->getL(), target->getC())) {
-		complexPath(start, target);
-	} else {simplePath(start, target);}
+		return complexPath(start, target);
+	} else {return simplePath(start, target);}
+
 }
 
-void simplePath(Player* start, Player* target) {
+double simplePath(Player* start, Player* target) {
 	return angle(start->getL(), start->getC(), target->getL(), target->getC());
 }
 
 
 void complexPath(Player* start, Player* target){
-	//ajouter les arguments de floyd, diagonalDist, shortestIndirectDist
 	/* Description of Floyd's algorithm's implementation */
-	floyd(start, target);	//ajouter les arguments nécessaires à floyd, diagonalDist, shortestIndirectDist
+	return floyd(start, target);
 }
 
 double floyd(Player* start, Player* target) {
-	//avec start et target des Players/positions
-	/* "pathAngle" = angle *de départ*, shortestindirectDist cherchera mieux
-	 * Faut-il que tabCellDist soit static ou pas ?
-	 * S'il l'est, ne faudrait-il pas faire un tabPathAngle plutôt qu'un pathAngle unique ?*/
-
 	//initialisation d'un tableau de distances
-	vector <vector<double> > tabCellDist (pow(nbCell, 2));
+	static vector <vector<double> > tabCellDist (pow(nbCell, 2));
+	static vector <vector<double> > pathAngles (pow(nbCell, 2));
 	for (int i(0); i < pow(nbCell, 2); i++) {
 		for (int j(0); j < pow(nbCell, 2); j++) {
 			tabCellDist[i][j] = INFINITY_INIT;
@@ -137,27 +132,49 @@ double floyd(Player* start, Player* target) {
 					|| ((i%nbCell = 0) && (j + 1)%nbCell = 0))) {
 				tabCellDist[i][j] = 1;
 				tabCellDist[j][i] = 1;
+				
+				if (j/nbCell == i/nbCell + 1) {
+					pathAngles[i][j] = M_PI_2;
+					pathAngles[j][i] = 3*M_PI_4;
+				} else if (j/nbCell == i/nbCell - 1) {
+					pathAngles[i][j] = 3*M_PI_4;
+					pathAngles[j][i] = M_PI_2;
+				} else if (j%nbCell == i%nbCell - 1) {
+					pathAngles[i][j] = M_PI;
+					pathAngles[j][i] = 0;
+				} else if (j%nbCell == i%nbCell + 1) {
+					pathAngles[i][j] = 0;
+					pathAngles[j][i] = M_PI;
+				}
 			}			
 		}
 	}
 
-	for (int k(0); k < nbCell; k++) {
-		for (int i(0); i < nbCell - 1; i++) {	//déterminer les distances diagonales
-			diagonalDist(k*nbCell, (k + 1)*nbCell - 2);
+	for (int i(0); i < nbCell; i++) {
+		for (int j(0); j < nbCell - 1; j++) {	//déterminer les distances diagonales
+			diagonalDist(i*nbCell, (i + 1)*nbCell - 2, &tabCellDist, &pathAngles);
 		}
-		for (int i(1); i < nbCell; i++) {
-			diagonalDist(k*nbCell + 1, (k + 1)*nbCell - 1);
+		for (int j(1); j < nbCell; j++) {
+			diagonalDist(i*nbCell + 1, (i + 1)*nbCell - 1, &tabCellDist, &pathAngles);
 		}
 }
 
 	while (areThereUninitialisedCases(tabCellDist)) {
 		for (int i(0); i < pow(nbCell, 2); i++) {
 			for (int j(0); j < i; j++) {
-				shortestIndirectDist(i, j);
+				if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != INFINITY_DIST) {
+					shortestIndirectPath(i, j, &tabCellDist, &pathAngles);
+				}
 			}
 		}
 
-	return pathAngle;
+	return pathAngles[(start->getC() * nbCell) + start->getL()][(target->getC() * nbCell) + target->getL()];
+	/* !! Si start et target sont adjacents ou diagonales, on connait leur angle avant  la boucle _while_, ce qui rend
+	inutile le fait de compléter les vector<vector<double> > ! Il faudrait que, dans ces cas, floyd ne complète pas sa 
+	tâche, ce qui serait très économique.
+	De même, si une portion de la map est entièrement séparée du reste, comment arrêter l'algorithme et définir que les 
+	Players des deux côté de la frontière ne pourront pas se rejoindre à moins de provoquer la chute du mur ?
+	De même, faudra penser à aller acheter ces 10kg de riz à Aligro :) */
 }
 
 bool areThereUninitialisedCases (vector <vector<double> > tab2D) {
@@ -170,20 +187,20 @@ bool areThereUninitialisedCases (vector <vector<double> > tab2D) {
 	return false;
 }
 
-void shortestIndirectDist(Player start, Player target) {
+void shortestIndirectPath(Player start, Player target, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles) {
 	for (int k(0); k < pow(nbCell, 2); k++) {
-		if ((tabCellDist[i][k] < pow(nbCell, 2)) && (tabCellDist[k][j] < pow(nbCell, 2))) {
-				int tmpDist(distance(i, k) + distance(k, j));
-				if (tmpDist < tabCellDiste[i][j]) {
-					tabCellDist[i][j] = tmpDist;
-					pathAngle = angle(i/nbCell, i%nbCell, k/nbCell, k%nbCell);
+		if ((tabCellDist[i][k] != INFINITY_DIST) && (tabCellDist[j][k] != INFINITY_DIST) && (k != i) && (k != j)) {
+			if ((tabCellDist[i][k] + tabCellDist[j][k]) < tabCellDist[i][j]) {
+				tabCellDist[i][j] = tabCellDist[i][k] + tabCellDist[j][k];
+				tabCellDist[j][j] = tabCellDist[i][k] + tabCellDist[j][k];
+				pathAngles[i][j] = pathAngles[i][k];
+				pathAngles[j][i] = pathAngles[j][k];
 			}
 		}
 	}
-	return pathAngle;
 }
 
-void diagonalDistance(unsigned int i, unsigned int j) {
+void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles) {
 	double iXPos = i/nbCell;
 	double iYPos = i%nbCell;
 	double jXPos = j/nbCell;
@@ -192,9 +209,43 @@ void diagonalDistance(unsigned int i, unsigned int j) {
   if (isObstacle(iXPos, jYPos) xor isObstacle(jXPos, iYPos)) {
 		tabCellDist[i][j] = 2;
 		tabCellDist[j][i] = 2;
+		if (iY == jY + 1) {
+			if (isObstacle(jXPos, iYPos)) {
+				pathAngles[i][j] = 3*M_PI_4;
+				pathAngles[j][i] = M_PI;
+			} else {
+				pathAngles[i][j] = 0;
+				pathAngles[j][i] = m_PI_2;
+			}
+		} else {
+			if (isObstacle(iXPos, jYPos)) {
+				pathAngles[i][j] = M_PI;
+				pathAngles[j][i] = 3*M_PI_4;
+			} else {
+				pathAngles[i][j] = M_PI_2;
+				pathAngles[j][i] = 0;
+			}
+		}
 	//si aucun Obstacle en diagonale
 	} else if (!(isObstacle(iXPos, jYPos)) && !(isObstacle(jXPos, iYPos))) {
 		tabCellDist[i][j] = sqrt(2);
 		tabCellDist[j][i] = sqrt(2);
+		if (iXPos == jXPos - 1) {
+			if (iYPos == jYPos + 1){
+				pathAngle[i][j] = 7*M_PI_4;
+				pathAngle[j][i] = 3*M_PI_4;
+			} else {
+				pathAngle[i][j] = M_PI_4
+				pathAngle[j][i] = 5*M_PI_4;
+			}
+		} else {
+			if (iYPos == jYPos + 1) {
+				pathAngle[i][j] = 5*M_PI_4;
+				pathAngle[j][i] = M_PI_4;
+			} else {
+				pathAngle[i][j] = 3*M_PI_4;
+				pathAngle[j][i] = 7*M_PI_4;
+			}
+		}
 	} //si 2 Obstacles, il faut chercher mieux, donc on laisse à INFINITY_INIT
 }
