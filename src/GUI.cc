@@ -248,9 +248,10 @@ void GUI::on_button_clicked_start(){
 }
 
 void GUI::on_button_clicked_step(){ 
-  	update();
-  	check();
+  	updatePlayers();
 		dracarys();
+		updateBalls();
+  	check();
   	auto win = get_window();
   	if (win) {
       	Gdk::Rectangle r(0, 0, get_allocation().get_width(),
