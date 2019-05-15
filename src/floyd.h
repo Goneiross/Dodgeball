@@ -13,6 +13,6 @@
 #include "obstacle.h"
 
 std::vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist);
-double whichPath(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles) ;
+double whichPath(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles);
 
 #endif
