@@ -15,7 +15,7 @@
 #include "player.h"
 #include "ball.h"
 #include "obstacle.h"
-
+#include "pathfinding.h"
 #include "error.h"
 #include "GUI.h"
 
