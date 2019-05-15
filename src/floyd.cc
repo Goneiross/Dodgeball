@@ -186,17 +186,17 @@ void shortestIndirectPath(Player start, Player target, vector<vector<double> >* 
 	}
 }
 
-void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles) {
+void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, ObstacleMap* obstacles) {
 	double iXPos = i/nbCell;
 	double iYPos = i%nbCell;
 	double jXPos = j/nbCell;
 	double jYPos = j%nbCell;
 	//si un Obstacle en diagonale
-  if (isObstacle(iXPos, jYPos) xor isObstacle(jXPos, iYPos)) {
+  if (obstacles->isObstacle(iXPos, jYPos) xor obstacles->isObstacle(jXPos, iYPos)) {
 		tabCellDist[i][j] = 2;
 		tabCellDist[j][i] = 2;
 		if (iY == jY + 1) {
-			if (isObstacle(jXPos, iYPos)) {
+			if (obstacles->isObstacle(jXPos, iYPos)) {
 				pathAngles[i][j] = 3*M_PI_4;
 				pathAngles[j][i] = M_PI;
 			} else {
@@ -204,7 +204,7 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* t
 				pathAngles[j][i] = m_PI_2;
 			}
 		} else {
-			if (isObstacle(iXPos, jYPos)) {
+			if (obstacles->isObstacle(iXPos, jYPos)) {
 				pathAngles[i][j] = M_PI;
 				pathAngles[j][i] = 3*M_PI_4;
 			} else {
@@ -213,7 +213,7 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* t
 			}
 		}
 	//si aucun Obstacle en diagonale
-	} else if (!(isObstacle(iXPos, jYPos)) && !(isObstacle(jXPos, iYPos))) {
+	} else if (!(obstacles->isObstacle(iXPos, jYPos)) && !(obstacles->isObstacle(jXPos, iYPos))) {
 		tabCellDist[i][j] = sqrt(2);
 		tabCellDist[j][i] = sqrt(2);
 		if (iXPos == jXPos - 1) {
