@@ -10,6 +10,10 @@
 #include <cmath>
 #include "define.h"
 #include "tools.h"
+#include "player.h"
+#include "obstacle.h"
+#include "ball.h"
+
 
 using namespace std;
 
@@ -21,7 +25,7 @@ vector<size_t> targetting(PlayerMap* players){
 	for (int i=0; i < nbPlayer; i++) {
 		for (int j=0; j < i; j++) {
 			dBP[i][j] = distance(players[i], players[0]);
-			dBP[j][i] = dBP[i][j];
+			dBP[j][i] = dBP[i][j];¨
 		}
 	}
 	
