@@ -24,20 +24,16 @@ bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityIni
 void shortestIndirectPath(int startID, int targetID, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, int infinityDist, int nbCell);
 
 vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist){
-	vector<vector<double> > dBP(players->getNb()); //dBP = distance between players
-
-	for (int i=0; i < players->getNb(); i++) {dBP[i][i] = 0;}
-	
+	cout << players->getNb() << endl;
+	vector<vector<double> > dBP(players->getNb(), vector<double>(players->getNb(), 0)); //dBP = distance between players
 	for (int i=0; i < players->getNb(); i++) {
 		for (int j=0; j < i; j++) {
 			dBP[i][j] = distance(players->getPlayer(i), players->getPlayer(j));
 			dBP[j][i] = dBP[i][j];
 		}
 	}
-	
 	vector<double> minDistance(players->getNb());
 	vector<int> target(players->getNb());
-	
 	for (int i=0; i < players->getNb(); i++) {
 		minDistance[i] = infinityDist;
 
