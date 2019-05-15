@@ -1,6 +1,6 @@
 CC     = g++
 CFLAGS = -g -Wall -std=c++11
-OFILES = ball.o GUI.o main.o map.o player.o simulation.o tools.o obstacle.o floyd.o
+OFILES = ball.o GUI.o main.o map.o player.o simulation.o tools.o obstacle.o floyd.o pathfinding.o
 
 projet: $(OFILES)
 	$(CC) $(OFILES) `pkg-config gtkmm-3.0 --cflags --libs` -o $@
