@@ -5,19 +5,18 @@
   \brief  "Simulation" module header
 */
 
-#ifndef OBJECT_HEADER
-#define OBJECT_HEADER
-#include "player.h"
-#include "ball.h"
-#include "map.h"
-#endif
+#ifndef SIMULATION_H
+#define SIMULATION_H
+#include "tools.h"
 
 void simulation(std::string inputFile, int mode);
+void simulation(std::string inputFile, std::string saveFile, int mode);
 void save(std::string filename);
 bool initialization(std::string inputFile, int mode) ;
 bool isOut(double xPosision, double yPosition);
 void check();
 void update();
+void dracarys();
 
 int getPlayerNb();
 int getPlayerTimeTouched(int p);
@@ -32,3 +31,5 @@ Circle* getBallHitbox(int b);
 int getObstacleNb();
 double getObstacleSize();
 Square* getObstacleHitbox(int o);
+
+#endif

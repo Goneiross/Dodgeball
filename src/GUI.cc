@@ -11,11 +11,7 @@
 #include <iostream>
 #include "simulation.h"
 #include "define.h"
-
-#ifndef TOOLS_H
-#define TOOLS_H
 #include "tools.h"
-#endif
 
 using namespace Gtk;
 
@@ -254,6 +250,7 @@ void GUI::on_button_clicked_start(){
 void GUI::on_button_clicked_step(){ 
   	update();
   	check();
+		dracarys();
   	auto win = get_window();
   	if (win) {
       	Gdk::Rectangle r(0, 0, get_allocation().get_width(),
@@ -269,6 +266,7 @@ bool GUI::on_timeout() {
   	} else {
     	update();
     	check();
+			dracarys();
     	auto win = get_window();
     	if (win) {
       	  	Gdk::Rectangle r(0, 0, get_allocation().get_width(),

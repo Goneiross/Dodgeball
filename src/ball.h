@@ -5,10 +5,10 @@
   \brief  "Ball" module header
 */
 
-#ifndef TOOLS_H
-#define TOOLS_H
+#ifndef BALL_H
+#define BALL_H
 #include "tools.h"
-#endif
+
 
 class Ball {
 public:
@@ -21,8 +21,11 @@ public:
     double getC() const;
     double getGX() const;
     double getGY() const;
+    int getID() const;
     void setGX(double gY);
     void setGY(double gY);
+    void setL(int l);
+    void setC(int c);
     double getRadius() const;
     Circle *getHitbox() const;
     double getAngle() const;
@@ -49,8 +52,7 @@ public:
     std::vector<int> whichBall(int lgnPos, int colPos);
     Ball* getBall(int index) const;
     int getNb () const;
-    int getLNb () const;
-    int getCNb ()const;
+    int getNewID() const;
     void updatePosition();
 
 private:
@@ -59,3 +61,5 @@ private:
     std::vector<Ball *> balls;
     std::vector<int>** ballGrid;
 };
+
+#endif
