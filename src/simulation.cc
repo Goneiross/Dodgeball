@@ -267,6 +267,7 @@ void check() {
 }
 
 void update() {
+    pathfinding(players, obstacles);
     balls->updatePosition();
     players->updatePosition();
 }
