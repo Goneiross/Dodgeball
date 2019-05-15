@@ -12,8 +12,6 @@
 #include "tools.h"
 #include "player.h"
 #include "obstacle.h"
-#include "ball.h"
-
 
 using namespace std;
 
