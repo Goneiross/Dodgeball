@@ -12,6 +12,6 @@
 #include "obstacle.h"
 
 void pathfinding(PlayerMap* players, ObstacleMap* obstacles);
-double angle(int ID);
+double nearestPlayerAngle(int ID);
 
 #endif

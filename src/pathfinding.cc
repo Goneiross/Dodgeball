@@ -16,6 +16,6 @@ void pathfinding(PlayerMap* players, ObstacleMap* obstacles){
     }
 }
 
-double angle(int ID){
+double nearestPlayerangle(int ID){
     return pathAngle[ID];
 }
