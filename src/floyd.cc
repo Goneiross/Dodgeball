@@ -155,15 +155,15 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 		}
 }
 
-	while (areThereUninitialisedCases(tabCellDist), infinityInit) {
+	while (areThereUninitialisedCases(tabCellDist, infinityInit)) {
 		for (int i(0); i < pow(nbCell, 2); i++) {
 			for (int j(0); j < i; j++) {
-				if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != infinityDist) {
-					shortestIndirectPath(i, j, &tabCellDist, &pathAngles, int infinityDist);
+				if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != infinityDist)) {
+					shortestIndirectPath(i, j, &tabCellDist, &pathAngles, infinityDist);
 				}
 			}
 		}
-
+	}
 	return pathAngles[(start->getC() * nbCell) + start->getL()][(target->getC() * nbCell) + target->getL()];
 	/* !! Si start et target sont adjacents ou diagonales, on connait leur angle avant  la boucle _while_, ce qui rend
 	inutile le fait de compléter les vector<vector<double> > ! Il faudrait que, dans ces cas, floyd ne complète pas sa 
@@ -173,14 +173,14 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 	De même, faudra penser à aller acheter ces 10kg de riz à Aligro :) */
 }
 
-void shortestIndirectPath(Player start, Player target, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, int infinityDist) {
+void shortestIndirectPath(int startID, int targetID, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, int infinityDist) {
 	for (int k(0); k < pow(nbCell, 2); k++) {
-		if ((tabCellDist[i][k] != infinityDist) && (tabCellDist[j][k] != infinityDist) && (k != i) && (k != j)) {
-			if ((tabCellDist[i][k] + tabCellDist[j][k]) < tabCellDist[i][j]) {
-				tabCellDist[i][j] = tabCellDist[i][k] + tabCellDist[j][k];
-				tabCellDist[j][j] = tabCellDist[i][k] + tabCellDist[j][k];
-				pathAngles[i][j] = pathAngles[i][k];
-				pathAngles[j][i] = pathAngles[j][k];
+		if ((tabCellDist[startID][k] != infinityDist) && (tabCellDist[targetID][k] != infinityDist) && (k != startID) && (k != targetID)) {
+			if ((tabCellDist[startID][k] + tabCellDist[targetID][k]) < tabCellDist[startID][targetID]) {
+				tabCellDist[startID][targetID] = tabCellDist[startID][k] + tabCellDist[targetID][k];
+				tabCellDist[startID][targetID] = tabCellDist[startID][k] + tabCellDist[targetID][k];
+				pathAngles[startID][targetID] = pathAngles[startID][k];
+				pathAngles[targetID][startID] = pathAngles[targetID][k];
 			}
 		}
 	}
@@ -236,13 +236,13 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* t
 	} //si 2 Obstacles, il faut chercher mieux, donc on laisse à infinityInit
 }
 
-void complexPath(Player* start, Player* target, int infinityInit, int infinityDist){
+double complexPath(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles){
 	/* Description of Floyd's algorithm's implementation */
-	return floyd(start, target, infinityInit, infinityDist);
+	return floyd(start, target, infinityInit, infinityDist, obstacles);
 }
 
-double whichPath(Player* start, Player* target, int infinityInit, int infinityDist) {
+double whichPath(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles) {
 	if (isThereObstacleBetween(start->getL(), start->getC(), target->getL(), target->getC(), obstacles)) {
-		return complexPath(start, target);
+		return complexPath(start, target, infinityInit, infinityDist, obstacles);
 	} else {return simplePath(start, target);}
 }
