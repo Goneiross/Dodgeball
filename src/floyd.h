@@ -9,7 +9,9 @@
 #define FLOYD_H
 
 #include "player.h"
+#include "obstacle.h"
 
-double floyd(Player* start, Player* target);
+vector<int> targetting(PlayerMap* players);
+double whichPath(Player* start, Player* target, ObstacleMap* obstacles);
 
 #endif
