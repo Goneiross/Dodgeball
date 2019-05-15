@@ -12,7 +12,7 @@
 #include "player.h"
 #include "obstacle.h"
 
-std::vector<int> targetting(PlayerMap* players);
-double whichPath(Player* start, Player* target, ObstacleMap* obstacles);
+std::vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist);
+double whichPath(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles) ;
 
 #endif

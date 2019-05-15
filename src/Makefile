@@ -23,7 +23,7 @@ map.o: map.cc map.h
 obstacle.o : obstacle.cc obstacle.h map.h tools.h define.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-player.o: player.cc player.h tools.h
+player.o: player.cc player.h tools.h pathfinding.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 simulation.o: simulation.cc simulation.h ball.h obstacle.h player.h error.h GUI.h pathfinding.h

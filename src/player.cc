@@ -11,6 +11,7 @@
 #include "player.h"
 #include "tools.h"
 #include "define.h"
+#include "pathfinding.h"
 
 using namespace std;
 
@@ -135,8 +136,7 @@ int PlayerMap::getCNb() const {return columnNumber;}
 void PlayerMap::updatePosition(){
   	for (int p = 0; p < players.size(); p++){
     	int c = players[p]->getCount();
-		// double angle = nearestPlayerAngle();
-		double angle = 0;
+		double angle = nearestPlayerAngle(p);
 		players[p]->updatePosition(angle);
 		int colPos = ((players[p]->getX() + DIM_MAX ) / (SIDE / lineNumber) ) - 1 / 2;
         int lgnPos = - ((players[p]->getY() - DIM_MAX) / (SIDE / lineNumber) ) - 1 / 2;
