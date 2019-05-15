@@ -1,6 +1,6 @@
 CC     = g++
 CFLAGS = -g -Wall -std=c++11
-OFILES = ball.o GUI.o main.o map.o player.o simulation.o tools.o obstacle.o
+OFILES = ball.o GUI.o main.o map.o player.o simulation.o tools.o obstacle.o floyd.o
 
 projet: $(OFILES)
 	$(CC) $(OFILES) `pkg-config gtkmm-3.0 --cflags --libs` -o $@
@@ -26,11 +26,14 @@ obstacle.o : obstacle.cc obstacle.h map.h tools.h define.h
 player.o: player.cc player.h tools.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-simulation.o: simulation.cc simulation.h ball.h obstacle.h player.h error.h GUI.h
+simulation.o: simulation.cc simulation.h ball.h obstacle.h player.h error.h GUI.h pathfinding.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 tools.o: tools.cc tools.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-pathfinding.o: pathfinding.cc pathfinding.h player.h ball.h map.h tools.h
+pathfinding.o: pathfinding.cc pathfinding.h player.h obstacle.h floyd.h
+	$(CC) $(CFLAGS) -c $< -o $@	
+
+floyd.o: floyd.h define.h tools.h player.h obstacle.h
 	$(CC) $(CFLAGS) -c $< -o $@	
