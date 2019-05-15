@@ -22,9 +22,9 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap* obstacl
 double simplePath(Player* start, Player* target);
 void complexPath(Player* start, Player* target, int infinityInit, int infinityDist);
 double floyd(Player* start, Player* target, int infinityInit, int infinityDist);
-void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles);
+void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, ObstacleMap* obstacles);
 bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityInit);
-void shortestIndirectPath(Player start, Player target, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, int infinityDist);
+void shortestIndirectPath(int startID, int targetID, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, int infinityDist, int nbCell);
 
 vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist){
 	vector<vector<double> > dBP(players->getNb()); //dBP = distance between players
@@ -159,10 +159,10 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 
 	for (int i(0); i < nbCell; i++) {
 		for (int j(0); j < nbCell - 1; j++) {	//déterminer les distances diagonales
-			diagonalDistance(i*nbCell, (i + 1)*nbCell - 2, &tabCellDist, &pathAngles, nbCell);
+			diagonalDistance(i*nbCell, (i + 1)*nbCell - 2, tabCellDist, pathAngles, obstacles);
 		}
 		for (int j(1); j < nbCell; j++) {
-			diagonalDistance(i*nbCell + 1, (i + 1)*nbCell - 1, &tabCellDist, &pathAngles, nbCell);
+			diagonalDistance(i*nbCell + 1, (i + 1)*nbCell - 1, tabCellDist, pathAngles, obstacles);
 		}
 }
 
@@ -170,7 +170,7 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 		for (int i(0); i < pow(nbCell, 2); i++) {
 			for (int j(0); j < i; j++) {
 				if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != infinityDist)) {
-					shortestIndirectPath(i, j, &tabCellDist, &pathAngles, infinityDist);
+					shortestIndirectPath(i, j, tabCellDist, pathAngles, infinityDist, nbCell);
 				}
 			}
 		}
@@ -184,8 +184,9 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 	De même, faudra penser à aller acheter ces 10kg de riz à Aligro :) */
 }
 
-void shortestIndirectPath(int startID, int targetID, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, int infinityDist) {
-	for (int k(0); k < pow(nbCell, 2); k++) {
+void shortestIndirectPath(int startID, int targetID, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, int infinityDist, int nbCell) {
+	int nbCellSquared = pow(nbCell, 2);
+	for (int k(0); k < nbCellSquared; k++) {
 		if ((tabCellDist[startID][k] != infinityDist) && (tabCellDist[targetID][k] != infinityDist) && (k != startID) && (k != targetID)) {
 			if ((tabCellDist[startID][k] + tabCellDist[targetID][k]) < tabCellDist[startID][targetID]) {
 				tabCellDist[startID][targetID] = tabCellDist[startID][k] + tabCellDist[targetID][k];
@@ -207,7 +208,7 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> > &t
   if (obstacles->isObstacle(iXPos, jYPos) xor obstacles->isObstacle(jXPos, iYPos)) {
 		tabCellDist[i][j] = 2;
 		tabCellDist[j][i] = 2;
-		if (iY == jY + 1) {
+		if (iYPos == jYPos + 1) {
 			if (obstacles->isObstacle(jXPos, iYPos)) {
 				pathAngles[i][j] = 3*M_PI_4;
 				pathAngles[j][i] = M_PI;
@@ -233,7 +234,7 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> > &t
 				pathAngles[i][j] = 7*M_PI_4;
 				pathAngles[j][i] = 3*M_PI_4;
 			} else {
-				pathAngles[i][j] = M_PI_4
+				pathAngles[i][j] = M_PI_4;
 				pathAngles[j][i] = 5*M_PI_4;
 			}
 		} else {
