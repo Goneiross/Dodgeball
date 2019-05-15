@@ -16,6 +16,7 @@
 using namespace std;
 
 vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist);
+
 double whichPath(Player* start, Player* target, int infinityInit, int infinityDist);
 bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap* obstacles);
 double simplePath(Player* start, Player* target);
