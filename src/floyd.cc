@@ -183,7 +183,7 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 	De même, faudra penser à aller acheter ces 10kg de riz à Aligro :) */
 }
 
-void shortestIndirectPath(int startID, int targetID, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, int infinityDist) {
+void shortestIndirectPath(int startID, int targetID, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, int infinityDist) {
 	for (int k(0); k < pow(nbCell, 2); k++) {
 		if ((tabCellDist[startID][k] != infinityDist) && (tabCellDist[targetID][k] != infinityDist) && (k != startID) && (k != targetID)) {
 			if ((tabCellDist[startID][k] + tabCellDist[targetID][k]) < tabCellDist[startID][targetID]) {
@@ -196,7 +196,7 @@ void shortestIndirectPath(int startID, int targetID, vector<vector<double> >* ta
 	}
 }
 
-void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, ObstacleMap* obstacles) {
+void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, ObstacleMap* obstacles) {
 	int nbCell = obstacles->getLNb();
 	double iXPos = i/nbCell;
 	double iYPos = i%nbCell;
