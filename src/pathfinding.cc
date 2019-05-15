@@ -3,6 +3,8 @@
 #include "player.h"
 #include "floyd.h"
 
+#include <iostream>
+
 using namespace std;
 
 static vector<int> targets;
@@ -16,9 +18,11 @@ void pathfinding(PlayerMap* players, ObstacleMap* obstacles){
     targets.resize(players->getNb());
     pathAngles.resize(players->getNb());
     targets = targetting(players, infinityInit, infinityDist);
+    cout << "t" << endl;
     for (int p = 0; p < players->getNb(); p++){
         pathAngles[p] = whichPath(players->getPlayer(p), players->getPlayer(targets[p]), infinityInit, infinityDist, obstacles); 
     }
+    cout << "t" << endl;
 }
 
 double nearestPlayerAngle(int ID){

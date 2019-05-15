@@ -24,7 +24,6 @@ bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityIni
 void shortestIndirectPath(int startID, int targetID, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, int infinityDist, int nbCell);
 
 vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist){
-	cout << players->getNb() << endl;
 	vector<vector<double> > dBP(players->getNb(), vector<double>(players->getNb(), 0)); //dBP = distance between players
 	for (int i=0; i < players->getNb(); i++) {
 		for (int j=0; j < i; j++) {
@@ -110,22 +109,23 @@ double simplePath(Player* start, Player* target) {
 
 double floyd(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles) {
 	int nbCell = obstacles->getLNb();
+	int nbCellSquared = pow(nbCell, 2);
 	//initialisation d'un tableau de distances
-	static vector <vector<double> > tabCellDist (pow(nbCell, 2));
-	static vector <vector<double> > pathAngles (pow(nbCell, 2));
-	for (int i(0); i < pow(nbCell, 2); i++) {
-		for (int j(0); j < pow(nbCell, 2); j++) {
+	static vector <vector<double> > tabCellDist (nbCellSquared, vector<double>(nbCellSquared, infinityInit));
+	static vector <vector<double> > pathAngles (nbCellSquared, vector<double>(nbCellSquared, 0));
+	for (int i(0); i < nbCellSquared; i++) {
+		for (int j(0); j < nbCellSquared; j++) {
 			tabCellDist[i][j] = infinityInit;
 		}
+		cout << "i" << endl;
 		if (obstacles->isObstacle(i%nbCell, i/nbCell)) {
-			for (int j(0); j < pow(nbCell, 2); j++) {
+			for (int j(0); j < nbCellSquared; j++) {
 			 	tabCellDist[i][j] = infinityDist;
 				tabCellDist[j][i] = infinityDist;
 			}
 		}
-		
+		cout << "h" << endl;		
 		tabCellDist[i][i] = 0;
-		int nbCellSquared = pow(nbCell, 2);
 		for (int j(0); j < nbCellSquared; j++) {
 			if (((j == i + 1) || (j == i - 1))	//si les cases sont adjacentes
 					&& !(((j%nbCell == 0) && ((i + 1)%nbCell == 0))
@@ -160,7 +160,7 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 }
 
 	while (areThereUninitialisedCases(tabCellDist, infinityInit)) {
-		for (int i(0); i < pow(nbCell, 2); i++) {
+		for (int i(0); i < nbCellSquared; i++) {
 			for (int j(0); j < i; j++) {
 				if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != infinityDist)) {
 					shortestIndirectPath(i, j, tabCellDist, pathAngles, infinityDist, nbCell);
