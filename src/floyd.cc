@@ -17,7 +17,7 @@
 
 using namespace std;
 
-vector<size_t> targetting(PlayerMap* players){
+vector<int> targetting(PlayerMap* players){
 	vector<vector<double> > dBP(nbPlayer); //dBP = distance between players
 
 	for (int i=0; i < nbPlayer; i++) {dBP[i][i] = 0;}
@@ -30,7 +30,7 @@ vector<size_t> targetting(PlayerMap* players){
 	}
 	
 	vector<double> minDistance(nbPlayer);
-	vector<size_t> target(nbPlayer);
+	vector<int> target(nbPlayer);
 	
 	for (int i=0; i < nbPlayer; i++) {
 		minDistance[i] = INFINITY_DIST;
