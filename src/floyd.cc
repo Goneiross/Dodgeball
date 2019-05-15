@@ -121,8 +121,8 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 		}
 		
 		tabCellDist[i][i] = 0;
-
-		for (int j(0); j < pow(nbCell, 2); j++) {
+		int nbCellSquared = pow(nbCell, 2);
+		for (int j(0); j < nbCellSquared; j++) {
 			if (((j = i + 1) || (j = i - 1))	//si les cases sont adjacentes
 					&& !(((j%nbCell = 0) && ((i + 1)%nbCell = 0))
 					|| ((i%nbCell = 0) && (j + 1)%nbCell = 0))) {
