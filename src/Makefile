@@ -35,5 +35,5 @@ tools.o: tools.cc tools.h
 pathfinding.o: pathfinding.cc pathfinding.h player.h obstacle.h floyd.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-floyd.o: floyd.h define.h tools.h player.h obstacle.h
+floyd.o: floyd.cc floyd.h define.h tools.h player.h obstacle.h
 	$(CC) $(CFLAGS) -c $< -o $@	
