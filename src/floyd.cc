@@ -15,15 +15,15 @@
 
 using namespace std;
 
-vector<int> targetting(PlayerMap* players){
-	vector<vector<double> > dBP(nbPlayer); //dBP = distance between players
+vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist){
+	vector<vector<double> > dBP(player->getNb()); //dBP = distance between players
 
 	for (int i=0; i < nbPlayer; i++) {dBP[i][i] = 0;}
 	
 	for (int i=0; i < nbPlayer; i++) {
 		for (int j=0; j < i; j++) {
-			dBP[i][j] = distance(players[i], players[0]);
-			dBP[j][i] = dBP[i][j];¨
+			dBP[i][j] = distance(players->getPlayer(i), players->getPlayer(j));
+			dBP[j][i] = dBP[i][j];
 		}
 	}
 	
@@ -31,7 +31,7 @@ vector<int> targetting(PlayerMap* players){
 	vector<int> target(nbPlayer);
 	
 	for (int i=0; i < nbPlayer; i++) {
-		minDistance[i] = INFINITY_DIST;
+		minDistance[i] = infinityDist;
 
 		for (int j=0; j < nbPlayer; j++) {
 			if (i != j) {
@@ -45,21 +45,21 @@ vector<int> targetting(PlayerMap* players){
 	return target; //rend donc l'indice correspondant à players
 }
 
-bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
+bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap* obstacles){
 	if (l1 == l2) {									// Case 1 : same line
 		if (c1 < c2){
-			for (int c = c1; c <= c2; c++){ if (mainMap->isObstacle(l2, c)) { return true; } }
+			for (int c = c1; c <= c2; c++){ if (obstacles->isObstacle(l2, c)) { return true; } }
 			return false;
 		} else {
-			for (int c = c2; c <= c1; c++){ if (mainMap->isObstacle(l2, c)) { return true; } }
+			for (int c = c2; c <= c1; c++){ if (obstacles->isObstacle(l2, c)) { return true; } }
 			return false;
 		}
 	} else if (c1 == c2) {					// Case 2 : same column
 		if (l1 < l2){
-			for (int l = l1; l <= l2; l++){ if (mainMap->isObstacle(l, c2)) { return true; } }
+			for (int l = l1; l <= l2; l++){ if (obstacles->isObstacle(l, c2)) { return true; } }
 			return false;
 		} else {
-			for (int l = l2; l <= l1; l++){ if (mainMap->isObstacle(l, c2)) { return true; } }
+			for (int l = l2; l <= l1; l++){ if (obstacles->isObstacle(l, c2)) { return true; } }
 			return false;
 		}
 	} else {												// Case 3 : different line and column
@@ -74,7 +74,7 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
 					direction = column;
 					continue;
 				}
-				if (mainMap->isObstacle(l, c)) { return true; }
+				if (obstacles->isObstacle(l, c)) { return true; }
 				direction = column;
 			} else {
 				if (c < c2){ l ++; } 
@@ -83,42 +83,29 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2){
 					direction = line;
 					continue;
 				}
-				if (mainMap->isObstacle(l, c)) { return true; }
+				if (obstacles->isObstacle(l, c)) { return true; }
 				direction = line;
 			}
 		}
 	}
 }
 
-double whichPath(Player* start, Player* target) {
-	if (isThereObstacleBetween(start->getL(), start->getC(), target->getL(), target->getC())) {
-		return complexPath(start, target);
-	} else {return simplePath(start, target);}
-
-}
-
 double simplePath(Player* start, Player* target) {
 	return angle(start->getL(), start->getC(), target->getL(), target->getC());
 }
 
-
-void complexPath(Player* start, Player* target){
-	/* Description of Floyd's algorithm's implementation */
-	return floyd(start, target);
-}
-
-double floyd(Player* start, Player* target) {
+double floyd(Player* start, Player* target, int infinityInit, int infinityDist) {
 	//initialisation d'un tableau de distances
 	static vector <vector<double> > tabCellDist (pow(nbCell, 2));
 	static vector <vector<double> > pathAngles (pow(nbCell, 2));
 	for (int i(0); i < pow(nbCell, 2); i++) {
 		for (int j(0); j < pow(nbCell, 2); j++) {
-			tabCellDist[i][j] = INFINITY_INIT;
+			tabCellDist[i][j] = infinityInit;
 		}
 		if (Obstacles->isObstacle(i%nbCell, i/nbCell)) {
 			for (int j(0); j < pow(nbCell, 2); j++) {
-			 	tabCellDist[i][j] = INFINITY_DIST;
-				tabCellDist[j][i] = INFINITY_DIST;
+			 	tabCellDist[i][j] = infinityDist;
+				tabCellDist[j][i] = infinityDist;
 			}
 		}
 		
@@ -157,11 +144,11 @@ double floyd(Player* start, Player* target) {
 		}
 }
 
-	while (areThereUninitialisedCases(tabCellDist)) {
+	while (areThereUninitialisedCases(tabCellDist), int infinityInit) {
 		for (int i(0); i < pow(nbCell, 2); i++) {
 			for (int j(0); j < i; j++) {
-				if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != INFINITY_DIST) {
-					shortestIndirectPath(i, j, &tabCellDist, &pathAngles);
+				if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != infinityDist) {
+					shortestIndirectPath(i, j, &tabCellDist, &pathAngles, int infinityDist);
 				}
 			}
 		}
@@ -175,19 +162,19 @@ double floyd(Player* start, Player* target) {
 	De même, faudra penser à aller acheter ces 10kg de riz à Aligro :) */
 }
 
-bool areThereUninitialisedCases (vector <vector<double> > tab2D) {
+bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityInit) {
 	//considers an inferior triangular matrix, with a null-diagonal
 	for (int i(0); i < tab2D.size(); i++) {
 		for (int j(0); j < i; j++) {
-			if (tab2D[i][j] == INFINITY_INIT) { return true;}
+			if (tab2D[i][j] == infinityInit) { return true;}
 		}
 	}
 	return false;
 }
 
-void shortestIndirectPath(Player start, Player target, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles) {
+void shortestIndirectPath(Player start, Player target, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, int infinityDist) {
 	for (int k(0); k < pow(nbCell, 2); k++) {
-		if ((tabCellDist[i][k] != INFINITY_DIST) && (tabCellDist[j][k] != INFINITY_DIST) && (k != i) && (k != j)) {
+		if ((tabCellDist[i][k] != infinityDist) && (tabCellDist[j][k] != infinityDist) && (k != i) && (k != j)) {
 			if ((tabCellDist[i][k] + tabCellDist[j][k]) < tabCellDist[i][j]) {
 				tabCellDist[i][j] = tabCellDist[i][k] + tabCellDist[j][k];
 				tabCellDist[j][j] = tabCellDist[i][k] + tabCellDist[j][k];
@@ -245,5 +232,16 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* t
 				pathAngle[j][i] = 7*M_PI_4;
 			}
 		}
-	} //si 2 Obstacles, il faut chercher mieux, donc on laisse à INFINITY_INIT
+	} //si 2 Obstacles, il faut chercher mieux, donc on laisse à infinityInit
+}
+
+void complexPath(Player* start, Player* target, int infinityInit, int infinityDist){
+	/* Description of Floyd's algorithm's implementation */
+	return floyd(start, target, infinityInit, infinityDist);
+}
+
+double whichPath(Player* start, Player* target, int infinityInit, int infinityDist) {
+	if (isThereObstacleBetween(start->getL(), start->getC(), target->getL(), target->getC(), obstacles)) {
+		return complexPath(start, target);
+	} else {return simplePath(start, target);}
 }
