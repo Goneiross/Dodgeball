@@ -15,6 +15,16 @@
 
 using namespace std;
 
+vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist);
+double whichPath(Player* start, Player* target, int infinityInit, int infinityDist);
+bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap* obstacles);
+double simplePath(Player* start, Player* target);
+void complexPath(Player* start, Player* target, int infinityInit, int infinityDist);
+double floyd(Player* start, Player* target, int infinityInit, int infinityDist);
+void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles);
+bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityInit);
+void shortestIndirectPath(Player start, Player target, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, int infinityDist);
+
 vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist){
 	vector<vector<double> > dBP(players->getNb()); //dBP = distance between players
 
@@ -56,7 +66,7 @@ bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityIni
 }
 
 bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap* obstacles){
-	if (l1 == l2) {									// Case 1 : same line
+	if (l1 == l2) {							// Case 1 : same line
 		if (c1 < c2){
 			for (int c = c1; c <= c2; c++){ if (obstacles->isObstacle(l2, c)) { return true; } }
 			return false;
@@ -72,7 +82,7 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap* obstacl
 			for (int l = l2; l <= l1; l++){ if (obstacles->isObstacle(l, c2)) { return true; } }
 			return false;
 		}
-	} else {												// Case 3 : different line and column
+	} else {								// Case 3 : different line and column
 		enum direction {line = 0, column = 1};
 		bool direction = line;
 		int l = l1, c = c1; 
@@ -148,10 +158,10 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 
 	for (int i(0); i < nbCell; i++) {
 		for (int j(0); j < nbCell - 1; j++) {	//déterminer les distances diagonales
-			diagonalDistance(i*nbCell, (i + 1)*nbCell - 2, &tabCellDist, &pathAngles);
+			diagonalDistance(i*nbCell, (i + 1)*nbCell - 2, &tabCellDist, &pathAngles, nbCell);
 		}
 		for (int j(1); j < nbCell; j++) {
-			diagonalDistance(i*nbCell + 1, (i + 1)*nbCell - 1, &tabCellDist, &pathAngles);
+			diagonalDistance(i*nbCell + 1, (i + 1)*nbCell - 1, &tabCellDist, &pathAngles, nbCell);
 		}
 }
 
@@ -187,6 +197,7 @@ void shortestIndirectPath(int startID, int targetID, vector<vector<double> >* ta
 }
 
 void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, ObstacleMap* obstacles) {
+	int nbCell = obstacles->getLNb();
 	double iXPos = i/nbCell;
 	double iYPos = i%nbCell;
 	double jXPos = j/nbCell;
@@ -201,7 +212,7 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* t
 				pathAngles[j][i] = M_PI;
 			} else {
 				pathAngles[i][j] = 0;
-				pathAngles[j][i] = m_PI_2;
+				pathAngles[j][i] = M_PI_2;
 			}
 		} else {
 			if (obstacles->isObstacle(iXPos, jYPos)) {
@@ -218,19 +229,19 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> >* t
 		tabCellDist[j][i] = sqrt(2);
 		if (iXPos == jXPos - 1) {
 			if (iYPos == jYPos + 1){
-				pathAngle[i][j] = 7*M_PI_4;
-				pathAngle[j][i] = 3*M_PI_4;
+				pathAngles[i][j] = 7*M_PI_4;
+				pathAngles[j][i] = 3*M_PI_4;
 			} else {
-				pathAngle[i][j] = M_PI_4
-				pathAngle[j][i] = 5*M_PI_4;
+				pathAngles[i][j] = M_PI_4
+				pathAngles[j][i] = 5*M_PI_4;
 			}
 		} else {
 			if (iYPos == jYPos + 1) {
-				pathAngle[i][j] = 5*M_PI_4;
-				pathAngle[j][i] = M_PI_4;
+				pathAngles[i][j] = 5*M_PI_4;
+				pathAngles[j][i] = M_PI_4;
 			} else {
-				pathAngle[i][j] = 3*M_PI_4;
-				pathAngle[j][i] = 7*M_PI_4;
+				pathAngles[i][j] = 3*M_PI_4;
+				pathAngles[j][i] = 7*M_PI_4;
 			}
 		}
 	} //si 2 Obstacles, il faut chercher mieux, donc on laisse à infinityInit
