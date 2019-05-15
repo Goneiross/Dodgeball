@@ -16,24 +16,24 @@
 using namespace std;
 
 vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist){
-	vector<vector<double> > dBP(player->getNb()); //dBP = distance between players
+	vector<vector<double> > dBP(players->getNb()); //dBP = distance between players
 
-	for (int i=0; i < nbPlayer; i++) {dBP[i][i] = 0;}
+	for (int i=0; i < players->getNb(); i++) {dBP[i][i] = 0;}
 	
-	for (int i=0; i < nbPlayer; i++) {
+	for (int i=0; i < players->getNb(); i++) {
 		for (int j=0; j < i; j++) {
 			dBP[i][j] = distance(players->getPlayer(i), players->getPlayer(j));
 			dBP[j][i] = dBP[i][j];
 		}
 	}
 	
-	vector<double> minDistance(nbPlayer);
-	vector<int> target(nbPlayer);
+	vector<double> minDistance(players->getNb());
+	vector<int> target(players->getNb());
 	
-	for (int i=0; i < nbPlayer; i++) {
+	for (int i=0; i < players->getNb(); i++) {
 		minDistance[i] = infinityDist;
 
-		for (int j=0; j < nbPlayer; j++) {
+		for (int j=0; j < players->getNb(); j++) {
 			if (i != j) {
 				if (dBP[i][j] < minDistance[i]) {
 					minDistance[i] = dBP[i][j];
@@ -43,6 +43,16 @@ vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist){
 		}
 	}
 	return target; //rend donc l'indice correspondant à players
+}
+
+bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityInit) {
+	//considers an inferior triangular matrix, with a null-diagonal
+	for (int i(0); i < tab2D.size(); i++) {
+		for (int j(0); j < i; j++) {
+			if (tab2D[i][j] == infinityInit) { return true;}
+		}
+	}
+	return false;
 }
 
 bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap* obstacles){
@@ -102,7 +112,7 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist) 
 		for (int j(0); j < pow(nbCell, 2); j++) {
 			tabCellDist[i][j] = infinityInit;
 		}
-		if (Obstacles->isObstacle(i%nbCell, i/nbCell)) {
+		if (obstacles->isObstacle(i%nbCell, i/nbCell)) {
 			for (int j(0); j < pow(nbCell, 2); j++) {
 			 	tabCellDist[i][j] = infinityDist;
 				tabCellDist[j][i] = infinityDist;
@@ -137,14 +147,14 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist) 
 
 	for (int i(0); i < nbCell; i++) {
 		for (int j(0); j < nbCell - 1; j++) {	//déterminer les distances diagonales
-			diagonalDist(i*nbCell, (i + 1)*nbCell - 2, &tabCellDist, &pathAngles);
+			diagonalDistance(i*nbCell, (i + 1)*nbCell - 2, &tabCellDist, &pathAngles);
 		}
 		for (int j(1); j < nbCell; j++) {
-			diagonalDist(i*nbCell + 1, (i + 1)*nbCell - 1, &tabCellDist, &pathAngles);
+			diagonalDistance(i*nbCell + 1, (i + 1)*nbCell - 1, &tabCellDist, &pathAngles);
 		}
 }
 
-	while (areThereUninitialisedCases(tabCellDist), int infinityInit) {
+	while (areThereUninitialisedCases(tabCellDist), infinityInit) {
 		for (int i(0); i < pow(nbCell, 2); i++) {
 			for (int j(0); j < i; j++) {
 				if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != infinityDist) {
@@ -160,16 +170,6 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist) 
 	De même, si une portion de la map est entièrement séparée du reste, comment arrêter l'algorithme et définir que les 
 	Players des deux côté de la frontière ne pourront pas se rejoindre à moins de provoquer la chute du mur ?
 	De même, faudra penser à aller acheter ces 10kg de riz à Aligro :) */
-}
-
-bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityInit) {
-	//considers an inferior triangular matrix, with a null-diagonal
-	for (int i(0); i < tab2D.size(); i++) {
-		for (int j(0); j < i; j++) {
-			if (tab2D[i][j] == infinityInit) { return true;}
-		}
-	}
-	return false;
 }
 
 void shortestIndirectPath(Player start, Player target, vector<vector<double> >* tabCellDist, vector<vector<double> >* pathAngles, int infinityDist) {
