@@ -104,7 +104,8 @@ double simplePath(Player* start, Player* target) {
 	return angle(start->getL(), start->getC(), target->getL(), target->getC());
 }
 
-double floyd(Player* start, Player* target, int infinityInit, int infinityDist) {
+double floyd(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles) {
+	int nbCell = obstacles->getLNb();
 	//initialisation d'un tableau de distances
 	static vector <vector<double> > tabCellDist (pow(nbCell, 2));
 	static vector <vector<double> > pathAngles (pow(nbCell, 2));
