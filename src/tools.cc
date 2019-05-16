@@ -62,11 +62,11 @@ double angle(double x1, double y1, double x2, double y2) {
 		return M_PI + atan(distance(y2, y1) / distance (x2, x1));
 	} else if (x2 > x1 && y2 < y1) {
 		return M_PI + M_PI_2 + atan(distance(x2, x1) / distance(y2, y1));
-	} else if (x1 = x2) {
+	} else if (x1 == x2) {
 		if (y2 > y1) { return M_PI_2; } 
 		else if (y2 < y1) { return - M_PI_2; } 
 		else { std::cout << "UNDEFINED" << endl; exit(1); }
-	} else if (y1 = y2) {
+	} else if (y1 == y2) {
 		if (x2 > x1) { return 0; } 
 		else if (x2 < x1) { return - M_PI; } 
 	}
