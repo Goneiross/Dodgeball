@@ -18,8 +18,8 @@ void pathfinding(PlayerMap* players, ObstacleMap* obstacles){
     targets.resize(players->getNb());
     pathAngles.resize(players->getNb());
     targets = targetting(players, infinityInit, infinityDist);
-    cout << "t" << endl;
     for (int p = 0; p < players->getNb(); p++){
+        cout << "start ID: " << players->getPlayer(p)->getID() << " target ID: " << targets[p] << endl;
         pathAngles[p] = whichPath(players->getPlayer(p), players->getPlayer(targets[p]), infinityInit, infinityDist, obstacles); 
     }
     cout << "t" << endl;

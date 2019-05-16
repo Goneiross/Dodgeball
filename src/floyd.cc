@@ -24,11 +24,14 @@ bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityIni
 void shortestIndirectPath(int startID, int targetID, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, int infinityDist, int nbCell);
 
 vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist){
-	vector<vector<double> > dBP(players->getNb(), vector<double>(players->getNb(), 0)); //dBP = distance between players
+	cout << "infinityInit: " << infinityInit << endl;
+	vector<vector<double> > dBP(players->getNb(), vector<double>(players->getNb(), infinityInit)); //dBP = distance between players
 	for (int i=0; i < players->getNb(); i++) {
 		for (int j=0; j < i; j++) {
-			dBP[i][j] = distance(players->getPlayer(i), players->getPlayer(j));
+			dBP[i][j] = distance(players->getPlayer(i)->getL(), players->getPlayer(i)->getC(), players->getPlayer(j)->getL(), players->getPlayer(j)->getC()); //L C or C L
 			dBP[j][i] = dBP[i][j];
+			cout << "start ID: " << i << " target ID:" << j << " distance:" << distance(players->getPlayer(i)->getL(), players->getPlayer(i)->getC(), players->getPlayer(j)->getL(), players->getPlayer(j)->getC()) << endl;
+
 		}
 	}
 	vector<double> minDistance(players->getNb());
@@ -52,7 +55,7 @@ bool areThereUninitialisedCases (vector <vector<double> > tab2D, int infinityIni
 	//considers an inferior triangular matrix, with a null-diagonal
 	for (int i(0); i < tab2D.size(); i++) {
 		for (int j(0); j < i; j++) {
-			if (tab2D[i][j] == infinityInit) { return true;}
+			if (tab2D[i][j] == infinityInit) {return true;}
 		}
 	}
 	return false;
@@ -117,14 +120,12 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 		for (int j(0); j < nbCellSquared; j++) {
 			tabCellDist[i][j] = infinityInit;
 		}
-		cout << "i" << endl;
 		if (obstacles->isObstacle(i%nbCell, i/nbCell)) {
 			for (int j(0); j < nbCellSquared; j++) {
 			 	tabCellDist[i][j] = infinityDist;
 				tabCellDist[j][i] = infinityDist;
 			}
 		}
-		cout << "h" << endl;		
 		tabCellDist[i][i] = 0;
 		for (int j(0); j < nbCellSquared; j++) {
 			if (((j == i + 1) || (j == i - 1))	//si les cases sont adjacentes
@@ -149,7 +150,6 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 			}			
 		}
 	}
-
 	for (int i(0); i < nbCell; i++) {
 		for (int j(0); j < nbCell - 1; j++) {	//déterminer les distances diagonales
 			diagonalDistance(i*nbCell, (i + 1)*nbCell - 2, tabCellDist, pathAngles, obstacles);
@@ -157,9 +157,15 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 		for (int j(1); j < nbCell; j++) {
 			diagonalDistance(i*nbCell + 1, (i + 1)*nbCell - 1, tabCellDist, pathAngles, obstacles);
 		}
-}
-
+	}
+	cout << "done" << endl;
 	while (areThereUninitialisedCases(tabCellDist, infinityInit)) {
+		for (int i = 0; i < tabCellDist.size(); i++){
+			for (int j = 0; j < tabCellDist[0].size(); j++){
+				cout << "(" << i << "," << j << "," << tabCellDist[i][j] << ") ";
+			}
+		}
+		cout << endl << endl;
 		for (int i(0); i < nbCellSquared; i++) {
 			for (int j(0); j < i; j++) {
 				if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != infinityDist)) {
@@ -168,6 +174,8 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 			}
 		}
 	}
+	cout << "gggg" << endl;
+	exit(0);
 	return pathAngles[(start->getC() * nbCell) + start->getL()][(target->getC() * nbCell) + target->getL()];
 	/* !! Si start et target sont adjacents ou diagonales, on connait leur angle avant  la boucle _while_, ce qui rend
 	inutile le fait de compléter les vector<vector<double> > ! Il faudrait que, dans ces cas, floyd ne complète pas sa 
