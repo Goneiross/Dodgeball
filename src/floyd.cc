@@ -117,39 +117,48 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 	static vector <vector<double> > tabCellDist (nbCellSquared, vector<double>(nbCellSquared, infinityInit));
 	static vector <vector<double> > pathAngles (nbCellSquared, vector<double>(nbCellSquared, 0));
 	for (int i(0); i < nbCellSquared; i++) {
-		for (int j(0); j < nbCellSquared; j++) {
-			tabCellDist[i][j] = infinityInit;
-		}
-		if (obstacles->isObstacle(i%nbCell, i/nbCell)) {
-			for (int j(0); j < nbCellSquared; j++) {
-			 	tabCellDist[i][j] = infinityDist;
-				tabCellDist[j][i] = infinityDist;
-			}
-		}
-		tabCellDist[i][i] = 0;
-		for (int j(0); j < nbCellSquared; j++) {
-			if (((j == i + 1) || (j == i - 1))	//si les cases sont adjacentes
-					&& !(((j%nbCell == 0) && ((i + 1)%nbCell == 0))
-					|| ((i%nbCell == 0) && (j + 1)%nbCell == 0))) {
-				tabCellDist[i][j] = 1;
-				tabCellDist[j][i] = 1;
-				
-				if (j/nbCell == i/nbCell + 1) {
-					pathAngles[i][j] = M_PI_2;
-					pathAngles[j][i] = 3*M_PI_4;
-				} else if (j/nbCell == i/nbCell - 1) {
-					pathAngles[i][j] = 3*M_PI_4;
-					pathAngles[j][i] = M_PI_2;
-				} else if (j%nbCell == i%nbCell - 1) {
-					pathAngles[i][j] = M_PI;
-					pathAngles[j][i] = 0;
-				} else if (j%nbCell == i%nbCell + 1) {
-					pathAngles[i][j] = 0;
-					pathAngles[j][i] = M_PI;
-				}
-			}			
-		}
+    	for (int j(0); j < nbCellSquared; j++) {
+    	tabCellDist[i][j] = infinityInit;
+    }
+   for (int j(0); j < i; j++) {
+      if ((i/nbCell)==(j/nbCell)) {
+        if ((i%nbCell)==((j%nbCell)-1)){
+          tabCellDist[i][j] = 1;
+          tabCellDist[j][i] = 1;
+          pathAngles[i][j] = 0;
+          pathAngles[j][i] = M_PI;
+        } else if ((i%nbCell)==((j%nbCell)+1)) {
+          tabCellDist[i][j] = 1;
+          tabCellDist[j][i] = 1;
+          pathAngles[i][j] = M_PI;
+          pathAngles[j][i] = 0;
+        }
+      } else if ((i%nbCell)==(j%nbCell)) {
+        if ((i/nbCell)==((j/nbCell)-1)) {
+          tabCellDist[i][j] = 1;
+          tabCellDist[j][i] = 1;
+          pathAngles[i][j] = 3*M_PI_2;
+          pathAngles[j][i] = M_PI_2;
+        } else if ((i/nbCell)==((j/nbCell)+1)) {
+          tabCellDist[i][j] = 1;            tabCellDist[j][i] = 1;
+          pathAngles[i][j] = M_PI_2;
+          pathAngles[j][i] = 3*M_PI_2;
+        }
+      }
+    }
 	}
+	for (int i(0); i < nbCellSquared; i++) {
+    	if (obstacles->isObstacle(i%nbCell, i/nbCell)) {
+			cout << i%nbCell << i/nbCell << endl;
+    	  for (int j(0); j < nbCellSquared; j++) {
+		  cout << i << j << " OBST" << endl;
+          tabCellDist[i][j] = infinityDist;
+          tabCellDist[j][i] = infinityDist;
+        }
+    }
+    tabCellDist[i][i] = 0;
+  }
+	// Diag not working
 	for (int i(0); i < nbCell; i++) {
 		for (int j(0); j < nbCell - 1; j++) {	//déterminer les distances diagonales
 			diagonalDistance(i*nbCell, (i + 1)*nbCell - 2, tabCellDist, pathAngles, obstacles);
@@ -158,8 +167,12 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 			diagonalDistance(i*nbCell + 1, (i + 1)*nbCell - 1, tabCellDist, pathAngles, obstacles);
 		}
 	}
+	
 	cout << "done" << endl;
-	while (areThereUninitialisedCases(tabCellDist, infinityInit)) {
+	int g = 0;
+	while (areThereUninitialisedCases(tabCellDist, infinityInit) && g < 20 ) {
+		g++;
+		cout << "infinityInit: " << infinityInit << endl;
 		for (int i = 0; i < tabCellDist.size(); i++){
 			for (int j = 0; j < tabCellDist[0].size(); j++){
 				cout << "(" << i << "," << j << "," << tabCellDist[i][j] << ") ";
@@ -175,7 +188,6 @@ double floyd(Player* start, Player* target, int infinityInit, int infinityDist, 
 		}
 	}
 	cout << "gggg" << endl;
-	exit(0);
 	return pathAngles[(start->getC() * nbCell) + start->getL()][(target->getC() * nbCell) + target->getL()];
 	/* !! Si start et target sont adjacents ou diagonales, on connait leur angle avant  la boucle _while_, ce qui rend
 	inutile le fait de compléter les vector<vector<double> > ! Il faudrait que, dans ces cas, floyd ne complète pas sa 
