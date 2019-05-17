@@ -34,19 +34,17 @@ void shortestIndirectPath(int startID, int targetID,
 
 vector<int> targetting(PlayerMap *players, int infinityInit, int infinityDist) {
   // cout << "infinityInit: " << infinityInit << endl;
-  vector<vector<double>> dBP(
-      players->getNb(),
-      vector<double>(players->getNb(),
-                     infinityInit)); // dBP = distance between players
+  // dBP = distance between players
+  vector<vector<double>> dBP(players->getNb(),
+                             vector<double>(players->getNb(), infinityInit));
   for (int i = 0; i < players->getNb(); i++) {
     for (int j = 0; j < i; j++) {
       dBP[i][j] =
           distance(players->getPlayer(i)->getL(), players->getPlayer(i)->getC(),
-                   players->getPlayer(j)->getL(),
-                   players->getPlayer(j)->getC()); // L C or C L
+                   players->getPlayer(j)->getL(), players->getPlayer(j)->getC());
       dBP[j][i] = dBP[i][j];
-      cout << "start ID: " << i << "(" << players->getPlayer(i)->getL() << ","
-           << players->getPlayer(i)->getC() << ") target ID: " << j << "("
+      cout << "start: " << i << "(" << players->getPlayer(i)->getL() << ","
+           << players->getPlayer(i)->getC() << ") target: " << j << "("
            << players->getPlayer(j)->getL() << "," << players->getPlayer(j)->getC()
            << ") distance:"
            << distance(players->getPlayer(i)->getL(), players->getPlayer(i)->getC(),
@@ -85,6 +83,7 @@ bool areThereUninitialisedCases(vector<vector<double>> tab2D, int infinityInit) 
 
 bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacles) {
   if (l1 == l2) { // Case 1 : same line
+  cout << "case 1" << endl;
     if (c1 < c2) {
       for (int c = c1; c <= c2; c++) {
         if (obstacles->isObstacle(l2, c)) {
@@ -101,6 +100,7 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacl
       return false;
     }
   } else if (c1 == c2) { // Case 2 : same column
+  cout << "case 2" << endl;
     if (l1 < l2) {
       for (int l = l1; l <= l2; l++) {
         if (obstacles->isObstacle(l, c2)) {
@@ -117,10 +117,12 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacl
       return false;
     }
   } else { // Case 3 : different line and column
+  cout << "case 3" << endl;
     enum direction { line = 0, column = 1 };
     bool direction = line;
     int l = l1, c = c1;
     while ((l != l2) && (c != c2)) {
+      cout << "l1: " << l1 << " c1: " <<  c1 <<  " l2: " << l2 << " c2: " <<  c2 << " l: " << l << " c: " << c << endl;
       if (direction == line) {
         if (l < l2) {
           l++;
@@ -128,6 +130,7 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacl
           l--;
         } else {
           direction = column;
+          cout << "continue" << endl;
           continue;
         }
         if (obstacles->isObstacle(l, c)) {
@@ -136,11 +139,12 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacl
         direction = column;
       } else {
         if (c < c2) {
-          l++;
+          c++;
         } else if (c > c2) {
-          l--;
+          c--;
         } else {
           direction = line;
+          cout << "continue" << endl;
           continue;
         }
         if (obstacles->isObstacle(l, c)) {
@@ -280,9 +284,9 @@ void diagonalDistance(unsigned int i, unsigned int j,
 
   cout << "i: " << i << " j: " << j << " iC: " << iC << " iL: " << iL << " jC: " << jC
        << " jL: " << jL << endl;
-  if (iL == jL + 1) {                           // j/i
+  if (iL == jL + 1) { // j/i
     cout << "J au dessus de I" << endl;
-    if (iC == jC - 1) {                         // i-j
+    if (iC == jC - 1) { // i-j
       cout << "J a droite de I" << endl;
       if (obstacles->isObstacle(jL, jC - 1)) { // oj
         cout << "a" << endl;
@@ -303,7 +307,7 @@ void diagonalDistance(unsigned int i, unsigned int j,
         pathAngles[i][j] = M_PI_4;
         pathAngles[j][i] = 5 * M_PI_4;
       }
-    } else {                                 // j-i
+    } else { // j-i
       cout << "J a gauche de I" << endl;
       if (obstacles->isObstacle(jL, jC + 1)) { // jo
         cout << "d" << endl;
@@ -325,9 +329,9 @@ void diagonalDistance(unsigned int i, unsigned int j,
         pathAngles[j][i] = 7 * M_PI_4;
       }
     }
-  } else {                                     // i/j
+  } else { // i/j
     cout << "J en dessous de I" << endl;
-    if (iC == jC + 1) {                         // j-i
+    if (iC == jC + 1) { // j-i
       cout << "J a gauche de I" << endl;
       if (obstacles->isObstacle(jL, jC + 1)) { // jo
         cout << "g" << endl;
