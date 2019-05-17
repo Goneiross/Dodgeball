@@ -341,19 +341,24 @@ void updatePlayers() {
 }
 
 void dracarys() {
+  cout << "dracarys" << endl;
   double ballRadius = COEF_RAYON_BALLE * (SIDE / obstacles->getLNb()); // Changer ca !
   double playerRadius = COEF_RAYON_JOUEUR * (SIDE / obstacles->getLNb()); // Ca aussi !
   double ballVelocity =
       COEF_VITESSE_BALLE * (SIDE / obstacles->getLNb()); // Et aussi lui !
   for (int p = 0; p < players->getNb(); p++) {
+    cout << p << endl;
     if (players->getPlayer(p)->getCount() ==
         MAX_COUNT) { // ET SI IL N'Y A PAS D'OBSTACLE ENTRE LES DEUX
       double xPos = players->getPlayer(p)->getX();
       double yPos = players->getPlayer(p)->getY();
       double delta = ballRadius + playerRadius;
       double angle = nearestPlayerAngle(p);
+
       balls->addBall(xPos + cos(angle) * delta, yPos + sin(angle) * delta, angle,
                      ballRadius, ballVelocity, balls->getNewID());
+        cout << "COUNT" << endl;
+
       players->getPlayer(p)->setCount(0);
     }
   }

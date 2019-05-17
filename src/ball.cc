@@ -57,6 +57,8 @@ BallMap::BallMap(int l, int c) {
 void BallMap::addBall(double x, double y, double a, double r, double v, int ID) {
   int colPos = ((x + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
   int lgnPos = -((y - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
+  if (colPos >= columnNumber || colPos < 0){return;}
+  if (lgnPos >= lineNumber || lgnPos < 0){return;}
   balls.push_back(new Ball(x, y, a, r, v, colPos, lgnPos, ID));
   if (ballGrid[lgnPos][colPos][0] == -1) {
     ballGrid[lgnPos][colPos][0] = ID;

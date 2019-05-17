@@ -156,7 +156,7 @@ void PlayerMap::updatePosition() {
     double newY = players[p]->getY() + sin(angle) * players[p]->getVelocity();
     int newC = ((newX + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
     int newL = -((newY - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
-    cout << "oldX: " << players[p]->getX() << " oldY: " << players[p]->getY()
+    cout << "p: " << p << " oldX: " << players[p]->getX() << " oldY: " << players[p]->getY()
          << " newX: " << newX << " newY: " << newY << " OldL: " << players[p]->getL()
          << " OldC: " << players[p]->getC() << " newL: " << newL << " newC: " << newC
          << " ";
@@ -178,7 +178,6 @@ void PlayerMap::updatePosition() {
       cout << "Player collision" << endl;
       continue;
     }
-
     cout << endl;
     players[p]->setL(newL);
     players[p]->setC(newC);
