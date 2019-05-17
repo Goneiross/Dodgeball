@@ -55,6 +55,8 @@ double distance(Circle *c, Square *s) {
 double angle(double x1, double y1, double x2, double y2) {
   cout << "Compute angle from coords : "
        << "(" << x1 << "," << y1 << ") and (" << x2 << "," << y2 << ")" << endl;
+  return atan2(y2-y1, x2-x1);
+  /*
   if (x2 > x1 && y2 > y1) {
     return atan(distance(y2, y1) / distance(x2, x1));
   } else if (x2 < x1 && y2 > y1) {
@@ -79,4 +81,5 @@ double angle(double x1, double y1, double x2, double y2) {
       return -M_PI;
     }
   }
+  */
 }

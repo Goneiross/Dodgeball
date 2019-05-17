@@ -153,8 +153,8 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacl
 }
 
 double simplePath(Player *start, Player *target) {
-  return angle(start->getX(), start->getY(), target->getX(),
-               target->getY()); // Check if true
+  double pathA = angle(start->getX(), start->getY(), target->getX(), target->getY());
+  return pathA; // Check if true
 }
 
 void floyd(Player *start, Player *target, int infinityInit, int infinityDist,
