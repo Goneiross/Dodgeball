@@ -281,8 +281,10 @@ void diagonalDistance(unsigned int i, unsigned int j,
 
   cout << "i: " << i << " j: " << j << " iC: " << iC << " iL: " << iL << " jC: " << jC
        << " jL: " << jL << endl;
-  if (iL = jL + 1) {                           // j/i
-    if (iC = jC - 1) {                         // i-j
+  if (iL == jL + 1) {                           // j/i
+    cout << "J au dessus de I" << endl;
+    if (iC == jC - 1) {                         // i-j
+      cout << "J a droite de I" << endl;
       if (obstacles->isObstacle(jL, jC - 1)) { // oj
         cout << "a" << endl;
         tabCellDist[i][j] = 2;
@@ -302,7 +304,8 @@ void diagonalDistance(unsigned int i, unsigned int j,
         pathAngles[i][j] = M_PI_4;
         pathAngles[j][i] = 5 * M_PI_4;
       }
-    } else {                                   // j-i
+    } else {                                 // j-i
+      cout << "J a gauche de I" << endl;
       if (obstacles->isObstacle(jL, jC + 1)) { // jo
         cout << "d" << endl;
         tabCellDist[i][j] = 2;
@@ -324,7 +327,9 @@ void diagonalDistance(unsigned int i, unsigned int j,
       }
     }
   } else {                                     // i/j
-    if (iC = jC + 1) {                         // j-i
+    cout << "J en dessous de I" << endl;
+    if (iC == jC + 1) {                         // j-i
+      cout << "J a gauche de I" << endl;
       if (obstacles->isObstacle(jL, jC + 1)) { // jo
         cout << "g" << endl;
         tabCellDist[i][j] = 2;
@@ -345,6 +350,7 @@ void diagonalDistance(unsigned int i, unsigned int j,
         pathAngles[j][i] = M_PI_4;
       }
     } else { // i-j
+      cout << "J a droite de I" << endl;
       cout << "j" << endl;
       if (obstacles->isObstacle(jL, jC - 1)) { // oj
         tabCellDist[i][j] = 2;
