@@ -148,6 +148,9 @@ bool PlayerMap::isCollision(int newX, int newY, int ID) {
 void PlayerMap::updatePosition() {
   cout << "--------------------Player-Moving--------------------" << endl;
   for (int p = 0; p < players.size(); p++) {
+    if (players[p]->getCount() != MAX_COUNT) {
+      players[p]->setCount(players[p]->getCount() + 1);
+    }
     double angle = nearestPlayerAngle(p);
     double newX = players[p]->getX() + cos(angle) * players[p]->getVelocity();
     double newY = players[p]->getY() + sin(angle) * players[p]->getVelocity();
@@ -198,10 +201,6 @@ void PlayerMap::updatePosition() {
       } else {
         playerGrid[newL][newC].push_back(ID);
       }
-    }
-    if (players[p]->getCount() == MAX_COUNT) {
-    } else {
-      players[p]->setCount(players[p]->getCount() + 1);
     }
   }
 }
