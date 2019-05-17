@@ -12,10 +12,11 @@
 
 void simulation(std::string inputFile, int mode);
 void simulation(std::string inputFile, std::string saveFile, int mode);
+void newGame();
 void save(std::string filename);
 bool initialization(std::string inputFile, int mode);
 bool isOut(double xPosision, double yPosition);
-void check();
+bool check();
 void updateBalls();
 void updatePlayers();
 void dracarys();

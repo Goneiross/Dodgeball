@@ -50,17 +50,16 @@ void MyArea::refresh() {
 }
 
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
+  Allocation allocation = get_allocation();
+  int width = allocation.get_width();
+  int height = allocation.get_height();
+  int lesser = MIN(width, height);
+  cr->save();
+  cr->set_source_rgb(1, 1, 1);
+  cr->rectangle(0, 0, get_width(), get_height());
+  cr->fill();
   if (not empty) {
-    Allocation allocation = get_allocation();
-    int width = allocation.get_width();
-    int height = allocation.get_height();
-    int lesser = MIN(width, height);
-
     int nbPlayer = getPlayerNb();
-    cr->save();
-    cr->set_source_rgb(1, 1, 1);
-    cr->rectangle(0, 0, get_width(), get_height());
-    cr->fill();
     for (int p = 0; p < nbPlayer; p++) {
       Circle *player = getPlayerHitbox(p);
       double GX = width / 2 + player->getX();
@@ -143,6 +142,8 @@ protected:
   bool disconnect;
   const int timeoutValue;
 
+  bool won;
+
   Box m_box_top, m_box1, m_box2;
   Button m_button_exit;
   Button m_button_open;
@@ -192,6 +193,8 @@ GUI::GUI()
   show_all_children();
 
   maximize();
+
+  won = false;
 }
 
 GUI::~GUI() {}
@@ -199,6 +202,7 @@ GUI::~GUI() {}
 void GUI::on_button_clicked_exit() { hide(); }
 
 void GUI::on_button_clicked_open() {
+  won = false;
   FileChooserDialog dialog("Please choose a file", FILE_CHOOSER_ACTION_OPEN);
   dialog.set_transient_for(*this);
   dialog.add_button("_Cancel", RESPONSE_CANCEL);
@@ -244,15 +248,20 @@ void GUI::on_button_clicked_start() {
 }
 
 void GUI::on_button_clicked_step() {
-  updatePlayers();
-  dracarys();
-  updateBalls();
-  check();
-  auto win = get_window();
-  if (win) {
-    Gdk::Rectangle r(0, 0, get_allocation().get_width(),
-                     get_allocation().get_height());
-    win->invalidate_rect(r, false);
+  if (not won) {
+    updatePlayers();
+    dracarys();
+    updateBalls();
+    won = check();
+    auto win = get_window();
+    if (win) {
+      Gdk::Rectangle r(0, 0, get_allocation().get_width(),
+                       get_allocation().get_height());
+      win->invalidate_rect(r, false);
+    }
+  } else {
+    m_label_status.set_label("Game’s over !");
+    newGame();
   }
 }
 
@@ -261,17 +270,21 @@ bool GUI::on_timeout() {
     disconnect = false;
     return false;
   } else {
-    updatePlayers();
-    dracarys();
-    updateBalls();
-    check();
-    auto win = get_window();
-    if (win) {
-      Gdk::Rectangle r(0, 0, get_allocation().get_width(),
-                       get_allocation().get_height());
-      win->invalidate_rect(r, false);
+    if (not won) {
+      updatePlayers();
+      dracarys();
+      updateBalls();
+      won = check();
+      auto win = get_window();
+      if (win) {
+        Gdk::Rectangle r(0, 0, get_allocation().get_width(),
+                         get_allocation().get_height());
+        win->invalidate_rect(r, false);
+      }
+    } else {
+      m_label_status.set_label("Game’s over !");
+      newGame();
     }
-    return true;
   }
 }
 

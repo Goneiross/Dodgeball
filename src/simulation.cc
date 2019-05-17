@@ -48,10 +48,13 @@ static PlayerMap *players;
 static BallMap *balls;
 static ObstacleMap *obstacles;
 
-void simulation(std::string inputFile, std::string saveFile, int mode) {
+void newGame(){
   players = new PlayerMap(0, 0);
   balls = new BallMap(0, 0);
   obstacles = new ObstacleMap(0, 0);
+}
+
+void simulation(std::string inputFile, std::string saveFile, int mode) {
   bool success = false;
 
   if (inputFile != "") {
@@ -78,9 +81,7 @@ void simulation(std::string inputFile, std::string saveFile, int mode) {
     return;
   } else {
     if (not success) {
-      players = new PlayerMap(0, 0);
-      balls = new BallMap(0, 0);
-      obstacles = new ObstacleMap(0, 0);
+      newGame();
     }
     draw(success);
     delete obstacles;
@@ -91,9 +92,7 @@ void simulation(std::string inputFile, std::string saveFile, int mode) {
 }
 
 void simulation(std::string inputFile, int mode) {
-  players = new PlayerMap(0, 0);
-  balls = new BallMap(0, 0);
-  obstacles = new ObstacleMap(0, 0);
+  newGame();
   bool success = false;
 
   if (inputFile != "") {
@@ -110,9 +109,7 @@ void simulation(std::string inputFile, int mode) {
     return;
   } else {
     if (not success) {
-      players = new PlayerMap(0, 0);
-      balls = new BallMap(0, 0);
-      obstacles = new ObstacleMap(0, 0);
+      newGame();
     }
     draw(success);
     delete obstacles;
@@ -290,7 +287,7 @@ bool isOut(double xPosition, double yPosition) {
   }
 }
 
-void check() {
+bool check() {
   int ballNb = balls->getNb();
   int playerNb = players->getNb();
   double delta = COEF_MARGE_JEU * (SIDE / (double)obstacles->getLNb()); // Map
@@ -311,6 +308,12 @@ void check() {
         }
       }
     }
+  }
+  if (players->getNb() <= 1){
+    cout << "ONLY ONE PLAYER OR LESS LEFT" << endl; 
+    return true;
+  } else {
+    return false;
   }
 }
 
