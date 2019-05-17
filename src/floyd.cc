@@ -110,7 +110,7 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap* obstacl
 }
 
 double simplePath(Player* start, Player* target) {
-	return angle(start->getL(), start->getC(), target->getL(), target->getC());
+	return angle(start->getX(), start->getY(), target->getX(), target->getY()); // Check if true
 }
 
 void floyd(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles) {
@@ -338,7 +338,7 @@ double complexPath(Player* start, Player* target, int infinityInit, int infinity
 
 double whichPath(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles, bool &firstInStep) {
 	if (isThereObstacleBetween(start->getL(), start->getC(), target->getL(), target->getC(), obstacles)) {
-		cout << "complex path" << endl;
+		cout << "Complex path" << endl;
 		return complexPath(start, target, infinityInit, infinityDist, obstacles, firstInStep);
-	} else {return simplePath(start, target);}
+	} else {cout << "Simple path" << endl; return simplePath(start, target);}
 }
