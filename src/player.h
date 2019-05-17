@@ -31,15 +31,14 @@ public:
   	double getCount() const;
   	double getTimeTouched() const;
 	  Circle *getHitbox() const;
-		
+		double getVelocity() const;
+
     void setL(int l);
     void setC(int c);
   	void setGX(double gY);
   	void setGY(double gY);
   	void setCount(int c);
 		void setTimeTouched(int t);
-
-  	void updatePosition(double angle);
 
 private:
   	int timeTouched;
@@ -61,6 +60,7 @@ public:
     void removeAll();
     void reserveSpace(int nbPlayer);
     bool isPlayer(int lgnPos, int colPos);
+		bool isDifferentPlayer(int lgnPos, int colPos, int ID);
     std::vector<int> whichPlayer(int lgnPos, int colPos);
     Player* getPlayer(int p) const;
     int getNb() const;

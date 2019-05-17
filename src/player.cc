@@ -28,11 +28,6 @@ Player::Player(double x0, double y0, int t, double c, double r,
   	hitbox = new Circle(x0, y0, r);
 }
 
-void Player::updatePosition(double angle) {
-  	hitbox->setX(hitbox->getX() + cos(angle) * velocity);
-  	hitbox->setY(hitbox->getY() + sin(angle) * velocity);
-}
-
 bool Player::touchedAndDead() {
   	timeTouched += 1;
   	if (timeTouched == MAX_TOUCH) { // Dead when equal or sup ? //#askBoulic
@@ -48,6 +43,7 @@ double Player::getC() const { return colPos; }
 double Player::getGX() const { return gXPosition; }
 double Player::getGY() const { return gYPosition; }
 int Player::getID() const { return ID; }
+double Player::getVelocity() const { return velocity; }
 void Player::setGX(double gX) { gXPosition = gX; }
 void Player::setGY(double gY) { gYPosition = gY; }
 void Player::setL(int l) { lgnPos = l; }
@@ -114,6 +110,16 @@ bool PlayerMap::isPlayer(int lgnPos, int colPos){
   	}
 }
 
+bool PlayerMap::isDifferentPlayer(int lgnPos, int colPos, int ID){
+  	if (playerGrid[lgnPos][colPos][0] == -1){
+    	return false;
+  	} else if (playerGrid[lgnPos][colPos][0] == ID && playerGrid[lgnPos][colPos].size() == 1) {
+    	return false;
+  	} else {
+		  return false;
+	}
+}
+
 vector<int> PlayerMap::whichPlayer(int lgnPos, int colPos){
   	return playerGrid[lgnPos][colPos];
 }
@@ -134,30 +140,40 @@ int PlayerMap::getLNb() const {return lineNumber;}
 int PlayerMap::getCNb() const {return columnNumber;}
 
 void PlayerMap::updatePosition(){
+	cout << "--------------------Player-Moving--------------------" << endl;
   	for (int p = 0; p < players.size(); p++){
-    	int c = players[p]->getCount();
 		double angle = nearestPlayerAngle(p);
-		players[p]->updatePosition(angle);
-		int colPos = ((players[p]->getX() + DIM_MAX ) / (SIDE / lineNumber) ) - 1 / 2;
-        int lgnPos = - ((players[p]->getY() - DIM_MAX) / (SIDE / lineNumber) ) - 1 / 2;
-		if (lgnPos < lineNumber && lgnPos >= 0 && colPos < columnNumber && colPos >= 0){
-            players[p]->setL(lgnPos);
-            players[p]->setC(colPos);
+		double newX = players[p]->getX() + cos(angle) * players[p]->getVelocity();
+		double newY = players[p]->getY() + sin(angle) * players[p]->getVelocity();
+		int newC = ((players[p]->getX() + DIM_MAX ) / (SIDE / lineNumber) ) - 1 / 2;
+    	int newL = - ((players[p]->getY() - DIM_MAX) / (SIDE / lineNumber) ) - 1 / 2;
+		cout << "oldX: " << players[p]->getX() << " oldY: " << players[p]->getY() << " newX: " << newX << " newY: " << newY << " OldL: " << players[p]->getL() << " OldC: " << players[p]->getC() << " newL: " << newL << " newC: " << newC << endl;
+		if (newX > (DIM_MAX - players[p]->getHitbox()->getRadius()) || newX < (- DIM_MAX + players[p]->getHitbox()->getRadius())){return;} //Et les marges ?
+		if (newY > (DIM_MAX - players[p]->getHitbox()->getRadius()) || newY < (- DIM_MAX + players[p]->getHitbox()->getRadius())){return;} //Et les marges ?
+
+		if(isDifferentPlayer(newL, newC, players[p]->getID())){return;}
+
+		players[p]->setL(newL);
+        players[p]->setC(newC);
+		players[p]->getHitbox()->setX(newX);
+  		players[p]->getHitbox()->setY(newY);
+
+		if (newL < lineNumber && newL >= 0 && newC < columnNumber && newC >= 0){
             int ID = players[p]->getID();
-            if (playerGrid[lgnPos][colPos][0] == ID){ playerGrid[lgnPos][colPos][0] = -1; }
+            if (playerGrid[newL][newC][0] == ID){ playerGrid[newL][newC][0] = -1; }
             else {
-                for (int i = 1; i < playerGrid[lgnPos][colPos].size(); i++){
-                    if (playerGrid[lgnPos][colPos][i] == ID){
-                        playerGrid[lgnPos][colPos].erase(playerGrid[lgnPos][colPos].begin()+i);
+                for (int i = 1; i < playerGrid[newL][newC].size(); i++){
+                    if (playerGrid[newL][newC][i] == ID){
+                        playerGrid[newL][newC].erase(playerGrid[newL][newC].begin()+i);
                     }
                 }
             }
-            if (playerGrid[lgnPos][colPos][0] == -1) { playerGrid[lgnPos][colPos][0] = ID; }
-            else { playerGrid[lgnPos][colPos].push_back(ID); }
+            if (playerGrid[newL][newC][0] == -1) { playerGrid[newL][newC][0] = ID; }
+            else { playerGrid[newL][newC].push_back(ID); }
         }
-    	if (c == MAX_COUNT){
+    	if (players[p]->getCount() == MAX_COUNT){
     	} else {
-      		players[p]->setCount(c+1);
+      		players[p]->setCount(players[p]->getCount()+1);
     	}
   	}
 }
