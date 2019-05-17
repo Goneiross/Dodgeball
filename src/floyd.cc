@@ -134,9 +134,9 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacl
         direction = column;
       } else {
         if (c < c2) {
-          l++;
+          c++;
         } else if (c > c2) {
-          l--;
+          c--;
         } else {
           direction = line;
           continue;
