@@ -65,9 +65,10 @@ void simulation(std::string inputFile, std::string saveFile, int mode) {
         delete balls;
         return;
     } else if (mode == STEP_MODE) {
-        update();
-        check();
+        updatePlayers();
         dracarys();
+        updateBalls();
+        check();
         save(saveFile);
         delete obstacles;
         delete players;
@@ -266,9 +267,12 @@ void check() {
     }
 }
 
-void update() {
-    pathfinding(players, obstacles);
+void updateBalls() {
     balls->updatePosition();
+}
+
+void updatePlayers() {
+    pathfinding(players, obstacles);
     players->updatePosition();
 }
 
@@ -277,7 +281,7 @@ void dracarys(){
     double playerRadius = COEF_RAYON_JOUEUR * (SIDE / obstacles->getLNb()); //Ca aussi !
     double ballVelocity = COEF_VITESSE_BALLE * (SIDE / obstacles->getLNb()); //Et aussi lui !
     for (int p = 0; p < players->getNb(); p++){
-        if (players->getPlayer(p)->getCount() == MAX_COUNT){
+        if (players->getPlayer(p)->getCount() == MAX_COUNT){ // ET SI IL N'Y A PAS D'OBSTACLE ENTRE LES DEUX
             double xPos = players->getPlayer(p)->getX();
             double yPos = players->getPlayer(p)->getY();
             double delta = ballRadius + playerRadius;
