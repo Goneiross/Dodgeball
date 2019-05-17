@@ -117,6 +117,7 @@ int BallMap::getNewID() const {
 }
 
 void BallMap::updatePosition() {
+  cout << "--------------------Ball-Moving--------------------" << endl;
   int ballNb = balls.size();
   for (int b = 0; b < ballNb; b++) {
     int xPos = balls[b]->getHitbox()->getX() +

@@ -82,40 +82,70 @@ bool areThereUninitialisedCases(vector<vector<double>> tab2D, int infinityInit) 
 }
 
 bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacles) {
-  enum direction { line = 0, column = 1 };
-  bool direction = line;
-  int l = l1, c = c1;
-  while ((l != l2) && (c != c2)) {
-    cout << "l1: " << l1 << " c1: " << c1 << " l2: " << l2 << " c2: " << c2
-         << " l: " << l << " c: " << c << endl;
-    if (direction == line) {
-      if (l < l2) {
-        l++;
-      } else if (l > l2) {
-        l--;
-      } else {
-        direction = column;
-        cout << "continue" << endl;
-        continue;
+  if (l1 == l2) { // Case 1 : same line
+    if (c1 < c2) {
+      for (int c = c1; c <= c2; c++) {
+        if (obstacles->isObstacle(l2, c)) {
+          return true;
+        }
       }
-      if (obstacles->isObstacle(l, c)) {
-        return true;
-      }
-      direction = column;
+      return false;
     } else {
-      if (c < c2) {
-        c++;
-      } else if (c > c2) {
-        c--;
+      for (int c = c2; c <= c1; c++) {
+        if (obstacles->isObstacle(l2, c)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  } else if (c1 == c2) { // Case 2 : same column
+    if (l1 < l2) {
+      for (int l = l1; l <= l2; l++) {
+        if (obstacles->isObstacle(l, c2)) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+      for (int l = l2; l <= l1; l++) {
+        if (obstacles->isObstacle(l, c2)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  } else { // Case 3 : different line and column
+    enum direction { line = 0, column = 1 };
+    bool direction = line;
+    int l = l1, c = c1;
+    while ((l != l2) && (c != c2)) {
+      if (direction == line) {
+        if (l < l2) {
+          l++;
+        } else if (l > l2) {
+          l--;
+        } else {
+          direction = column;
+          continue;
+        }
+        if (obstacles->isObstacle(l, c)) {
+          return true;
+        }
+        direction = column;
       } else {
+        if (c < c2) {
+          l++;
+        } else if (c > c2) {
+          l--;
+        } else {
+          direction = line;
+          continue;
+        }
+        if (obstacles->isObstacle(l, c)) {
+          return true;
+        }
         direction = line;
-        cout << "continue" << endl;
-        continue;
       }
-      if (obstacles->isObstacle(l, c)) {
-        return true;
-      }
-      direction = line;
     }
   }
 }
@@ -188,13 +218,15 @@ void floyd(Player *start, Player *target, int infinityInit, int infinityDist,
   int g = 0;
   while (areThereUninitialisedCases(tabCellDist, infinityInit) && g < 20) {
     g++;
-    // cout << "infinityInit: " << infinityInit << endl;
+    /*
+    cout << "infinityInit: " << infinityInit << endl;
     for (int i = 0; i < tabCellDist.size(); i++) {
       for (int j = 0; j < tabCellDist[0].size(); j++) {
         cout << "(" << i << "," << j << "," << tabCellDist[i][j] << ") ";
       }
     }
     cout << endl << endl;
+    */
     for (int i(0); i < nbCellSquared; i++) {
       for (int j(0); j < i; j++) {
         if ((tabCellDist[i][j] > 2) && (tabCellDist[i][j] != infinityDist)) {
@@ -246,47 +278,47 @@ void diagonalDistance(unsigned int i, unsigned int j,
   int jC = j / nbCell;
   int jL = j % nbCell;
 
-  cout << "i: " << i << " j: " << j << " iC: " << iC << " iL: " << iL << " jC: " << jC
-       << " jL: " << jL << endl;
+  // cout << "i: " << i << " j: " << j << " iC: " << iC << " iL: " << iL << " jC: " << jC
+  //     << " jL: " << jL << endl;
   if (iL == jL + 1) { // j/i
-    cout << "J au dessus de I" << endl;
+    // cout << "J au dessus de I" << endl;
     if (iC == jC - 1) { // i-j
-      cout << "J a droite de I" << endl;
+      // cout << "J a droite de I" << endl;
       if (obstacles->isObstacle(jL, jC - 1)) { // oj
-        cout << "a" << endl;
+        // cout << "a" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = 0;
         pathAngles[j][i] = 3 * M_PI_2;
       } else if (obstacles->isObstacle(iL, iC + 1)) { // io
-        cout << "b" << endl;
+        // cout << "b" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = M_PI_2;
         pathAngles[j][i] = M_PI;
       } else { //õ
-        cout << "c" << endl;
+        // cout << "c" << endl;
         tabCellDist[i][j] = sqrt(2);
         tabCellDist[j][i] = sqrt(2);
         pathAngles[i][j] = M_PI_4;
         pathAngles[j][i] = 5 * M_PI_4;
       }
     } else { // j-i
-      cout << "J a gauche de I" << endl;
+      // cout << "J a gauche de I" << endl;
       if (obstacles->isObstacle(jL, jC + 1)) { // jo
-        cout << "d" << endl;
+        // cout << "d" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = M_PI;
         pathAngles[j][i] = 3 * M_PI_2;
       } else if (obstacles->isObstacle(iL, iC - 1)) { // oi
-        cout << "e" << endl;
+        // cout << "e" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = M_PI_2;
         pathAngles[j][i] = 0;
       } else { //õ
-        cout << "f" << endl;
+        // cout << "f" << endl;
         tabCellDist[i][j] = sqrt(2);
         tabCellDist[j][i] = sqrt(2);
         pathAngles[i][j] = 3 * M_PI_4;
@@ -294,44 +326,44 @@ void diagonalDistance(unsigned int i, unsigned int j,
       }
     }
   } else { // i/j
-    cout << "J en dessous de I" << endl;
+    // cout << "J en dessous de I" << endl;
     if (iC == jC + 1) { // j-i
-      cout << "J a gauche de I" << endl;
+      // cout << "J a gauche de I" << endl;
       if (obstacles->isObstacle(jL, jC + 1)) { // jo
-        cout << "g" << endl;
+        // cout << "g" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = M_PI;
         pathAngles[j][i] = M_PI_2;
       } else if (obstacles->isObstacle(iL, iC - 1)) { // oi
-        cout << "h" << endl;
+        // cout << "h" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = 3 * M_PI_2;
         pathAngles[j][i] = 0;
       } else { //õ
-        cout << "i" << endl;
+        // cout << "i" << endl;
         tabCellDist[i][j] = sqrt(2);
         tabCellDist[j][i] = sqrt(2);
         pathAngles[i][j] = 5 * M_PI_4;
         pathAngles[j][i] = M_PI_4;
       }
     } else { // i-j
-      cout << "J a droite de I" << endl;
-      cout << "j" << endl;
+      // cout << "J a droite de I" << endl;
+      // cout << "j" << endl;
       if (obstacles->isObstacle(jL, jC - 1)) { // oj
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = 0;
         pathAngles[j][i] = M_PI_2;
       } else if (obstacles->isObstacle(iL, iC + 1)) { // io
-        cout << "k" << endl;
+        // cout << "k" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = 3 * M_PI_2;
         pathAngles[j][i] = 0;
       } else { //õ
-        cout << "l" << endl;
+        // cout << "l" << endl;
         tabCellDist[i][j] = sqrt(2);
         tabCellDist[j][i] = sqrt(2);
         pathAngles[i][j] = 7 * M_PI_4;
@@ -349,19 +381,19 @@ double complexPath(Player *start, Player *target, int infinityInit, int infinity
     cout << "-----Floyd------" << endl;
     floyd(start, target, infinityInit, infinityDist, obstacles);
     firstInStep = false;
-    cout << "Distance tab" << endl;
+    // cout << "Distance tab" << endl;
     for (int i = 0; i < tabCellDist.size(); i++) {
       for (int j = 0; j < tabCellDist[0].size(); j++) {
-        cout << tabCellDist[i][j] << " ";
+        // cout << tabCellDist[i][j] << " ";
       }
-      cout << endl;
+      // cout << endl;
     }
-    cout << "Angle tab (degrés)" << endl;
+    // cout << "Angle tab (degrés)" << endl;
     for (int i = 0; i < pathAngles.size(); i++) {
       for (int j = 0; j < pathAngles[0].size(); j++) {
-        cout << (int)(pathAngles[i][j] * 180 / M_PI) << "     ";
+        // cout << (int)(pathAngles[i][j] * 180 / M_PI) << "     ";
       }
-      cout << endl;
+      // cout << endl;
     }
     cout << "--------------" << endl;
     return pathAngles[(start->getC() * nbCell) + start->getL()]

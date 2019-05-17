@@ -281,9 +281,11 @@ bool GUI::on_timeout() {
                          get_allocation().get_height());
         win->invalidate_rect(r, false);
       }
+      return true;
     } else {
       m_label_status.set_label("Game’s over !");
       newGame();
+      return true; // STOP ?
     }
   }
 }

@@ -48,7 +48,7 @@ static PlayerMap *players;
 static BallMap *balls;
 static ObstacleMap *obstacles;
 
-void newGame(){
+void newGame() {
   players = new PlayerMap(0, 0);
   balls = new BallMap(0, 0);
   obstacles = new ObstacleMap(0, 0);
@@ -288,31 +288,47 @@ bool isOut(double xPosition, double yPosition) {
 }
 
 bool check() {
-  int ballNb = balls->getNb();
-  int playerNb = players->getNb();
+  cout << "--------------------Checking--------------------" << endl;
+  cout << balls->getNb() << " balls" << endl;
   double delta = COEF_MARGE_JEU * (SIDE / (double)obstacles->getLNb()); // Map
-  for (int b = 0; b < ballNb; b++) {
+  int b = 0;
+  while (b < balls->getNb()) {
+    cout << "b: " << b << " ";
     if (isOut(balls->getBall(b)->getX(), balls->getBall(b)->getY())) {
+      cout << "is out" << endl;
       balls->removeBall(b);
-    }
-    for (int p = 0; p < playerNb; p++) {
-      bool collision = false;
-      collisionCheckPB(p, b, delta, collision, 0);
-      if (collision) {
-        balls->removeBall(b);
-        players->getPlayer(p)->setTimeTouched(players->getPlayer(p)->getTimeTouched() -
-                                              1);
-        if (players->getPlayer(p)->getTimeTouched() ==
-            0) { // RENOMER OU VERIFIER DANS LE BON SENS !!!!!
-          players->removePlayer(p);
+    } else {
+      int p = 0;
+      while (p < players->getNb()) {
+        cout << "p: " << p << " ";
+        bool collision = false;
+        collisionCheckPB(p, b, delta, collision, 0);
+        if (collision) {
+          cout << "removing ball of ID " << balls->getBall(b)->getID() << endl;
+          balls->removeBall(b);
+          cout << "removed" << endl;
+          players->getPlayer(p)->setTimeTouched(
+              players->getPlayer(p)->getTimeTouched() - 1);
+          cout << "set" << endl;
+          if (players->getPlayer(p)->getTimeTouched() == 0) {
+            // RENOMER OU VERIFIER DANS LE BON SENS !!!!!
+            players->removePlayer(p);
+          }
+          break;
+        } else {
+          p++;
         }
+        cout << "done" << endl;
       }
+      b++;
     }
   }
-  if (players->getNb() <= 1){
-    cout << "ONLY ONE PLAYER OR LESS LEFT" << endl; 
+  cout << "t" << endl;
+  if (players->getNb() <= 1) {
+    cout << "ONLY ONE PLAYER OR LESS LEFT" << endl;
     return true;
   } else {
+    cout << "Player left" << endl;
     return false;
   }
 }
