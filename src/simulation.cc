@@ -287,7 +287,7 @@ bool isOut(double xPosition, double yPosition) {
   }
 }
 
-bool check() {
+bool check() { // Et si ca touche both player et obstacle en meme temps ?
   cout << "--------------------Checking--------------------" << endl;
   cout << balls->getNb() << " balls" << endl;
   double delta = COEF_MARGE_JEU * (SIDE / (double)obstacles->getLNb()); // Map
@@ -320,7 +320,22 @@ bool check() {
           p++;
         }
       }
-      cout << "done" << endl;
+      int o = 0;
+      while (o < obstacles->getNb()){
+        bool collision = false;
+        collisionCheckBO(b, o, delta, collision, 0);
+        if (collision) {
+          cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID()
+               << endl;
+          balls->removeBall(b);
+          cout << "removed" << endl;
+          cout << "removing obstacle" << endl;
+          obstacles->removeObstacle(o);
+          break;
+        } else {
+          o++;
+        }
+      }
       b++;
     }
   }
