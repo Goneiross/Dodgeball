@@ -160,20 +160,20 @@ void PlayerMap::updatePosition() {
     if (newX > (DIM_MAX - players[p]->getHitbox()->getRadius()) ||
         newX < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {
       cout << "Outside ERROR" << endl;
-      return;
+      continue;
     } // Et les marges ?
     if (newY > (DIM_MAX - players[p]->getHitbox()->getRadius()) ||
         newY < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {
       cout << "Outside ERROR" << endl;
-      return;
+      continue;
     } // Et les marges ?
     if (isDifferentPlayer(newL, newC, players[p]->getID())) {
       cout << "Player here ERROR" << endl;
-      return;
+      continue;
     }
     if (isCollision(newX, newY, p)) {
       cout << "Player collision" << endl;
-      return;
+      continue;
     }
 
     cout << endl;
