@@ -3,7 +3,10 @@
 #include "player.h"
 #include <cmath>
 
+#include <chrono>
 #include <iostream>
+
+using namespace std::chrono;
 
 using namespace std;
 
@@ -20,6 +23,7 @@ void pathfinding(PlayerMap *players, ObstacleMap *obstacles) {
   pathAngles.resize(players->getNb());
   cout << "--------------------TARGETTING--------------------" << endl;
   targets = targetting(players, infinityInit, infinityDist);
+  auto start = high_resolution_clock::now();
   cout << "--------------------WHICH-PATH--------------------" << endl;
   for (int p = 0; p < players->getNb(); p++) {
     cout << "start ID: " << players->getPlayer(p)->getID()
@@ -29,6 +33,10 @@ void pathfinding(PlayerMap *players, ObstacleMap *obstacles) {
     cout << "Player " << players->getPlayer(p)->getID()
          << " angle: " << pathAngles[p] * 180 / M_PI << " degrés" << endl;
     cout << endl;
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start); 
+
+    cout << "Time taken by Path: " << duration.count() / 1000 << " ms" << endl;
   }
 }
 
