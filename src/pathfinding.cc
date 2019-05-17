@@ -8,7 +8,7 @@
 using namespace std;
 
 static vector<int> targets;
-static vector<int> pathAngles;
+static vector<double> pathAngles;
 static int infinityInit;
 static int infinityDist;
 

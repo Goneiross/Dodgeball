@@ -56,18 +56,24 @@ double angle(double x1, double y1, double x2, double y2) {
   cout << "Compute angle from coords : "
        << "(" << x1 << "," << y1 << ") and (" << x2 << "," << y2 << ")" << endl;
   if (abs(x1) == abs(x2)) {
+    cout << "X1 == X2 ";
     if (y2 > y1) {
+      cout << "&& Y2 > Y1" << endl;
       return M_PI_2;
     } else if (y2 < y1) {
+      cout << "&& Y2 < Y1" << endl;
       return -M_PI_2;
     } else {
       std::cout << "UNDEFINED" << endl;
       exit(1);
     }
   } else if (abs(y1) == abs(y2)) {
+    cout << "Y1 == Y2 " << endl;
     if (x2 > x1) {
+      cout << "&& X2 > X1" << endl;
       return 0;
     } else if (x2 < x1) {
+      cout << "&& X2 < X1" << endl;
       return -M_PI;
     }
   } else {
