@@ -216,21 +216,21 @@ void shortestIndirectPath(int startID, int targetID, vector<vector<double> > &ta
 void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> > &tabCellDist, vector<vector<double> > &pathAngles, ObstacleMap* obstacles) {
   int nbCell = obstacles->getLNb();
 	// cout << "nbCell: " << nbCell << endl;
-  int iX = i/nbCell;
-  int iY = i%nbCell;
-  int jX = j/nbCell;
-  int jY = j%nbCell;
+  int iC = i/nbCell;
+  int iL = i%nbCell;
+  int jC = j/nbCell;
+  int jL = j%nbCell;
 
-	cout << "i: " << i << " j: " << j << " iX: " << iX << " iY: " << iY << " jX: " << jX << " jY: " << jY << endl;
-  if (iY = jY + 1) {  //j/i
-    if (iX = jX - 1) {  //i-j
-      if (obstacles->isObstacle(jY, jX-1)) {  //oj
+	cout << "i: " << i << " j: " << j << " iC: " << iC << " iL: " << iL << " jC: " << jC << " jL: " << jL << endl;
+  if (iL = jL + 1) {  //j/i
+    if (iC = jC - 1) {  //i-j
+      if (obstacles->isObstacle(jL, jC-1)) {  //oj
 				cout << "a" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = 0;
         pathAngles[j][i] = 3*M_PI_2;
-      } else if (obstacles->isObstacle(iY, iX + 1)) {  //io
+      } else if (obstacles->isObstacle(iL, iC + 1)) {  //io
 			cout << "b" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
@@ -244,13 +244,13 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> > &t
         pathAngles[j][i] = 5*M_PI_4;
       }
     } else {  //j-i
-      if (obstacles->isObstacle(jY, jX + 1)) {  //jo
+      if (obstacles->isObstacle(jL, jC + 1)) {  //jo
 			cout << "d" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = M_PI;
         pathAngles[j][i] = 3*M_PI_2;
-      } else if (obstacles->isObstacle(iY, iX - 1)) {  //oi
+      } else if (obstacles->isObstacle(iL, iC - 1)) {  //oi
 			cout << "e" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
@@ -265,14 +265,14 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> > &t
       }
     }
   } else {  //i/j
-    if (iX = jX + 1) {  //j-i
-      if (obstacles->isObstacle(jY, jX + 1)) {  //jo
+    if (iC = jC + 1) {  //j-i
+      if (obstacles->isObstacle(jL, jC + 1)) {  //jo
 			cout << "g" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = M_PI;
         pathAngles[j][i] = M_PI_2;
-      } else if (obstacles->isObstacle(iY, iX - 1)) {  //oi
+      } else if (obstacles->isObstacle(iL, iC - 1)) {  //oi
 			cout << "h" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
@@ -287,12 +287,12 @@ void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double> > &t
       }
     } else {  //i-j
 		cout << "j" << endl;
-      if (obstacles->isObstacle(jY, jX - 1)) {  //oj
+      if (obstacles->isObstacle(jL, jC - 1)) {  //oj
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
         pathAngles[i][j] = 0;
         pathAngles[j][i] = M_PI_2;
-      } else if (obstacles->isObstacle(iY, iX + 1)) {  //io
+      } else if (obstacles->isObstacle(iL, iC + 1)) {  //io
 			cout << "k" << endl;
         tabCellDist[i][j] = 2;
         tabCellDist[j][i] = 2;
