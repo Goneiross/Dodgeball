@@ -139,6 +139,17 @@ int PlayerMap::getNb() const{
 int PlayerMap::getLNb() const {return lineNumber;}
 int PlayerMap::getCNb() const {return columnNumber;}
 
+bool PlayerMap::isCollision(int newX, int newY, int ID){
+	for (int i = 0; i < players.size(); i++) {
+        if (i != ID) {
+            double d = distance(players[i]->getX(), players[i]->getY(), newX, newY);
+            if (d < (players[i]->getRadius() + players[ID]->getRadius())) { // Et la marge delta
+            	return true;
+            }
+        }
+    }
+}
+
 void PlayerMap::updatePosition(){
 	cout << "--------------------Player-Moving--------------------" << endl;
   	for (int p = 0; p < players.size(); p++){
@@ -147,12 +158,14 @@ void PlayerMap::updatePosition(){
 		double newY = players[p]->getY() + sin(angle) * players[p]->getVelocity();
 		int newC = ((players[p]->getX() + DIM_MAX ) / (SIDE / lineNumber) ) - 1 / 2;
     	int newL = - ((players[p]->getY() - DIM_MAX) / (SIDE / lineNumber) ) - 1 / 2;
-		cout << "oldX: " << players[p]->getX() << " oldY: " << players[p]->getY() << " newX: " << newX << " newY: " << newY << " OldL: " << players[p]->getL() << " OldC: " << players[p]->getC() << " newL: " << newL << " newC: " << newC << endl;
-		if (newX > (DIM_MAX - players[p]->getHitbox()->getRadius()) || newX < (- DIM_MAX + players[p]->getHitbox()->getRadius())){return;} //Et les marges ?
-		if (newY > (DIM_MAX - players[p]->getHitbox()->getRadius()) || newY < (- DIM_MAX + players[p]->getHitbox()->getRadius())){return;} //Et les marges ?
+		cout << "oldX: " << players[p]->getX() << " oldY: " << players[p]->getY() << " newX: " << newX << " newY: " << newY << " OldL: " << players[p]->getL() << " OldC: " << players[p]->getC() << " newL: " << newL << " newC: " << newC <<  " ";
+		if (newX > (DIM_MAX - players[p]->getHitbox()->getRadius()) || newX < (- DIM_MAX + players[p]->getHitbox()->getRadius())){cout << "Outside ERROR" << endl; return;} //Et les marges ?
+		if (newY > (DIM_MAX - players[p]->getHitbox()->getRadius()) || newY < (- DIM_MAX + players[p]->getHitbox()->getRadius())){cout << "Outside ERROR" << endl;return;} //Et les marges ?
+		if(isDifferentPlayer(newL, newC, players[p]->getID())){cout << "Player here ERROR" << endl; return;}
+		if(isCollision(newX, newY, p)){cout << "Player collision" << endl;return;}
 
-		if(isDifferentPlayer(newL, newC, players[p]->getID())){return;}
 
+		cout << endl;
 		players[p]->setL(newL);
         players[p]->setC(newC);
 		players[p]->getHitbox()->setX(newX);

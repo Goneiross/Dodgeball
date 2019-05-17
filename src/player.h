@@ -69,6 +69,7 @@ public:
     void updatePosition();
 
 private:
+	bool isCollision(int newX, int newY, int ID);
     std::vector<Player *> players;
     std::vector<int>** playerGrid;
 };
