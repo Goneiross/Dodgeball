@@ -151,8 +151,8 @@ void PlayerMap::updatePosition() {
     double angle = nearestPlayerAngle(p);
     double newX = players[p]->getX() + cos(angle) * players[p]->getVelocity();
     double newY = players[p]->getY() + sin(angle) * players[p]->getVelocity();
-    int newC = ((players[p]->getX() + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
-    int newL = -((players[p]->getY() - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
+    int newC = ((newX + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
+    int newL = -((newY - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
     cout << "oldX: " << players[p]->getX() << " oldY: " << players[p]->getY()
          << " newX: " << newX << " newY: " << newY << " OldL: " << players[p]->getL()
          << " OldC: " << players[p]->getC() << " newL: " << newL << " newC: " << newC
