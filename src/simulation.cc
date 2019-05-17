@@ -304,7 +304,7 @@ bool check() {
         bool collision = false;
         collisionCheckPB(p, b, delta, collision, 0);
         if (collision) {
-          cout << "removing ball of ID " << balls->getBall(b)->getID() << endl;
+          cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID() << endl;
           balls->removeBall(b);
           cout << "removed" << endl;
           players->getPlayer(p)->setTimeTouched(
@@ -318,8 +318,8 @@ bool check() {
         } else {
           p++;
         }
-        cout << "done" << endl;
       }
+      cout << "done" << endl;
       b++;
     }
   }
