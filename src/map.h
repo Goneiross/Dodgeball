@@ -10,14 +10,13 @@
 
 class Map {
 public:
-	Map(int l, int c);
-	virtual ~Map(){};
-	int getLNb() const;
-	int getCNb() const; 
-	// virtual int getNb() const {};
+  Map(int l, int c);
+  virtual ~Map(){};
+  int getLNb() const;
+  int getCNb() const;
+  // virtual int getNb() const {};
 protected:
-	int lineNumber;
-	int columnNumber;
+  int lineNumber, columnNumber;
 };
 
 #endif

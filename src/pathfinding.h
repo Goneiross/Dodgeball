@@ -8,10 +8,10 @@
 #ifndef PATHFINDING_H
 #define PATHFINDING_H
 
-#include "player.h"
 #include "obstacle.h"
+#include "player.h"
 
-void pathfinding(PlayerMap* players, ObstacleMap* obstacles);
+void pathfinding(PlayerMap *players, ObstacleMap *obstacles);
 double nearestPlayerAngle(int ID);
 
 #endif

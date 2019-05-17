@@ -8,48 +8,46 @@
 #ifndef OBSTACLE_H
 #define OBSTACLE_H
 
-#include <vector>
 #include "map.h"
 #include "tools.h"
+#include <vector>
 
 class Obstacle {
 public:
-  	Obstacle(double x0, double y0, int lgnPos, int colPos, double s);
-  	~Obstacle(){};
-  	double getX() const;
-  	double getY() const;
-  	int getL() const;
-  	int getC() const;
-  	double getGX() const;
-  	double getGY() const;
-  	void setGX(double x);
-  	void setGY(double y);
-  	double getSide() const;
-  	Square* getHitbox() const;
-
+  Obstacle(double x0, double y0, int lgnPos, int colPos, double s);
+  ~Obstacle(){};
+  double getX() const;
+  double getY() const;
+  double getGX() const;
+  double getGY() const;
+  int getL() const;
+  int getC() const;
+  double getSide() const;
+  Square *getHitbox() const;
+  void setGX(double x);
+  void setGY(double y);
+  
 private:
-  	Square* hitbox;
-  	int colPos;
-  	int lgnPos;
-  	double gXPosition;
-  	double gYPosition;
+  Square *hitbox;
+  int colPos, lgnPos;
+  double gXPosition, gYPosition;
 };
 
-class ObstacleMap: public Map {
+class ObstacleMap : public Map {
 public:
-  	ObstacleMap(int l, int c);
-  	~ObstacleMap(){};
-  	int getNb() const;
-  	Obstacle* getObstacle(int i) const;
-  	void addObstacle(int lgnPos, int colPos, int ID);
-  	void removeObstacle(int ID);
-  	void removeAll();
-  	bool isObstacle(double lgnPos, double colPos);
-  	int whichObstacle(double lgnPos, double colPos);
+  ObstacleMap(int l, int c);
+  ~ObstacleMap(){};
+  void addObstacle(int lgnPos, int colPos, int ID);
+  void removeObstacle(int ID);
+  void removeAll();
+  bool isObstacle(double lgnPos, double colPos);
+  int whichObstacle(double lgnPos, double colPos);
+  int getNb() const;
+  Obstacle *getObstacle(int i) const;
 
 private:
-  	int** obstaclesGrid;
-  	std::vector<Obstacle *> obstacles;
+  int **obstaclesGrid;
+  std::vector<Obstacle *> obstacles;
 };
 
 #endif

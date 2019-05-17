@@ -7,71 +7,70 @@
 
 #ifndef PLAYER_H
 #define PLAYER_H
-#include <vector>
-#include "tools.h"
 #include "map.h"
-
+#include "tools.h"
+#include <vector>
 
 class Player {
 public:
-	Player(double xPosition, double yPosition, int timeTouched, double counter,
-         	double radius, int lPosition, int cPosition, double velocity, int ID);
-  	~Player(){};
+  Player(double xPosition, double yPosition, int timeTouched, double counter,
+         double radius, int lPosition, int cPosition, double velocity, int ID);
+  ~Player(){};
 
-  	bool touchedAndDead();
+  bool touchedAndDead();
 
-  	double getX() const;
-  	double getY() const;
-  	double getL() const;
- 		double getC() const;
-  	double getGX() const;
-  	double getGY() const;
-		int getID() const;
-  	double getRadius() const;
-  	double getCount() const;
-  	double getTimeTouched() const;
-	  Circle *getHitbox() const;
-		double getVelocity() const;
+  double getX() const;
+  double getY() const;
+  double getL() const;
+  double getC() const;
+  double getGX() const;
+  double getGY() const;
+  int getID() const;
+  double getRadius() const;
+  double getCount() const;
+  double getTimeTouched() const;
+  Circle *getHitbox() const;
+  double getVelocity() const;
 
-    void setL(int l);
-    void setC(int c);
-  	void setGX(double gY);
-  	void setGY(double gY);
-  	void setCount(int c);
-		void setTimeTouched(int t);
+  void setL(int l);
+  void setC(int c);
+  void setGX(double gY);
+  void setGY(double gY);
+  void setCount(int c);
+  void setTimeTouched(int t);
 
 private:
-  	int timeTouched;
-  	int ID;
-  	int lgnPos, colPos;
-  	double count;
-  	double velocity;
-  	double gXPosition, gYPosition;
-  	Circle *hitbox;
+  int timeTouched;
+  int ID;
+  int lgnPos, colPos;
+  double count;
+  double velocity;
+  double gXPosition, gYPosition;
+  Circle *hitbox;
 };
 
 class PlayerMap : public Map {
 public:
-    PlayerMap(int lgnPos, int colPos);
-    ~PlayerMap(){};
-    void addPlayer(double xPosition, double yPosition, int timeTouched, double counter,
-                   	double radius, double velocity, int ID);
-    void removePlayer(int ID);
-    void removeAll();
-    void reserveSpace(int nbPlayer);
-    bool isPlayer(int lgnPos, int colPos);
-		bool isDifferentPlayer(int lgnPos, int colPos, int ID);
-    std::vector<int> whichPlayer(int lgnPos, int colPos);
-    Player* getPlayer(int p) const;
-    int getNb() const;
-	int getLNb() const;
-	int getCNb() const;
-    void updatePosition();
+  PlayerMap(int lgnPos, int colPos);
+  ~PlayerMap(){};
+  void addPlayer(double xPosition, double yPosition, int timeTouched, double counter,
+                 double radius, double velocity, int ID);
+  void removePlayer(int ID);
+  void removeAll();
+  void reserveSpace(int nbPlayer);
+  bool isPlayer(int lgnPos, int colPos);
+  bool isDifferentPlayer(int lgnPos, int colPos, int ID);
+  std::vector<int> whichPlayer(int lgnPos, int colPos);
+  Player *getPlayer(int p) const;
+  int getNb() const;
+  int getLNb() const;
+  int getCNb() const;
+  void updatePosition();
 
 private:
-	bool isCollision(int newX, int newY, int ID);
-    std::vector<Player *> players;
-    std::vector<int>** playerGrid;
+  bool isCollision(int newX, int newY, int ID);
+  std::vector<Player *> players;
+  std::vector<int> **playerGrid;
 };
 
 #endif

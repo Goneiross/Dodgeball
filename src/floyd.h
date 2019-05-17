@@ -8,11 +8,12 @@
 #ifndef FLOYD_H
 #define FLOYD_H
 
-#include <vector>
-#include "player.h"
 #include "obstacle.h"
+#include "player.h"
+#include <vector>
 
-std::vector<int> targetting(PlayerMap* players, int infinityInit, int infinityDist);
-double whichPath(Player* start, Player* target, int infinityInit, int infinityDist, ObstacleMap* obstacles, bool &firstInStep);
+std::vector<int> targetting(PlayerMap *players, int infinityInit, int infinityDist);
+double whichPath(Player *start, Player *target, int infinityInit, int infinityDist,
+                 ObstacleMap *obstacles, bool &firstInStep);
 
 #endif
