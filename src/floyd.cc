@@ -313,9 +313,24 @@ double complexPath(Player* start, Player* target, int infinityInit, int infinity
 	/* Description of Floyd's algorithm's implementation */
 	int nbCell = obstacles->getLNb();
 	if (firstInStep){
-		cout << "Floyd" << endl;
+		cout << "-----Floyd------" << endl;
 		floyd(start, target, infinityInit, infinityDist, obstacles);
 		firstInStep = false;
+		cout << "Distance tab" << endl;
+		for (int i = 0; i < tabCellDist.size(); i ++){
+			for (int j = 0; j < tabCellDist[0].size(); j++){
+				cout << tabCellDist[i][j] << " ";
+			}
+			cout << endl;
+		}
+		cout << "Angle tab (degrés)" << endl;
+		for (int i = 0; i < pathAngles.size(); i ++){
+			for (int j = 0; j < pathAngles[0].size(); j++){
+				cout << (int) (pathAngles[i][j] * 180/M_PI)<< "     ";
+			}
+			cout << endl;
+		}
+		cout << "--------------" << endl;
 		return pathAngles[(start->getC() * nbCell) + start->getL()][(target->getC() * nbCell) + target->getL()];
 	}
 	return pathAngles[(start->getC() * nbCell) + start->getL()][(target->getC() * nbCell) + target->getL()];
