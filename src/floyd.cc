@@ -82,76 +82,40 @@ bool areThereUninitialisedCases(vector<vector<double>> tab2D, int infinityInit) 
 }
 
 bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacles) {
-  if (l1 == l2) { // Case 1 : same line
-  cout << "case 1" << endl;
-    if (c1 < c2) {
-      for (int c = c1; c <= c2; c++) {
-        if (obstacles->isObstacle(l2, c)) {
-          return true;
-        }
-      }
-      return false;
-    } else {
-      for (int c = c2; c <= c1; c++) {
-        if (obstacles->isObstacle(l2, c)) {
-          return true;
-        }
-      }
-      return false;
-    }
-  } else if (c1 == c2) { // Case 2 : same column
-  cout << "case 2" << endl;
-    if (l1 < l2) {
-      for (int l = l1; l <= l2; l++) {
-        if (obstacles->isObstacle(l, c2)) {
-          return true;
-        }
-      }
-      return false;
-    } else {
-      for (int l = l2; l <= l1; l++) {
-        if (obstacles->isObstacle(l, c2)) {
-          return true;
-        }
-      }
-      return false;
-    }
-  } else { // Case 3 : different line and column
-  cout << "case 3" << endl;
-    enum direction { line = 0, column = 1 };
-    bool direction = line;
-    int l = l1, c = c1;
-    while ((l != l2) && (c != c2)) {
-      cout << "l1: " << l1 << " c1: " <<  c1 <<  " l2: " << l2 << " c2: " <<  c2 << " l: " << l << " c: " << c << endl;
-      if (direction == line) {
-        if (l < l2) {
-          l++;
-        } else if (l > l2) {
-          l--;
-        } else {
-          direction = column;
-          cout << "continue" << endl;
-          continue;
-        }
-        if (obstacles->isObstacle(l, c)) {
-          return true;
-        }
-        direction = column;
+  enum direction { line = 0, column = 1 };
+  bool direction = line;
+  int l = l1, c = c1;
+  while ((l != l2) && (c != c2)) {
+    cout << "l1: " << l1 << " c1: " << c1 << " l2: " << l2 << " c2: " << c2
+         << " l: " << l << " c: " << c << endl;
+    if (direction == line) {
+      if (l < l2) {
+        l++;
+      } else if (l > l2) {
+        l--;
       } else {
-        if (c < c2) {
-          c++;
-        } else if (c > c2) {
-          c--;
-        } else {
-          direction = line;
-          cout << "continue" << endl;
-          continue;
-        }
-        if (obstacles->isObstacle(l, c)) {
-          return true;
-        }
-        direction = line;
+        direction = column;
+        cout << "continue" << endl;
+        continue;
       }
+      if (obstacles->isObstacle(l, c)) {
+        return true;
+      }
+      direction = column;
+    } else {
+      if (c < c2) {
+        c++;
+      } else if (c > c2) {
+        c--;
+      } else {
+        direction = line;
+        cout << "continue" << endl;
+        continue;
+      }
+      if (obstacles->isObstacle(l, c)) {
+        return true;
+      }
+      direction = line;
     }
   }
 }
