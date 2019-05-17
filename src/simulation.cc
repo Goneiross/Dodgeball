@@ -266,8 +266,11 @@ void check() {
     }
 }
 
-void update() {
+void updateBalls() {
     balls->updatePosition();
+}
+
+void updatePlayers() {
     players->updatePosition();
 }
 
@@ -276,12 +279,11 @@ void dracarys(){
     double playerRadius = COEF_RAYON_JOUEUR * (SIDE / obstacles->getLNb()); //Ca aussi !
     double ballVelocity = COEF_VITESSE_BALLE * (SIDE / obstacles->getLNb()); //Et aussi lui !
     for (int p = 0; p < players->getNb(); p++){
-        if (players->getPlayer(p)->getCount() == MAX_COUNT){
+        if (players->getPlayer(p)->getCount() == MAX_COUNT){ // ET SI IL N'Y A PAS D'OBSTACLE ENTRE LES DEUX
             double xPos = players->getPlayer(p)->getX();
             double yPos = players->getPlayer(p)->getY();
             double delta = ballRadius + playerRadius;
-            //double angle = nearestPlayerAngle();
-            double angle = 0;
+            double angle = nearestPlayerAngle();
             balls->addBall(xPos + cos(angle) * delta, yPos + sin(angle) * delta, angle, ballRadius, ballVelocity, balls->getNewID());
             players->getPlayer(p)->setCount(0);
         }
