@@ -348,10 +348,8 @@ void dracarys() {
   double ballVelocity =
       COEF_VITESSE_BALLE * (SIDE / obstacles->getLNb()); // Et aussi lui !
   for (int p = 0; p < players->getNb(); p++) {
-    cout << p << endl;
     if ((players->getPlayer(p)->getCount() == MAX_COUNT) &&
         (isReadyToFire(p, players, obstacles))) {
-          cout << "t" << endl;
       double xPos = players->getPlayer(p)->getX();
       double yPos = players->getPlayer(p)->getY();
       double delta = ballRadius + playerRadius;
@@ -359,8 +357,6 @@ void dracarys() {
 
       balls->addBall(xPos + cos(angle) * delta, yPos + sin(angle) * delta, angle,
                      ballRadius, ballVelocity, balls->getNewID());
-      cout << "COUNT" << endl;
-
       players->getPlayer(p)->setCount(0);
     }
   }

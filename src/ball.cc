@@ -71,23 +71,17 @@ void BallMap::addBall(double x, double y, double a, double r, double v, int ID) 
 void BallMap::removeBall(int ID) {
   int l = balls[ID]->getL();
   int c = balls[ID]->getC();
-  cout << "t" << endl;
   int posSize = ballGrid[l][c].size();
-  cout << "t" << endl;
   if (ballGrid[l][c][0] == ID) {
-    cout << "g" << endl;
     ballGrid[l][c][0] = -1;
   } else {
-    cout << "h" << endl;
     for (int i = 0; i < posSize; i++) {
       if (ballGrid[l][c][i] == ID) {
-        cout << "erase" << endl;
         ballGrid[l][c].erase(ballGrid[l][c].begin() + i);
         break;
       }
     }
   }
-  cout << "t" << endl;
   balls.erase(balls.begin() + ID);
 }
 

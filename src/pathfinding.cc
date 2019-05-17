@@ -45,8 +45,8 @@ double nearestPlayerAngle(int ID) { return pathAngles[ID]; }
 bool isReadyToFire(int ID, PlayerMap *players, ObstacleMap *obstacles) {
   int l1 = players->getPlayer(ID)->getL();
   int c1 = players->getPlayer(ID)->getC();
-  int l2 = players->getPlayer(pathAngles[ID])->getL();
-  int c2 = players->getPlayer(pathAngles[ID])->getC();
+  int l2 = players->getPlayer(targets[ID])->getL();
+  int c2 = players->getPlayer(targets[ID])->getC();
   if (isThereObstacleBetween(l1, c1, l2, c2, obstacles)) {
     return false;
   } else {
