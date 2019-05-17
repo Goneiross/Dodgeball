@@ -304,7 +304,8 @@ bool check() {
         bool collision = false;
         collisionCheckPB(p, b, delta, collision, 0);
         if (collision) {
-          cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID() << endl;
+          cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID()
+               << endl;
           balls->removeBall(b);
           cout << "removed" << endl;
           players->getPlayer(p)->setTimeTouched(
@@ -348,8 +349,9 @@ void dracarys() {
       COEF_VITESSE_BALLE * (SIDE / obstacles->getLNb()); // Et aussi lui !
   for (int p = 0; p < players->getNb(); p++) {
     cout << p << endl;
-    if (players->getPlayer(p)->getCount() ==
-        MAX_COUNT) { // ET SI IL N'Y A PAS D'OBSTACLE ENTRE LES DEUX
+    if ((players->getPlayer(p)->getCount() == MAX_COUNT) &&
+        (isReadyToFire(p, players, obstacles))) {
+          cout << "t" << endl;
       double xPos = players->getPlayer(p)->getX();
       double yPos = players->getPlayer(p)->getY();
       double delta = ballRadius + playerRadius;
@@ -357,7 +359,7 @@ void dracarys() {
 
       balls->addBall(xPos + cos(angle) * delta, yPos + sin(angle) * delta, angle,
                      ballRadius, ballVelocity, balls->getNewID());
-        cout << "COUNT" << endl;
+      cout << "COUNT" << endl;
 
       players->getPlayer(p)->setCount(0);
     }

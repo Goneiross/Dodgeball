@@ -13,5 +13,6 @@
 
 void pathfinding(PlayerMap *players, ObstacleMap *obstacles);
 double nearestPlayerAngle(int ID);
+bool isReadyToFire(int ID, PlayerMap* players, ObstacleMap* obstacles);
 
 #endif

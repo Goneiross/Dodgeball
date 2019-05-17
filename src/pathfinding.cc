@@ -34,10 +34,22 @@ void pathfinding(PlayerMap *players, ObstacleMap *obstacles) {
          << " angle: " << pathAngles[p] * 180 / M_PI << " degrés" << endl;
     cout << endl;
     auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start); 
+    auto duration = duration_cast<microseconds>(stop - start);
 
     cout << "Time taken by Path: " << duration.count() / 1000 << " ms" << endl;
   }
 }
 
 double nearestPlayerAngle(int ID) { return pathAngles[ID]; }
+
+bool isReadyToFire(int ID, PlayerMap *players, ObstacleMap *obstacles) {
+  int l1 = players->getPlayer(ID)->getL();
+  int c1 = players->getPlayer(ID)->getC();
+  int l2 = players->getPlayer(pathAngles[ID])->getL();
+  int c2 = players->getPlayer(pathAngles[ID])->getC();
+  if (isThereObstacleBetween(l1, c1, l2, c2, obstacles)) {
+    return false;
+  } else {
+    return true;
+  }
+}
