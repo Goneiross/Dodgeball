@@ -15,39 +15,39 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  int mode = NORMAL_MODE;
-  string inputFile = "";
-  string saveFile = "";
-  if (argc == 1) {
-    // cout << "Type '--help' for a list of commands" << endl;
-  } else if (argc <= 4) {
-    for (int i = 1; i < argc; i++) {
-      if (string(argv[i]) == "Error" && mode == 0) {
-        mode = ERROR_MODE;
-      } else if (string(argv[i]) == "Step" && mode == 0) {
-        mode = STEP_MODE;
-      } else if (string(argv[i]) == "--help") {
-        cout << "Type :" << endl
-             << "'Error' to check input file" << endl
-             << "'Step' to run only one step of the simulation" << endl
-             << "'filename.extension' to use this input file" << endl;
-        exit(1);
-      } else {
-        if (inputFile == "") {
-          inputFile = argv[i];
-        } else {
-          saveFile = argv[i];
+    int mode = NORMAL_MODE;
+    string inputFile = "";
+    string saveFile = "";
+    if (argc == 1) {
+        // cout << "Type '--help' for a list of commands" << endl;
+    } else if (argc <= 4) {
+        for (int i = 1; i < argc; i++) {
+            if (string(argv[i]) == "Error" && mode == 0) {
+                mode = ERROR_MODE;
+            } else if (string(argv[i]) == "Step" && mode == 0) {
+                mode = STEP_MODE;
+            } else if (string(argv[i]) == "--help") {
+                cout << "Type :" << endl
+                     << "'Error' to check input file" << endl
+                     << "'Step' to run only one step of the simulation" << endl
+                     << "'filename.extension' to use this input file" << endl;
+                exit(1);
+            } else {
+                if (inputFile == "") {
+                    inputFile = argv[i];
+                } else {
+                    saveFile = argv[i];
+                }
+            }
         }
-      }
+    } else {
+        cout << "Error, too many arguments, type '--help' for help" << endl;
+        exit(1);
     }
-  } else {
-    cout << "Error, too many arguments, type '--help' for help" << endl;
-    exit(1);
-  }
-  if (saveFile == "") {
-    simulation(inputFile, mode);
-  } else {
-    simulation(inputFile, saveFile, mode);
-  }
-  return 0;
+    if (saveFile == "") {
+        simulation(inputFile, mode);
+    } else {
+        simulation(inputFile, saveFile, mode);
+    }
+    return 0;
 }

@@ -41,36 +41,36 @@
 
 // les deux joueurs d'indices PARAM1 et PARAM2 sont en collision
 #define PLAYER_COLLISION(PARAM1, PARAM2)                                              \
-  ("Player collision: " + std::to_string(PARAM1) + " with " + std::to_string(PARAM2))
+    ("Player collision: " + std::to_string(PARAM1) + " with " + std::to_string(PARAM2))
 
 // le joueur d'indice PARAM1 est en collision avec la balle d'indice PARAM2
 #define PLAYER_BALL_COLLISION(PARAM1, PARAM2)                                         \
-  ("Player  " + std::to_string(PARAM1) + " colliding with ball " +                    \
-   std::to_string(PARAM2))
+    ("Player  " + std::to_string(PARAM1) + " colliding with ball " +                  \
+     std::to_string(PARAM2))
 
 // la valeur PARAM indiquant l'indice incorrect de ligne ou de colonne
 #define OBSTACLE_VALUE_INCORRECT(PARAM)                                               \
-  ("Impossible value " + std::to_string(PARAM) + " for obstacle")
+    ("Impossible value " + std::to_string(PARAM) + " for obstacle")
 
 // les valeurs PARAM1 et PARAM2 sont respectivement les indices de ligne et colonne
 // d'un obstacle qui est redéfini une seconde fois
 #define MULTI_OBSTACLE(PARAM1, PARAM2)                                                \
-  ("Multiple definition of obstacle (" + std::to_string(PARAM1) + ";" +               \
-   std::to_string(PARAM2) + ")")
+    ("Multiple definition of obstacle (" + std::to_string(PARAM1) + ";" +             \
+     std::to_string(PARAM2) + ")")
 
 // collision obstacle-joueur
 // le premier paramètre est l'indice de l'obstace, le second l'indice du joueur
 #define COLL_OBST_PLAYER(PARAM1, PARAM2)                                              \
-  ("Obstacle " + std::to_string(PARAM1) + " in collision with player " +              \
-   std::to_string(PARAM2))
+    ("Obstacle " + std::to_string(PARAM1) + " in collision with player " +            \
+     std::to_string(PARAM2))
 
 // les deux balles d'indices PARAM1 et PARAM2 sont en collision
 #define BALL_COLLISION(PARAM1, PARAM2)                                                \
-  ("Ball collision: " + std::to_string(PARAM1) + " with " + std::to_string(PARAM2))
+    ("Ball collision: " + std::to_string(PARAM1) + " with " + std::to_string(PARAM2))
 
 // collision balle-obstacle
 // l'unique paramètre est l'indice de la balle
 #define COLL_BALL_OBSTACLE(PARAM)                                                     \
-  ("Ball " + std::to_string(PARAM) + " in collision with an obstacle")
+    ("Ball " + std::to_string(PARAM) + " in collision with an obstacle")
 
 #endif
