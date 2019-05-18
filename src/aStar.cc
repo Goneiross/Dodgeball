@@ -94,7 +94,6 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
   std::cout << "Start " << startID << "(" << players->getPlayer(startID)->getL() << "," << players->getPlayer(startID)->getC() << ")" << endl;
   cout << "BEGIN" << endl;
   do {
-    std::cin.ignore();
     /*
     for (int i = 0; i < openList.size(); i++){
       Node back = openList[i];
