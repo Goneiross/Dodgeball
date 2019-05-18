@@ -76,32 +76,24 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacl
     if (l1 == l2) { // Case 1 : same line
         if (c1 < c2) {
             for (int c = c1; c <= c2; c++) {
-                if (obstacles->isObstacle(l2, c)) {
-                    return true;
-                }
+                if (obstacles->isObstacle(l2, c)) {return true;}
             }
             return false;
         } else {
             for (int c = c2; c <= c1; c++) {
-                if (obstacles->isObstacle(l2, c)) {
-                    return true;
-                }
+                if (obstacles->isObstacle(l2, c)) {return true;}
             }
             return false;
         }
     } else if (c1 == c2) { // Case 2 : same column
         if (l1 < l2) {
             for (int l = l1; l <= l2; l++) {
-                if (obstacles->isObstacle(l, c2)) {
-                    return true;
-                }
+                if (obstacles->isObstacle(l, c2)) {return true;}
             }
             return false;
         } else {
             for (int l = l2; l <= l1; l++) {
-                if (obstacles->isObstacle(l, c2)) {
-                    return true;
-                }
+                if (obstacles->isObstacle(l, c2)) {return true;}
             }
             return false;
         }
@@ -115,10 +107,7 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacl
                     l++;
                 } else if (l > l2) {
                     l--;
-                } else {
-                    direction = column;
-                    continue;
-                }
+                } else {direction = column; continue;}
                 if (obstacles->isObstacle(l, c)) {
                     return true;
                 }
@@ -128,13 +117,8 @@ bool isThereObstacleBetween(int l1, int c1, int l2, int c2, ObstacleMap *obstacl
                     c++;
                 } else if (c > c2) {
                     c--;
-                } else {
-                    direction = line;
-                    continue;
-                }
-                if (obstacles->isObstacle(l, c)) {
-                    return true;
-                }
+                } else {direction = line; continue;}
+                if (obstacles->isObstacle(l, c)) {return true;}
                 direction = line;
             }
         }
@@ -217,11 +201,7 @@ void floyd(Player *start, Player *target, int infinityInit, int infinityDist,
     /* !! Si start et target sont adjacents ou diagonales, on connait leur angle
     avant  la boucle _while_, ce qui rend inutile le fait de compléter les
     vector<vector<double> > ! Il faudrait que, dans ces cas, floyd ne complète pas
-    sa tâche, ce qui serait très économique. De même, si une portion de la map est
-    entièrement séparée du reste, comment arrêter l'algorithme et définir que les
-    Players des deux côté de la frontière ne pourront pas se rejoindre à moins de
-    provoquer la chute du mur ?
-    De même, faudra penser à aller acheter ces 10kg de riz à Aligro :) */
+    sa tâche, ce qui serait très économique.*/
 
     for (int i = 0; i < nbCell; i++) {
         for (int j = 0; j < nbCell; j++) {
@@ -250,88 +230,62 @@ void shortestIndirectPath(int start, int target, vector<vector<double>> &tabDist
 void diagonalDistance(unsigned int i, unsigned int j, vector<vector<double>> &tabDist,
                       vector<vector<double>> &pathAngles, ObstacleMap *obstacles) {
     int nbCell = obstacles->getLNb();
-    int iC = i / nbCell;
-    int iL = i % nbCell;
-    int jC = j / nbCell;
-    int jL = j % nbCell;
+    int iC = i / nbCell; int iL = i % nbCell;
+    int jC = j / nbCell; int jL = j % nbCell;
 
     if (iL == jL + 1) {                              // j/i
         if (iC == jC - 1) {                          // i-j
             if (obstacles->isObstacle(jL, jC - 1)) { // oj
-                tabDist[i][j] = 2;
-                tabDist[j][i] = 2;
-                pathAngles[i][j] = 0;
-                pathAngles[j][i] = 3 * M_PI_2;
+                tabDist[i][j] = 2; tabDist[j][i] = 2;
+                pathAngles[i][j] = 0; pathAngles[j][i] = 3 * M_PI_2;
             } else if (obstacles->isObstacle(iL, iC + 1)) { // io
-                tabDist[i][j] = 2;
-                tabDist[j][i] = 2;
-                pathAngles[i][j] = M_PI_2;
-                pathAngles[j][i] = M_PI;
+                tabDist[i][j] = 2; tabDist[j][i] = 2;
+                pathAngles[i][j] = M_PI_2; pathAngles[j][i] = M_PI;
             } else { //õ
-                tabDist[i][j] = sqrt(2);
-                tabDist[j][i] = sqrt(2);
-                pathAngles[i][j] = M_PI_4;
-                pathAngles[j][i] = 5 * M_PI_4;
+                tabDist[i][j] = sqrt(2); tabDist[j][i] = sqrt(2);
+                pathAngles[i][j] = M_PI_4; pathAngles[j][i] = 5 * M_PI_4;
             }
         } else {                                     // j-i
             if (obstacles->isObstacle(jL, jC + 1)) { // jo
-                tabDist[i][j] = 2;
-                tabDist[j][i] = 2;
-                pathAngles[i][j] = M_PI;
-                pathAngles[j][i] = 3 * M_PI_2;
+                tabDist[i][j] = 2; tabDist[j][i] = 2;
+                pathAngles[i][j] = M_PI; pathAngles[j][i] = 3 * M_PI_2;
             } else if (obstacles->isObstacle(iL, iC - 1)) { // oi
-                tabDist[i][j] = 2;
-                tabDist[j][i] = 2;
-                pathAngles[i][j] = M_PI_2;
-                pathAngles[j][i] = 0;
+                tabDist[i][j] = 2; tabDist[j][i] = 2;
+                pathAngles[i][j] = M_PI_2; pathAngles[j][i] = 0;
             } else { //õ
-                tabDist[i][j] = sqrt(2);
-                tabDist[j][i] = sqrt(2);
-                pathAngles[i][j] = 3 * M_PI_4;
-                pathAngles[j][i] = 7 * M_PI_4;
+                tabDist[i][j] = sqrt(2); tabDist[j][i] = sqrt(2);
+                pathAngles[i][j] = 3 * M_PI_4; pathAngles[j][i] = 7 * M_PI_4;
             }
         }
     } else {                                         // i/j
         if (iC == jC + 1) {                          // j-i
             if (obstacles->isObstacle(jL, jC + 1)) { // jo
-                tabDist[i][j] = 2;
-                tabDist[j][i] = 2;
-                pathAngles[i][j] = M_PI;
-                pathAngles[j][i] = M_PI_2;
+                tabDist[i][j] = 2; tabDist[j][i] = 2;
+                pathAngles[i][j] = M_PI; pathAngles[j][i] = M_PI_2;
             } else if (obstacles->isObstacle(iL, iC - 1)) { // oi
-                tabDist[i][j] = 2;
-                tabDist[j][i] = 2;
-                pathAngles[i][j] = 3 * M_PI_2;
-                pathAngles[j][i] = 0;
+                tabDist[i][j] = 2; tabDist[j][i] = 2;
+                pathAngles[i][j] = 3 * M_PI_2; pathAngles[j][i] = 0;
             } else { //õ
-                tabDist[i][j] = sqrt(2);
-                tabDist[j][i] = sqrt(2);
-                pathAngles[i][j] = 5 * M_PI_4;
-                pathAngles[j][i] = M_PI_4;
+                tabDist[i][j] = sqrt(2); tabDist[j][i] = sqrt(2);
+                pathAngles[i][j] = 5 * M_PI_4; pathAngles[j][i] = M_PI_4;
             }
         } else {                                     // i-j
             if (obstacles->isObstacle(jL, jC - 1)) { // oj
-                tabDist[i][j] = 2;
-                tabDist[j][i] = 2;
-                pathAngles[i][j] = 0;
-                pathAngles[j][i] = M_PI_2;
+                tabDist[i][j] = 2; tabDist[j][i] = 2;
+                pathAngles[i][j] = 0; pathAngles[j][i] = M_PI_2;
             } else if (obstacles->isObstacle(iL, iC + 1)) { // io
-                tabDist[i][j] = 2;
-                tabDist[j][i] = 2;
-                pathAngles[i][j] = 3 * M_PI_2;
-                pathAngles[j][i] = 0;
+                tabDist[i][j] = 2; tabDist[j][i] = 2;
+                pathAngles[i][j] = 3 * M_PI_2; pathAngles[j][i] = 0;
             } else { //õ
-                tabDist[i][j] = sqrt(2);
-                tabDist[j][i] = sqrt(2);
-                pathAngles[i][j] = 7 * M_PI_4;
-                pathAngles[j][i] = 3 * M_PI_4;
+                tabDist[i][j] = sqrt(2); tabDist[j][i] = sqrt(2);
+                pathAngles[i][j] = 7 * M_PI_4; pathAngles[j][i] = 3 * M_PI_4;
             }
         }
     }
 }
 
 bool sameObstacles(ObstacleMap *obstacles) {
-    if (previousObstacles.size() != obstacles->getCNb()) {
+    if (previousObstacles.size() != obstacles->getCNb()) { 
         return false;
     } else {
         for (int i = 0; i < obstacles->getCNb(); i++) {

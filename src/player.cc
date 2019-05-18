@@ -156,24 +156,15 @@ void PlayerMap::updatePosition() {
         double newY = players[p]->getY() + sin(angle) * players[p]->getVelocity();
         int newC = ((newX + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
         int newL = -((newY - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
+        
         if (newX > (DIM_MAX - players[p]->getHitbox()->getRadius()) ||
-            newX < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {
-            continue;
-        } // Et les marges ?
+            newX < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {continue;} // Et les marges ?
         if (newY > (DIM_MAX - players[p]->getHitbox()->getRadius()) ||
-            newY < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {
-            continue;
-        } // Et les marges ?
-        if (isDifferentPlayer(newL, newC, players[p]->getID())) {
-            continue;
-        }
-        if (isCollision(newX, newY, p)) {
-            continue;
-        }
-        players[p]->setL(newL);
-        players[p]->setC(newC);
-        players[p]->getHitbox()->setX(newX);
-        players[p]->getHitbox()->setY(newY);
+            newY < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {continue;} // Et les marges ?
+        if (isDifferentPlayer(newL, newC, players[p]->getID())) {continue;}
+        if (isCollision(newX, newY, p)) {continue;}
+        players[p]->setL(newL); players[p]->setC(newC);
+        players[p]->getHitbox()->setX(newX); players[p]->getHitbox()->setY(newY);
 
         if (newL < lineNumber && newL >= 0 && newC < columnNumber && newC >= 0) {
             int ID = players[p]->getID();
@@ -187,11 +178,8 @@ void PlayerMap::updatePosition() {
                     }
                 }
             }
-            if (playerGrid[newL][newC][0] == -1) {
-                playerGrid[newL][newC][0] = ID;
-            } else {
-                playerGrid[newL][newC].push_back(ID);
-            }
+            if (playerGrid[newL][newC][0] == -1) {playerGrid[newL][newC][0] = ID;
+            } else { playerGrid[newL][newC].push_back(ID);}
         }
     }
 }

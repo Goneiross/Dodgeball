@@ -193,11 +193,8 @@ GUI::GUI()
         sigc::mem_fun(*this, &GUI::on_button_clicked_step));
 
     show_all_children();
-
     maximize();
-
-    won = false;
-    noSolution = false;
+    won = false; noSolution = false;
 }
 
 GUI::~GUI() {}

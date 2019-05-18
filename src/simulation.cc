@@ -127,15 +127,8 @@ bool initialization(string inputFile, int mode) {
     double ingameMargin = 0, parsingMargin = 0;
     string inputData[4];
     char charBin;
-    enum parseType {
-        cellParsing = 0,
-        playerNumberParsing,
-        playerParsing,
-        obstacleNumberParsing,
-        obstacleParsing,
-        ballNumberParsing,
-        ballParsing
-    };
+    enum parseType {cellParsing = 0, playerNumberParsing, playerParsing,
+        obstacleNumberParsing, obstacleParsing, ballNumberParsing, ballParsing};
     ifstream flux(inputFile, ios::in);
     if (!flux) {
         cout << "Unable to open file " << inputFile << endl;
@@ -145,9 +138,7 @@ bool initialization(string inputFile, int mode) {
         if (error) {
             return false;
         } else if (inputData[0] == "#") {
-            do {
-                flux.get(charBin);
-            } while (charBin != '\n');
+            do {flux.get(charBin);} while (charBin != '\n');
         } else {
             switch (parseType) {
             case cellParsing:
@@ -158,11 +149,7 @@ bool initialization(string inputFile, int mode) {
             case playerNumberParsing:
                 nbPlayer = stoi(inputData[0]);
                 players->reserveSpace(nbPlayer);
-                if (nbPlayer == 0) {
-                    parseType += 2;
-                } else {
-                    parseType++;
-                }
+                if (nbPlayer == 0) {parseType += 2;} else {parseType++;}
                 break;
             case playerParsing:
                 flux >> inputData[1] >> inputData[2] >> inputData[3];
@@ -170,17 +157,11 @@ bool initialization(string inputFile, int mode) {
                             inputData[0], inputData[1], inputData[2], inputData[3],
                             error, mode);
                 p++;
-                if (p == nbPlayer) {
-                    parseType++;
-                }
+                if (p == nbPlayer) {parseType++;}
                 break;
             case obstacleNumberParsing:
                 nbObstacle = stoi(inputData[0]);
-                if (nbObstacle == 0) {
-                    parseType += 2;
-                } else {
-                    parseType++;
-                }
+                if (nbObstacle == 0) {parseType += 2;} else {parseType++;}
                 break;
             case obstacleParsing:
                 flux >> inputData[1];
@@ -194,13 +175,9 @@ bool initialization(string inputFile, int mode) {
                         for (int j = 0; j < nbToCheck; j++) {
                             collisionCheckPO(i, toCheck[j], parsingMargin, error,
                                              mode);
-                            if (error) {
-                                return false;
-                            }
+                            if (error) {return false;}
                         }
-                        if (error) {
-                            return false;
-                        }
+                        if (error) {return false;}
                     }
                     parseType++;
                 }
@@ -209,9 +186,7 @@ bool initialization(string inputFile, int mode) {
                 nbBall = stoi(inputData[0]);
                 balls->reserveSpace(nbBall + nbPlayer);
                 parseType++;
-                if (nbBall == 0) {
-                    parseType++;
-                }
+                if (nbBall == 0) {parseType++;}
                 break;
             case ballParsing:
                 flux >> inputData[1] >> inputData[2];
@@ -225,9 +200,7 @@ bool initialization(string inputFile, int mode) {
                         largeCollisionCheckBO(i, toCheck);
                         for (auto o : toCheck) {
                             collisionCheckBO(i, o, parsingMargin, error, mode);
-                            if (error) {
-                                return false;
-                            }
+                            if (error) {return false;}
                         }
                     }
                     parseType++;
@@ -236,11 +209,7 @@ bool initialization(string inputFile, int mode) {
         }
     }
     flux.close();
-    if (error) {
-        return false;
-    } else {
-        return true;
-    }
+    if (error) {return false;} else {return true;}
 }
 
 static void initConstants(double &ballRadius, double &ballVelocity,
@@ -305,14 +274,11 @@ bool check() { // Et si ca touche both player et obstacle en meme temps ?
                     balls->removeBall(b);
                     players->getPlayer(p)->setTimeTouched(
                         players->getPlayer(p)->getTimeTouched() - 1);
-                    if (players->getPlayer(p)->getTimeTouched() == 0) {
-                        // RENOMER OU VERIFIER DANS LE BON SENS !!!!!
+                    if (players->getPlayer(p)->getTimeTouched() == 0) { // RENOMER OU VERIFIER DANS LE BON SENS !!!!!
                         players->removePlayer(p);
                     }
                     break;
-                } else {
-                    p++;
-                }
+                } else {p++;}
             }
             int o = 0;
             while (o < obstacles->getNb()) {
@@ -322,18 +288,12 @@ bool check() { // Et si ca touche both player et obstacle en meme temps ?
                     balls->removeBall(b);
                     obstacles->removeObstacle(o);
                     break;
-                } else {
-                    o++;
-                }
+                } else {o++;}
             }
             b++;
         }
     }
-    if (players->getNb() <= 1) {
-        return true;
-    } else {
-        return false;
-    }
+    if (players->getNb() <= 1) {return true;} else {return false;}
 }
 
 void updateBalls() { balls->updatePosition(); }
