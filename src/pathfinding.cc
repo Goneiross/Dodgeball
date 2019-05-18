@@ -26,8 +26,8 @@ void pathfinding(PlayerMap *players, ObstacleMap *obstacles) {
   auto start = high_resolution_clock::now();
   cout << "--------------------WHICH-PATH--------------------" << endl;
   for (int p = 0; p < players->getNb(); p++) {
-    cout << "start ID: " << players->getPlayer(p)->getID()
-         << " target ID: " << targets[p] << endl;
+    cout << "start ID: " << players->getPlayer(p)->getID() << "(" << players->getPlayer(p)->getL() << "," << players->getPlayer(p)->getC() << ")"
+         << " target ID: " << targets[p] << "(" << players->getPlayer(targets[p])->getL() << "," << players->getPlayer(targets[p])->getC() << ")" << endl;
     pathAngles[p] = whichPath(players->getPlayer(p), players->getPlayer(targets[p]),
                               infinityInit, infinityDist, obstacles, firstInStep);
     cout << "Player " << players->getPlayer(p)->getID()

@@ -196,10 +196,10 @@ void floyd(Player *start, Player *target, int infinityInit, int infinityDist,
   }
   for (int i(0); i < nbCellSquared; i++) {
     if (obstacles->isObstacle(i % nbCell, i / nbCell)) {
-      cout << i % nbCell << i / nbCell << endl;
+      //cout << i % nbCell << i / nbCell << endl;
       for (int j(0); j < nbCellSquared; j++) {
-        cout << i << " " << i % nbCell << " " << i / nbCell << "   " << j << " "
-             << j % nbCell << " " << j / nbCell << " OBST" << endl;
+        //cout << i << " " << i % nbCell << " " << i / nbCell << "   " << j << " "
+        //     << j % nbCell << " " << j / nbCell << " OBST" << endl;
         tabDist[i][j] = infinityDist;
         tabDist[j][i] = infinityDist;
       }
@@ -217,9 +217,9 @@ void floyd(Player *start, Player *target, int infinityInit, int infinityDist,
   }
 
   // cout << "done" << endl;
-  // int g = 0;
-  while (areThereUninitialisedCases(tabDist, infinityInit)) {
-    // g++;
+  int g = 0;
+  while (areThereUninitialisedCases(tabDist, infinityInit) && g < 100) {
+    g++;
     for (int i(0); i < nbCellSquared; i++) {
       for (int j(0); j < i; j++) {
         if ((tabDist[i][j] > 2) && (tabDist[i][j] != infinityDist)) {
@@ -393,6 +393,7 @@ double complexPath(Player *start, Player *target, int infinityInit, int infinity
       cout << "-----Floyd------" << endl;
       floyd(start, target, infinityInit, infinityDist, obstacles);
       firstInStep = false;
+      /*
       cout << "Distance tab" << endl;
       for (int i = 0; i < tabDist.size(); i++) {
         for (int j = 0; j < tabDist[0].size(); j++) {
@@ -406,7 +407,7 @@ double complexPath(Player *start, Player *target, int infinityInit, int infinity
           cout << (int)(pathAngles[i][j] * 180 / M_PI) << "     ";
         }
         cout << endl;
-      }
+      } */
       cout << "--------------" << endl;
       return pathAngles[(start->getC() * nbCell) + start->getL()]
                        [(target->getC() * nbCell) + target->getL()];
