@@ -18,7 +18,7 @@ bool initialization(std::string inputFile, int mode);
 bool isOut(double xPosision, double yPosition);
 bool check();
 void updateBalls();
-void updatePlayers();
+bool updatePlayers();
 void dracarys();
 
 int getPlayerNb();

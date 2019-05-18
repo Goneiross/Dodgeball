@@ -70,7 +70,7 @@ void simulation(std::string inputFile, std::string saveFile, int mode) {
     delete balls;
     return;
   } else if (mode == STEP_MODE) {
-    updatePlayers();
+    updatePlayers(); //Cannot complete the game! WHAT TO DO
     dracarys();
     updateBalls();
     check();
@@ -104,7 +104,7 @@ void simulation(std::string inputFile, int mode) {
       cout << FILE_READING_SUCCESS << endl;
     }
     delete obstacles;
-    delete players;
+    delete players; 
     delete balls;
     return;
   } else {
@@ -349,9 +349,13 @@ bool check() { // Et si ca touche both player et obstacle en meme temps ?
 
 void updateBalls() { balls->updatePosition(); }
 
-void updatePlayers() {
-  pathfinding(players, obstacles);
+bool updatePlayers() {
+  bool noSolution = pathfinding(players, obstacles);
+  if (noSolution){return true;}
+  else {
   players->updatePosition();
+return false;
+  }
 }
 
 void dracarys() {

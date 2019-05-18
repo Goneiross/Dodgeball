@@ -30,4 +30,6 @@
 #define ERROR_MODE 1
 #define STEP_MODE 2
 
+#define NO_SOLUTION 42
+
 #endif
