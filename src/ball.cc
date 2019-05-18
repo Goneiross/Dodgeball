@@ -57,6 +57,8 @@ BallMap::BallMap(int l, int c) {
 void BallMap::addBall(double x, double y, double a, double r, double v, int ID) {
   int colPos = ((x + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
   int lgnPos = -((y - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
+  if (colPos >= columnNumber || colPos < 0){return;}
+  if (lgnPos >= lineNumber || lgnPos < 0){return;}
   balls.push_back(new Ball(x, y, a, r, v, colPos, lgnPos, ID));
   if (ballGrid[lgnPos][colPos][0] == -1) {
     ballGrid[lgnPos][colPos][0] = ID;
@@ -68,23 +70,17 @@ void BallMap::addBall(double x, double y, double a, double r, double v, int ID) 
 void BallMap::removeBall(int ID) {
   int l = balls[ID]->getL();
   int c = balls[ID]->getC();
-  cout << "t" << endl;
   int posSize = ballGrid[l][c].size();
-  cout << "t" << endl;
   if (ballGrid[l][c][0] == ID) {
-    cout << "g" << endl;
     ballGrid[l][c][0] = -1;
   } else {
-    cout << "h" << endl;
     for (int i = 0; i < posSize; i++) {
       if (ballGrid[l][c][i] == ID) {
-        cout << "erase" << endl;
         ballGrid[l][c].erase(ballGrid[l][c].begin() + i);
         break;
       }
     }
   }
-  cout << "t" << endl;
   balls.erase(balls.begin() + ID);
 }
 
@@ -124,7 +120,6 @@ int BallMap::getNewID() const {
 }
 
 void BallMap::updatePosition() {
-  cout << "--------------------Ball-Moving--------------------" << endl;
   int ballNb = balls.size();
   for (int b = 0; b < ballNb; b++) {
     int xPos = balls[b]->getHitbox()->getX() +

@@ -287,7 +287,7 @@ bool isOut(double xPosition, double yPosition) {
   }
 }
 
-bool check() {
+bool check() { // Et si ca touche both player et obstacle en meme temps ?
   cout << "--------------------Checking--------------------" << endl;
   cout << balls->getNb() << " balls" << endl;
   double delta = COEF_MARGE_JEU * (SIDE / (double)obstacles->getLNb()); // Map
@@ -304,12 +304,13 @@ bool check() {
         bool collision = false;
         collisionCheckPB(p, b, delta, collision, 0);
         if (collision) {
-          cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID() << endl;
+          cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID()
+               << endl;
           balls->removeBall(b);
           cout << "removed" << endl;
           players->getPlayer(p)->setTimeTouched(
               players->getPlayer(p)->getTimeTouched() - 1);
-          cout << "set" << endl;
+          cout << "decrease player " << p << " life" << endl;
           if (players->getPlayer(p)->getTimeTouched() == 0) {
             // RENOMER OU VERIFIER DANS LE BON SENS !!!!!
             players->removePlayer(p);
@@ -319,16 +320,29 @@ bool check() {
           p++;
         }
       }
-      cout << "done" << endl;
+      int o = 0;
+      while (o < obstacles->getNb()){
+        bool collision = false;
+        collisionCheckBO(b, o, delta, collision, 0);
+        if (collision) {
+          cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID()
+               << endl;
+          balls->removeBall(b);
+          cout << "removing obstacle " << o << endl;
+          obstacles->removeObstacle(o);
+          break;
+        } else {
+          o++;
+        }
+      }
       b++;
     }
   }
-  cout << "t" << endl;
   if (players->getNb() <= 1) {
     cout << "ONLY ONE PLAYER OR LESS LEFT" << endl;
     return true;
   } else {
-    cout << "Player left" << endl;
+    cout << "MORE THAN ONE PLAYER LEFT" << endl;
     return false;
   }
 }
@@ -341,17 +355,19 @@ void updatePlayers() {
 }
 
 void dracarys() {
+  cout << "dracarys" << endl;
   double ballRadius = COEF_RAYON_BALLE * (SIDE / obstacles->getLNb()); // Changer ca !
   double playerRadius = COEF_RAYON_JOUEUR * (SIDE / obstacles->getLNb()); // Ca aussi !
   double ballVelocity =
       COEF_VITESSE_BALLE * (SIDE / obstacles->getLNb()); // Et aussi lui !
   for (int p = 0; p < players->getNb(); p++) {
-    if (players->getPlayer(p)->getCount() ==
-        MAX_COUNT) { // ET SI IL N'Y A PAS D'OBSTACLE ENTRE LES DEUX
+    if ((players->getPlayer(p)->getCount() == MAX_COUNT) &&
+        (isReadyToFire(p, players, obstacles))) {
       double xPos = players->getPlayer(p)->getX();
       double yPos = players->getPlayer(p)->getY();
       double delta = ballRadius + playerRadius;
       double angle = nearestPlayerAngle(p);
+
       balls->addBall(xPos + cos(angle) * delta, yPos + sin(angle) * delta, angle,
                      ballRadius, ballVelocity, balls->getNewID());
       players->getPlayer(p)->setCount(0);
