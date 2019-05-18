@@ -5,16 +5,10 @@
   \brief  add description
 */
 
-#ifndef OBJECT_HEADER
-#define OBJECT_HEADER
 #include "ball.h"
 #include "map.h"
 #include "player.h"
-#endif
-#ifndef TOOLS_H
-#define TOOLS_H
 #include "tools.h"
-#endif
 
 typedef tile int[2];
 

@@ -5,29 +5,56 @@
   \brief  add description
 */
 
-// GOOD LUCK CORRECTING MY CODE
-
 #include <math.h>
 #include <vector>
-#ifndef OBJECT_HEADER
-#define OBJECT_HEADER
-#include "ball.h"
-#include "map.h"
+#include "obstacle.h"
 #include "player.h"
-#endif
-#ifndef TOOLS_H
-#define TOOLS_H
-#include "tools.h"
-#endif
 
 #include <iostream>
 
 using namespace std;
 
+
+int nearestPlayer(PlayerMap *players, int index);
+bool openGridArea(bool **openGrid, bool **closedGrid, int l, int c);
+void setupOpenGrid(bool **openGrid, Map *mainMap);
+Tile lowestScoreTile(double **scoreGrid);
+bool isInGrid(double **scoreGrid, int l, int c);
+double TileScore(Player *players, int index, int targetIndex, bool **openGrid);
+double distanceCost(PlayerMap *players, int index);
+double distanceApprox(PlayerMap *players, int targetIndex);
+bool emptyOpenGrid(bool **openGrid, int tabsize);
+
 typedef struct Tile {
   int l;
   int c;
 } Tile;
+
+class Node {
+  public :
+    Node(Node* from, Tile at);
+    Node(Node* const& copy);
+    ~Node(){parent = nullptr;};
+    Tile position;
+    Node* parent;
+    int totalCost;
+    int endCost;
+    int beginCost;
+};
+Node::Node(Node* from, Tile at)
+  : parent (from),
+    position (at),
+    totalCost(0),
+    endCost(0),
+    beginCost(0) {}
+
+Node::Node(Node* const& copy)
+  : parent (copy->parent),
+    position (copy->position),
+    totalCost(copy->totalCost),
+    endCost(copy->endCost),
+    beginCost(copy->beginCost) {}
+
 
 class Path {
 public:
@@ -50,25 +77,17 @@ Path::Path(int nbCell) {
   }
 }
 
-int nearestPlayer(PlayerMap *players, int index);
-bool openGridArea(bool **openGrid, bool **closedGrid, int l, int c);
-void setupOpenGrid(bool **openGrid, Map *mainMap);
-Tile lowestScoreTile(double **scoreGrid);
-bool isInGrid(double **scoreGrid, int l, int c);
-double TileScore(Player *players, int index, int enemyIndex, bool **openGrid);
-double distanceCost(PlayerMap *players, int index);
-double distanceApprox(PlayerMap *players, int enemyIndex);
-bool emptyOpenGrid(bool **openGrid, int tabsize);
 
-double pathAngle(PlayerMap *players, int index, Map *obstacles) {
+double pathAngle(PlayerMap *players, int startID, ObstacleMap* obstacles) {
   double angle = 0;
-  int nearest = nearestPlayer(players, index);
+  int targetID = nearestPlayer(players, startID);
   int LNb = players->getLNb(), CNb = players->getCNb();
+
   double **scoreGrid = new double *[LNb]; // call LNb and CNb outside !
   for (int i = 0; i < LNb; i++) {
     scoreGrid[i] = new double[CNb];
     for (int j = 0; j < CNb; j++) {
-      scoreGrid[i][j] = LNb * sqrt(2); // Compute outside !
+      scoreGrid[i][j] = LNb * sqrt(2); // maybe squared ? Do outisde
     }
   }
   bool **openGrid = new bool *[LNb];
@@ -78,61 +97,98 @@ double pathAngle(PlayerMap *players, int index, Map *obstacles) {
       openGrid[i][j] = true;
     }
   }
-
-  Tile me;
-  me.l = players->getPlayer(index)->getL();
-  me.c = players->getPlayer(index)->getC();
-  Tile enemy;
-  enemy.l = players->getPlayer(nearest)->getL();
-  enemy.c = players->getPlayer(nearest)->getC();
-  Tile current;
-  current.l = me.l;
-  current.c = me.c;
-  Tile last;
-
   setupOpenGrid(openGrid, obstacles);
 
-  do { // A* algorithm under construction
-    std::cout << "Hello" << std::endl;
-    break;
-  } while (!openGrid.empty());
 
+  Node* start = new Node(nullptr,{players->getPlayer(startID)->getL(),players->getPlayer(startID)->getC()});
+  Node* target = new Node(nullptr,{players->getPlayer(targetID)->getL(),players->getPlayer(targetID)->getC()});
+  Node* current;
+
+  vector<Node*> openList;
+  vector<Node*> closedList;
+  vector<Tile> path;
+  openList.push_back(start);
+
+  while (openList.size() > 0) {
+    current = new Node(openList[0]);
+    int currentIndex = 0;
+    for (int i = 0; i < openList.size(); i++){
+      if(openList[i]->totalCost < current->totalCost){
+        current = new Node(openList[i]);
+        currentIndex = i;
+      }
+    }
+    openList.erase(openList.begin() + currentIndex);
+    closedList.push_back(current);
+
+    if (current == target){
+      Node* back = new Node(current);
+      while(back->parent != nullptr){
+        path.push_back(back->position);
+        back = new Node(current->parent);
+      }
+      // END
+      delete back;
+    }
+    vector<Node*> children;
+    for (int i = -1; i <= 1; i++){
+      for (int j = -1; j <= 1; j++){
+        if (not (i == 0 && j == 0)){
+          Tile newPosition = {current->position.l + i, current->position.c + j};
+          if (newPosition.l < 0 || newPosition.l > obstacles->getLNb()){continue;} // > or => ???
+          if (newPosition.c < 0 || newPosition.c > obstacles->getCNb()){continue;} // > or => ???
+          if(obstacles->isObstacle(newPosition.l,newPosition.c)){continue;}
+          children.push_back(new Node(current, newPosition));
+        }
+      }
+    }
+    for (int childID = 0; childID < children.size(); childID++){
+      for (int closedChildID = 0; closedChildID < closedList.size(); closedChildID++){
+        if (children[childID] == closedList[closedChildID]){continue;}
+      }
+      double lDistance = children[childID]->position.l - target->position.l;
+      double cDistance = children[childID]->position.c - target->position.c;
+      children[childID]->beginCost = current->beginCost + 1;
+      children[childID]->endCost = pow(lDistance, 2) + pow(cDistance, 2);
+      children[childID]->totalCost = children[childID]->beginCost + children[childID]->endCost;
+    }
+  }
+  
+
+  delete start;
+  delete target;
+  delete current;
   return angle;
 }
 
-bool emptyOpenGrid(bool **openGrid, int tabsize) {
-  bool isempty = true;
-  for (int i = 0; i < tabsize; i++) {
-    for (int j = 0; j < tabsize; j++) {
-      if (!openGrid[i][j]) {
-        isempty = false;
+bool isGridEmpty(bool ** grid, ObstacleMap* obstacles) {
+  for (int l = 0; l < obstacles->getLNb(); l++) {
+    for (int c = 0; c < obstacles->getCNb(); c++) {
+      if (grid[l][c]) {
+        return false;
       }
     }
   }
-
-  return isempty;
+  return true;
 }
 
-int nearestPlayer(PlayerMap *players, int index) {
-  int nearest(-1);
-  double distance = players->getLNb() * sqrt(2);
-
-  for (int list = 0; list < players->getNb(); list++) {
-    if (index != list) {
-      double dist = distance(players->getPlayer(index)->getHitbox(),
-                             players->getPlayer(list)->getHitbox());
-      if (dist < distance) {
-        distance = dist;
-        nearest = list;
+int nearestPlayer(PlayerMap *players, int ID) {
+  int nearestID = -1;
+  double nearestDistance = players->getLNb() * 2; // better than sqrt(2)
+  for (int p = 0; p < players->getNb(); p++) {
+    if (ID != p) {
+      double dist = distance(players->getPlayer(ID)->getHitbox(),
+                             players->getPlayer(p)->getHitbox());
+      if (dist < nearestDistance) {
+        nearestDistance = dist;
+        nearestID = p;
       }
     }
   }
-
-  return nearest;
+  return nearestID;
 }
 
-Tile lowestScoreTile(double **scoreGrid, Tile lastTile, int tabsize) {
-  int gridSize = scoreGrid.size();
+Tile lowestScoreTile(double **scoreGrid, Tile lastTile, int tabsize, ObstacleMap* obstacles) {
   double lowestScore = tabsize * sqrt(2);
   Tile lowest = {-1, -1};
   double value;
@@ -167,11 +223,11 @@ Tile lowestScoreTile(double **scoreGrid, Tile lastTile, int tabsize) {
 
   bool openGridArea(bool **openGrid, bool **closedGrid, int l, int c) {}
 
-  void setupOpenGrid(bool **openGrid, Map *mainMap) {
-    for (auto line : openGrid) {
-      for (auto column : line) {
-        if (mainMap->isObstacle(line, column)) {
-          openGrid[line][column] = false;
+  void setupOpenGrid(bool** &openGrid, ObstacleMap* obstacles) {
+    for (int l = 0; l < obstacles->getLNb(); l++) {
+      for (int c = 0; c < obstacles->getCNb(); c++) {
+        if (obstacles->isObstacle(l, c)) {
+          openGrid[l][c] = false;
         }
       }
     }
