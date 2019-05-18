@@ -8,7 +8,7 @@ projet: $(OFILES)
 clean:
 	@/bin/rm -f *.o *.x *.c~ *.h~ projet
 
-ball.o: ball.cc ball.h tools.h
+ball.o: ball.cc ball.h tools.h map.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 GUI.o: GUI.cc GUI.h simulation.h define.h
@@ -18,12 +18,12 @@ main.o: main.cc GUI.h simulation.h
 	$(CC) $(CFLAGS) `pkg-config gtkmm-3.0 --cflags --libs` -c $< -o $@
 
 map.o: map.cc map.h
-	$(CC) $(CFLAGS) -c $< -o $@	
+	$(CC) $(CFLAGS) -c $< -o $@	 
 
 obstacle.o : obstacle.cc obstacle.h map.h tools.h define.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
-player.o: player.cc player.h tools.h pathfinding.h
+player.o: player.cc player.h map.h tools.h pathfinding.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 simulation.o: simulation.cc simulation.h ball.h obstacle.h player.h error.h GUI.h pathfinding.h
