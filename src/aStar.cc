@@ -162,8 +162,8 @@ double whichPath(PlayerMap *players, int startID, ObstacleMap* obstacles) {
 
   int nextStepID= path.size() - 1;
   cout << nextStepID << endl;
-  cout << path[nextStepID].c << endl;
-  pathAngle = angle(players->getPlayer(startID)->getC(), players->getPlayer(startID)->getL(), path[nextStepID].c -1, path[nextStepID].l -1);
+  cout << "Going to " << path[nextStepID].l << " " << path[nextStepID].c << endl;
+  pathAngle = angle(players->getPlayer(startID)->getC(), players->getPlayer(startID)->getL(), path[nextStepID].c, path[nextStepID].l);
   std::cout << "PATH ANGLE" << pathAngle << endl;
   cout << "RETURN" << endl;
   return pathAngle;
