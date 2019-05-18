@@ -310,7 +310,7 @@ bool check() { // Et si ca touche both player et obstacle en meme temps ?
           cout << "removed" << endl;
           players->getPlayer(p)->setTimeTouched(
               players->getPlayer(p)->getTimeTouched() - 1);
-          cout << "set" << endl;
+          cout << "decrease player " << p << " life" << endl;
           if (players->getPlayer(p)->getTimeTouched() == 0) {
             // RENOMER OU VERIFIER DANS LE BON SENS !!!!!
             players->removePlayer(p);
@@ -328,8 +328,7 @@ bool check() { // Et si ca touche both player et obstacle en meme temps ?
           cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID()
                << endl;
           balls->removeBall(b);
-          cout << "removed" << endl;
-          cout << "removing obstacle" << endl;
+          cout << "removing obstacle " << o << endl;
           obstacles->removeObstacle(o);
           break;
         } else {
@@ -339,12 +338,11 @@ bool check() { // Et si ca touche both player et obstacle en meme temps ?
       b++;
     }
   }
-  cout << "t" << endl;
   if (players->getNb() <= 1) {
     cout << "ONLY ONE PLAYER OR LESS LEFT" << endl;
     return true;
   } else {
-    cout << "Player left" << endl;
+    cout << "MORE THAN ONE PLAYER LEFT" << endl;
     return false;
   }
 }
