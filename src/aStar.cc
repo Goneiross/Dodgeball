@@ -143,9 +143,10 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
       }
     }
     for (int childID = 0; childID < children.size(); childID++){
+      bool already = false;
       for (int closedChildID = 0; closedChildID < closedList.size(); closedChildID++){
-        if (children[childID]->position == closedList[closedChildID]->position){continue;}
-      }
+        if (children[childID]->position == closedList[closedChildID]->position){already = true;}
+      } if (not already) {
       double lDistance = children[childID]->position.l - target->position.l;
       double cDistance = children[childID]->position.c - target->position.c;
       children[childID]->beginCost = current->beginCost + 1;
@@ -157,7 +158,7 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
       }
 
       openList.push_back(children[childID]);
-    }
+    }}
   } while (openList.size() > 0);
   cout << "DONE" << endl;
   int nextStepID= path.size() - 1;
