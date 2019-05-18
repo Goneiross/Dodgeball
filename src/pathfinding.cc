@@ -1,4 +1,5 @@
 #include "floyd.h"
+#include "aStar.h"
 #include "obstacle.h"
 #include "player.h"
 #include <cmath>
@@ -15,7 +16,7 @@ static vector<double> pathAngles;
 static int infinityInit;
 static int infinityDist;
 
-void pathfinding(PlayerMap *players, ObstacleMap *obstacles) {
+void pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1) {
   bool firstInStep = true;
   infinityDist = pow(obstacles->getCNb(), 2);
   infinityInit = infinityDist + 1;
@@ -28,8 +29,14 @@ void pathfinding(PlayerMap *players, ObstacleMap *obstacles) {
   for (int p = 0; p < players->getNb(); p++) {
     cout << "start ID: " << players->getPlayer(p)->getID() << "(" << players->getPlayer(p)->getL() << "," << players->getPlayer(p)->getC() << ")"
          << " target ID: " << targets[p] << "(" << players->getPlayer(targets[p])->getL() << "," << players->getPlayer(targets[p])->getC() << ")" << endl;
-    pathAngles[p] = whichPath(players->getPlayer(p), players->getPlayer(targets[p]),
+    
+    if (type == 0){
+      pathAngles[p] = whichPath(players->getPlayer(p), players->getPlayer(targets[p]),
                               infinityInit, infinityDist, obstacles, firstInStep);
+    } else {
+      pathAngles[p] = whichPath(players, p, obstacles);
+    }
+    
     cout << "Player " << players->getPlayer(p)->getID()
          << " angle: " << pathAngles[p] * 180 / M_PI << " degrés" << endl;
     cout << endl;
