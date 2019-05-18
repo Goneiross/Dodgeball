@@ -91,6 +91,8 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
   vector<Tile> path;
   openList.push_back(start);
 
+  bool foundSolution = false;
+
   std::cout << "Start " << startID << "(" << players->getPlayer(startID)->getL() << "," << players->getPlayer(startID)->getC() << ")" << endl;
   cout << "BEGIN" << endl;
   do {
@@ -125,6 +127,7 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
         path.push_back(back->parent->position);
         back = back->parent;
       }
+      foundSolution = true;
       cout << "END" << endl;
       break;
     }
@@ -163,7 +166,14 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
   cout << "DONE" << endl;
   int nextStepID= path.size() - 1;
   // cout << nextStepID << endl;
-  if (nextStepID < 0){return angle(players->getPlayer(startID)->getX(), players->getPlayer(startID)->getY(), players->getPlayer(targetID)->getX(), players->getPlayer(targetID)->getY());}
+  if (nextStepID < 0){
+    if (foundSolution){
+      return angle(players->getPlayer(startID)->getX(), players->getPlayer(startID)->getY(), players->getPlayer(targetID)->getX(), players->getPlayer(targetID)->getY());
+    } else {
+      cout << NO_SOLUTION << endl;
+      return NO_SOLUTION;
+    }
+  }
   cout << "Going to " << path[nextStepID].l << " " << path[nextStepID].c << endl;
   double S = SIDE / obstacles->getLNb();
   double X = (0.5 * S + path[nextStepID].c * S) - (DIM_MAX);

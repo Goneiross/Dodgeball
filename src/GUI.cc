@@ -143,6 +143,7 @@ protected:
   const int timeoutValue;
 
   bool won;
+  bool noSolution;
 
   Box m_box_top, m_box1, m_box2;
   Button m_button_exit;
@@ -195,6 +196,7 @@ GUI::GUI()
   maximize();
 
   won = false;
+  noSolution = false;
 }
 
 GUI::~GUI() {}
@@ -203,6 +205,7 @@ void GUI::on_button_clicked_exit() { hide(); }
 
 void GUI::on_button_clicked_open() {
   won = false;
+  noSolution = false;
   FileChooserDialog dialog("Please choose a file", FILE_CHOOSER_ACTION_OPEN);
   dialog.set_transient_for(*this);
   dialog.add_button("_Cancel", RESPONSE_CANCEL);
@@ -248,19 +251,24 @@ void GUI::on_button_clicked_start() {
 }
 
 void GUI::on_button_clicked_step() {
-  if (not won) {
-    updatePlayers();
+  if (not won && not noSolution) {
+    noSolution = updatePlayers();
     dracarys();
     updateBalls();
     won = check();
+    if (noSolution){m_label_status.set_label("Cannot complete the game!");}
+    if (won){m_label_status.set_label("Game’s over !");}
     auto win = get_window();
     if (win) {
       Gdk::Rectangle r(0, 0, get_allocation().get_width(),
                        get_allocation().get_height());
       win->invalidate_rect(r, false);
     }
-  } else {
+  } else if (won) {
     m_label_status.set_label("Game’s over !");
+    newGame();
+  } else if (noSolution) {
+    m_label_status.set_label("Cannot complete the game!");
     newGame();
   }
 }
@@ -270,8 +278,8 @@ bool GUI::on_timeout() {
     disconnect = false;
     return false;
   } else {
-    if (not won) {
-      updatePlayers();
+    if (not won && not noSolution) {
+      noSolution = updatePlayers();
       dracarys();
       updateBalls();
       won = check();
@@ -282,10 +290,14 @@ bool GUI::on_timeout() {
         win->invalidate_rect(r, false);
       }
       return true;
-    } else {
+    } else if (won) {
       m_label_status.set_label("Game’s over !");
       newGame();
-      return true; // STOP ?
+      return true;
+    } else if (noSolution) {
+      m_label_status.set_label("Cannot complete the game!");
+      newGame();
+      return true;
     }
   }
 }

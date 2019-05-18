@@ -11,7 +11,7 @@
 #include "obstacle.h"
 #include "player.h"
 
-void pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1);
+bool pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1);
 double nearestPlayerAngle(int ID);
 bool isReadyToFire(int ID, PlayerMap* players, ObstacleMap* obstacles);
 

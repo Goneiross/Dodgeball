@@ -16,7 +16,7 @@ static vector<double> pathAngles;
 static int infinityInit;
 static int infinityDist;
 
-void pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1) {
+bool pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1) {
   bool firstInStep = true;
   infinityDist = pow(obstacles->getCNb(), 2);
   infinityInit = infinityDist + 1;
@@ -36,7 +36,7 @@ void pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1) {
     } else {
       pathAngles[p] = whichPath(players, p, targets[p], obstacles);
     }
-    
+    if (pathAngles[p] == 42){return 1;}
     cout << "Player " << players->getPlayer(p)->getID()
          << " angle: " << pathAngles[p] * 180 / M_PI << " degrés" << endl;
     cout << endl;
@@ -45,6 +45,7 @@ void pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1) {
 
     cout << "Time taken by Path: " << duration.count() / 1000 << " ms" << endl;
   }
+  return 0;
 }
 
 double nearestPlayerAngle(int ID) { return pathAngles[ID]; }
