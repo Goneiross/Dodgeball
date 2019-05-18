@@ -6,6 +6,7 @@
 */
 
 #include "ball.h"
+#include "map.h"
 #include "define.h"
 #include <math.h>
 #include <vector>

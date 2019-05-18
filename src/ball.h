@@ -8,6 +8,7 @@
 #ifndef BALL_H
 #define BALL_H
 #include "tools.h"
+#include "map.h"
 #include <vector>
 
 class Ball {
@@ -40,7 +41,7 @@ private:
   Circle *hitbox;
 };
 
-class BallMap {
+class BallMap : public Map {
 public:
   BallMap(int l, int c);
   void addBall(double xPosition, double yPosition, double angle, double radius,
