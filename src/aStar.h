@@ -13,6 +13,6 @@
 #include "player.h"
 #include "tools.h"
 
-double whichPath(PlayerMap *players, int startID, ObstacleMap* obstacles);
+double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obstacles);
 
 #endif

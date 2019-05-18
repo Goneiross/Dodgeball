@@ -34,7 +34,7 @@ void pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1) {
       pathAngles[p] = whichPath(players->getPlayer(p), players->getPlayer(targets[p]),
                               infinityInit, infinityDist, obstacles, firstInStep);
     } else {
-      pathAngles[p] = whichPath(players, p, obstacles);
+      pathAngles[p] = whichPath(players, p, targets[p], obstacles);
     }
     
     cout << "Player " << players->getPlayer(p)->getID()

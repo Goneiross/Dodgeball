@@ -76,10 +76,10 @@ Node& Node::operator=(Node const& copy) {
 
 int nearestPlayer(PlayerMap *players, int ID);
 
-double whichPath(PlayerMap *players, int startID, ObstacleMap* obstacles) {
+double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obstacles) {
   std::cout << "-----aStar-----" << endl;
   double pathAngle = 0;
-  int targetID = nearestPlayer(players, startID);
+  // int targetID = nearestPlayer(players, startID);
   int LNb = players->getLNb(), CNb = players->getCNb();
   Node* start = new Node ({players->getPlayer(startID)->getL(),players->getPlayer(startID)->getC()});
   Node* target = new Node({players->getPlayer(targetID)->getL(),players->getPlayer(targetID)->getC()});
@@ -92,7 +92,7 @@ double whichPath(PlayerMap *players, int startID, ObstacleMap* obstacles) {
   openList.push_back(start);
 
   std::cout << "Start " << startID << "(" << players->getPlayer(startID)->getL() << "," << players->getPlayer(startID)->getC() << ")" << endl;
-
+  cout << "BEGIN" << endl;
   do {
     /*
     for (int i = 0; i < openList.size(); i++){
@@ -113,15 +113,15 @@ double whichPath(PlayerMap *players, int startID, ObstacleMap* obstacles) {
         currentIndex = i;
       }
     }
-    cout << "Current: " << current->position.l << " " << current->position.c << endl;
+    // cout << "Current: " << current->position.l << " " << current->position.c << endl;
     openList.erase(openList.begin() + currentIndex);
     closedList.push_back(current);
     if (current->position == target->position){
-      cout << "Current = target" << endl;
+      // cout << "Current = target" << endl;
       Node* back = current;
       while(not (back->parent->position == start->position)){
-        cout << "Back: " << back->position.l << " " << back->position.c << " ";
-        cout << "Parent: " << back->parent->position.l << " " << back->parent->position.c << endl;
+        // cout << "Back: " << back->position.l << " " << back->position.c << " ";
+        // cout << "Parent: " << back->parent->position.l << " " << back->parent->position.c << endl;
         path.push_back(back->parent->position);
         back = back->parent;
       }
@@ -137,8 +137,8 @@ double whichPath(PlayerMap *players, int startID, ObstacleMap* obstacles) {
           if (newPosition.c < 0 || newPosition.c >= obstacles->getCNb()){continue;} // > or => ???
           if(obstacles->isObstacle(newPosition.l,newPosition.c)){continue;}
           children.push_back(new Node(current, newPosition));
-          cout << "PUSHED: " << children[children.size()-1]->position.l << " "  << children[children.size()-1]->position.c;
-          cout << " FROM: " << children[children.size()-1]->parent->position.l << " " << children[children.size()-1]->parent->position.c << endl;
+          // cout << "PUSHED: " << children[children.size()-1]->position.l << " "  << children[children.size()-1]->position.c;
+          // cout << " FROM: " << children[children.size()-1]->parent->position.l << " " << children[children.size()-1]->parent->position.c << endl;
         }
       }
     }
@@ -159,13 +159,17 @@ double whichPath(PlayerMap *players, int startID, ObstacleMap* obstacles) {
       openList.push_back(children[childID]);
     }
   } while (openList.size() > 0);
-
+  cout << "DONE" << endl;
   int nextStepID= path.size() - 1;
-  cout << nextStepID << endl;
+  // cout << nextStepID << endl;
+  if (nextStepID < 0){return angle(players->getPlayer(startID)->getX(), players->getPlayer(startID)->getY(), players->getPlayer(targetID)->getX(), players->getPlayer(targetID)->getY());}
   cout << "Going to " << path[nextStepID].l << " " << path[nextStepID].c << endl;
-  pathAngle = angle(players->getPlayer(startID)->getC(), players->getPlayer(startID)->getL(), path[nextStepID].c, path[nextStepID].l);
-  std::cout << "PATH ANGLE" << pathAngle << endl;
-  cout << "RETURN" << endl;
+  double S = SIDE / obstacles->getLNb();
+  double X = (0.5 * S + path[nextStepID].c * S) - (DIM_MAX);
+  double Y = -(0.5 * S + path[nextStepID].l * S) + (DIM_MAX);
+  pathAngle = angle(players->getPlayer(startID)->getX(), players->getPlayer(startID)->getY(), X, Y);
+  // std::cout << "PATH ANGLE" << pathAngle << endl;
+  // cout << "RETURN" << endl;
   return pathAngle;
 }
 
