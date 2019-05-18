@@ -94,6 +94,7 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
   std::cout << "Start " << startID << "(" << players->getPlayer(startID)->getL() << "," << players->getPlayer(startID)->getC() << ")" << endl;
   cout << "BEGIN" << endl;
   do {
+    std::cin.ignore();
     /*
     for (int i = 0; i < openList.size(); i++){
       Node back = openList[i];
@@ -113,15 +114,15 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
         currentIndex = i;
       }
     }
-    // cout << "Current: " << current->position.l << " " << current->position.c << endl;
+    cout << "Current: " << current->position.l << " " << current->position.c << endl;
     openList.erase(openList.begin() + currentIndex);
     closedList.push_back(current);
     if (current->position == target->position){
-      // cout << "Current = target" << endl;
+      cout << "Current = target" << endl;
       Node* back = current;
       while(not (back->parent->position == start->position)){
-        // cout << "Back: " << back->position.l << " " << back->position.c << " ";
-        // cout << "Parent: " << back->parent->position.l << " " << back->parent->position.c << endl;
+        cout << "Back: " << back->position.l << " " << back->position.c << " ";
+        cout << "Parent: " << back->parent->position.l << " " << back->parent->position.c << endl;
         path.push_back(back->parent->position);
         back = back->parent;
       }
@@ -137,15 +138,17 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
           if (newPosition.c < 0 || newPosition.c >= obstacles->getCNb()){continue;} // > or => ???
           if(obstacles->isObstacle(newPosition.l,newPosition.c)){continue;}
           children.push_back(new Node(current, newPosition));
-          // cout << "PUSHED: " << children[children.size()-1]->position.l << " "  << children[children.size()-1]->position.c;
-          // cout << " FROM: " << children[children.size()-1]->parent->position.l << " " << children[children.size()-1]->parent->position.c << endl;
+          cout << "PUSHED: " << children[children.size()-1]->position.l << " "  << children[children.size()-1]->position.c;
+          cout << " FROM: " << children[children.size()-1]->parent->position.l << " " << children[children.size()-1]->parent->position.c << endl;
         }
       }
     }
+    bool already = false;
     for (int childID = 0; childID < children.size(); childID++){
-      for (int closedChildID = 0; closedChildID < closedList.size(); closedChildID++){
-        if (children[childID]->position == closedList[closedChildID]->position){continue;}
+      for (int closedID = 0; closedID < closedList.size(); closedID++){
+        if (children[childID]->position == closedList[closedID]->position){already = true;}
       }
+      if (not already){
       double lDistance = children[childID]->position.l - target->position.l;
       double cDistance = children[childID]->position.c - target->position.c;
       children[childID]->beginCost = current->beginCost + 1;
@@ -155,8 +158,9 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
       for (int openChildID = 0; openChildID < openList.size(); openChildID++){
         if (children[childID]->position == openList[openChildID]->position && children[childID]->beginCost > openList[openChildID]->beginCost){continue;}
       }
-
       openList.push_back(children[childID]);
+      }
+      
     }
   } while (openList.size() > 0);
   cout << "DONE" << endl;
@@ -170,6 +174,11 @@ double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obs
   pathAngle = angle(players->getPlayer(startID)->getX(), players->getPlayer(startID)->getY(), X, Y);
   // std::cout << "PATH ANGLE" << pathAngle << endl;
   // cout << "RETURN" << endl;
+  for (int ID = 0; ID < openList.size(); ID++){ delete openList[ID];}
+  for (int ID = 0; ID < closedList.size(); ID++){ delete closedList[ID];}
+  delete start;
+  delete target;
+  delete current;
   return pathAngle;
 }
 
