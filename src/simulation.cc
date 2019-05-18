@@ -70,7 +70,7 @@ void simulation(std::string inputFile, std::string saveFile, int mode) {
     delete balls;
     return;
   } else if (mode == STEP_MODE) {
-    updatePlayers(); //Cannot complete the game! WHAT TO DO
+    updatePlayers(); // Cannot complete the game! WHAT TO DO
     dracarys();
     updateBalls();
     check();
@@ -104,7 +104,7 @@ void simulation(std::string inputFile, int mode) {
       cout << FILE_READING_SUCCESS << endl;
     }
     delete obstacles;
-    delete players; 
+    delete players;
     delete balls;
     return;
   } else {
@@ -288,29 +288,20 @@ bool isOut(double xPosition, double yPosition) {
 }
 
 bool check() { // Et si ca touche both player et obstacle en meme temps ?
-  cout << "--------------------Checking--------------------" << endl;
-  cout << balls->getNb() << " balls" << endl;
   double delta = COEF_MARGE_JEU * (SIDE / (double)obstacles->getLNb()); // Map
   int b = 0;
   while (b < balls->getNb()) {
-    cout << "b: " << b << " ";
     if (isOut(balls->getBall(b)->getX(), balls->getBall(b)->getY())) {
-      cout << "is out" << endl;
       balls->removeBall(b);
     } else {
       int p = 0;
       while (p < players->getNb()) {
-        cout << "p: " << p << " ";
         bool collision = false;
         collisionCheckPB(p, b, delta, collision, 0);
         if (collision) {
-          cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID()
-               << endl;
           balls->removeBall(b);
-          cout << "removed" << endl;
           players->getPlayer(p)->setTimeTouched(
               players->getPlayer(p)->getTimeTouched() - 1);
-          cout << "decrease player " << p << " life" << endl;
           if (players->getPlayer(p)->getTimeTouched() == 0) {
             // RENOMER OU VERIFIER DANS LE BON SENS !!!!!
             players->removePlayer(p);
@@ -321,14 +312,11 @@ bool check() { // Et si ca touche both player et obstacle en meme temps ?
         }
       }
       int o = 0;
-      while (o < obstacles->getNb()){
+      while (o < obstacles->getNb()) {
         bool collision = false;
         collisionCheckBO(b, o, delta, collision, 0);
         if (collision) {
-          cout << "removing ball " << b << " of ID " << balls->getBall(b)->getID()
-               << endl;
           balls->removeBall(b);
-          cout << "removing obstacle " << o << endl;
           obstacles->removeObstacle(o);
           break;
         } else {
@@ -339,10 +327,8 @@ bool check() { // Et si ca touche both player et obstacle en meme temps ?
     }
   }
   if (players->getNb() <= 1) {
-    cout << "ONLY ONE PLAYER OR LESS LEFT" << endl;
     return true;
   } else {
-    cout << "MORE THAN ONE PLAYER LEFT" << endl;
     return false;
   }
 }
@@ -351,15 +337,15 @@ void updateBalls() { balls->updatePosition(); }
 
 bool updatePlayers() {
   bool noSolution = pathfinding(players, obstacles);
-  if (noSolution){return true;}
-  else {
-  players->updatePosition();
-return false;
+  if (noSolution) {
+    return true;
+  } else {
+    players->updatePosition();
+    return false;
   }
 }
 
 void dracarys() {
-  cout << "dracarys" << endl;
   double ballRadius = COEF_RAYON_BALLE * (SIDE / obstacles->getLNb()); // Changer ca !
   double playerRadius = COEF_RAYON_JOUEUR * (SIDE / obstacles->getLNb()); // Ca aussi !
   double ballVelocity =

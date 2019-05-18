@@ -2,7 +2,7 @@
   \file   aStar.h
   \author Guillaume Pellerin & Vincent Miche
   \date   May 2019
-  \brief  add description
+  \brief  A* algorithm header
 */
 
 #ifndef ASTAR_H
@@ -13,6 +13,7 @@
 #include "player.h"
 #include "tools.h"
 
-double whichPath(PlayerMap *players, int startID, int targetID, ObstacleMap* obstacles);
+double whichPath(PlayerMap *players, int startID, int targetID,
+                 ObstacleMap *obstacles);
 
 #endif

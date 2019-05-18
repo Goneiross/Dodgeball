@@ -5,13 +5,14 @@
   \brief  "Player" module implementation
 */
 
-#include "player.h"
-#include "define.h"
-#include "pathfinding.h"
-#include "tools.h"
 #include <iostream>
 #include <math.h>
 #include <vector>
+
+#include "define.h"
+#include "pathfinding.h"
+#include "player.h"
+#include "tools.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ Player::Player(double x0, double y0, int t, double c, double r, int line, int co
 
 bool Player::touchedAndDead() {
   timeTouched += 1;
-  if (timeTouched == MAX_TOUCH) { // Dead when equal or sup ? //#askBoulic
+  if (timeTouched == MAX_TOUCH) {
     return (true);
   }
   return (false);
@@ -146,7 +147,6 @@ bool PlayerMap::isCollision(int newX, int newY, int ID) {
 }
 
 void PlayerMap::updatePosition() {
-  cout << "--------------------Player-Moving--------------------" << endl;
   for (int p = 0; p < players.size(); p++) {
     if (players[p]->getCount() != MAX_COUNT) {
       players[p]->setCount(players[p]->getCount() + 1);
@@ -156,29 +156,20 @@ void PlayerMap::updatePosition() {
     double newY = players[p]->getY() + sin(angle) * players[p]->getVelocity();
     int newC = ((newX + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
     int newL = -((newY - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
-    cout << "p: " << p << " oldX: " << players[p]->getX() << " oldY: " << players[p]->getY()
-         << " newX: " << newX << " newY: " << newY << " OldL: " << players[p]->getL()
-         << " OldC: " << players[p]->getC() << " newL: " << newL << " newC: " << newC
-         << " ";
     if (newX > (DIM_MAX - players[p]->getHitbox()->getRadius()) ||
         newX < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {
-      cout << "Outside ERROR" << endl;
       continue;
     } // Et les marges ?
     if (newY > (DIM_MAX - players[p]->getHitbox()->getRadius()) ||
         newY < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {
-      cout << "Outside ERROR" << endl;
       continue;
     } // Et les marges ?
     if (isDifferentPlayer(newL, newC, players[p]->getID())) {
-      cout << "Player here ERROR" << endl;
       continue;
     }
     if (isCollision(newX, newY, p)) {
-      cout << "Player collision" << endl;
       continue;
     }
-    cout << endl;
     players[p]->setL(newL);
     players[p]->setC(newC);
     players[p]->getHitbox()->setX(newX);

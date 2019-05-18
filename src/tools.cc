@@ -5,9 +5,10 @@
   \brief  "Tools" module implementation
 */
 
-#include "tools.h"
 #include <cmath>
 #include <iostream>
+
+#include "tools.h"
 
 using namespace std;
 
@@ -53,7 +54,5 @@ double distance(Circle *c, Square *s) {
 }
 
 double angle(double x1, double y1, double x2, double y2) {
-  cout << "Compute angle from coords : "
-       << "(" << x1 << "," << y1 << ") and (" << x2 << "," << y2 << ")" << endl;
-    return atan2(y2-y1, x2-x1);
+  return atan2(y2 - y1, x2 - x1);
 }

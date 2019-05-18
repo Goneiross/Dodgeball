@@ -7,8 +7,10 @@
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
-#include "tools.h"
+
 #include <string>
+
+#include "tools.h"
 
 void simulation(std::string inputFile, int mode);
 void simulation(std::string inputFile, std::string saveFile, int mode);

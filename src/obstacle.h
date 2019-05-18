@@ -8,9 +8,10 @@
 #ifndef OBSTACLE_H
 #define OBSTACLE_H
 
+#include <vector>
+
 #include "map.h"
 #include "tools.h"
-#include <vector>
 
 class Obstacle {
 public:
@@ -26,7 +27,7 @@ public:
   Square *getHitbox() const;
   void setGX(double x);
   void setGY(double y);
-  
+
 private:
   Square *hitbox;
   int colPos, lgnPos;

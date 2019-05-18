@@ -5,13 +5,14 @@
   \brief  "GUI" module implementation
 */
 
+#include <glibmm/main.h>
+#include <gtkmm.h>
+#include <iostream>
+
 #include "GUI.h"
 #include "define.h"
 #include "simulation.h"
 #include "tools.h"
-#include <glibmm/main.h>
-#include <gtkmm.h>
-#include <iostream>
 
 using namespace Gtk;
 
@@ -256,8 +257,12 @@ void GUI::on_button_clicked_step() {
     dracarys();
     updateBalls();
     won = check();
-    if (noSolution){m_label_status.set_label("Cannot complete the game!");}
-    if (won){m_label_status.set_label("Game’s over !");}
+    if (noSolution) {
+      m_label_status.set_label("Cannot complete the game!");
+    }
+    if (won) {
+      m_label_status.set_label("Game’s over !");
+    }
     auto win = get_window();
     if (win) {
       Gdk::Rectangle r(0, 0, get_allocation().get_width(),

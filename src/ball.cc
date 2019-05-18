@@ -5,13 +5,12 @@
   \brief  "Ball" module implementation
 */
 
-#include "ball.h"
-#include "map.h"
-#include "define.h"
 #include <math.h>
 #include <vector>
 
-#include <iostream>
+#include "ball.h"
+#include "define.h"
+#include "map.h"
 
 using namespace std;
 
@@ -42,7 +41,7 @@ Circle *Ball::getHitbox() const { return hitbox; }
 double Ball::getAngle() const { return angle; }
 double Ball::getVelocity() const { return velocity; }
 
-BallMap::BallMap(int l, int c) {
+BallMap::BallMap(int l, int c) : Map(l, c) {
   lineNumber = l;
   columnNumber = c;
 
@@ -58,8 +57,12 @@ BallMap::BallMap(int l, int c) {
 void BallMap::addBall(double x, double y, double a, double r, double v, int ID) {
   int colPos = ((x + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
   int lgnPos = -((y - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
-  if (colPos >= columnNumber || colPos < 0){return;}
-  if (lgnPos >= lineNumber || lgnPos < 0){return;}
+  if (colPos >= columnNumber || colPos < 0) {
+    return;
+  }
+  if (lgnPos >= lineNumber || lgnPos < 0) {
+    return;
+  }
   balls.push_back(new Ball(x, y, a, r, v, colPos, lgnPos, ID));
   if (ballGrid[lgnPos][colPos][0] == -1) {
     ballGrid[lgnPos][colPos][0] = ID;

@@ -11,7 +11,6 @@
 #include "GUI.h"
 #include "define.h"
 #include "simulation.h"
-#include "define.h"
 
 using namespace std;
 

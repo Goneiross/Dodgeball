@@ -7,9 +7,11 @@
 
 #ifndef BALL_H
 #define BALL_H
-#include "tools.h"
-#include "map.h"
+
 #include <vector>
+
+#include "map.h"
+#include "tools.h"
 
 class Ball {
 public:

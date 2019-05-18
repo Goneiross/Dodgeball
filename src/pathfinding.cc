@@ -1,11 +1,19 @@
-#include "floyd.h"
-#include "aStar.h"
-#include "obstacle.h"
-#include "player.h"
-#include <cmath>
 
+/*!
+  \file   pathfinding.h
+  \author Guillaume Pellerin & Vincent Miche
+  \date   May 2019
+  \brief  pathfinding implementation
+*/
+
+#include <cmath>
 #include <chrono>
 #include <iostream>
+
+#include "aStar.h"
+#include "floyd.h"
+#include "obstacle.h"
+#include "player.h"
 
 using namespace std::chrono;
 
@@ -22,28 +30,20 @@ bool pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1) {
   infinityInit = infinityDist + 1;
   targets.resize(players->getNb());
   pathAngles.resize(players->getNb());
-  cout << "--------------------TARGETTING--------------------" << endl;
   targets = targetting(players, infinityInit, infinityDist);
   auto start = high_resolution_clock::now();
-  cout << "--------------------WHICH-PATH--------------------" << endl;
   for (int p = 0; p < players->getNb(); p++) {
-    cout << "start ID: " << players->getPlayer(p)->getID() << "(" << players->getPlayer(p)->getL() << "," << players->getPlayer(p)->getC() << ")"
-         << " target ID: " << targets[p] << "(" << players->getPlayer(targets[p])->getL() << "," << players->getPlayer(targets[p])->getC() << ")" << endl;
-    
-    if (type == 0){
+    if (type == 0) {
       pathAngles[p] = whichPath(players->getPlayer(p), players->getPlayer(targets[p]),
-                              infinityInit, infinityDist, obstacles, firstInStep);
+                                infinityInit, infinityDist, obstacles, firstInStep);
     } else {
       pathAngles[p] = whichPath(players, p, targets[p], obstacles);
     }
-    if (pathAngles[p] == 42){return 1;}
-    cout << "Player " << players->getPlayer(p)->getID()
-         << " angle: " << pathAngles[p] * 180 / M_PI << " degrés" << endl;
-    cout << endl;
+    if (pathAngles[p] == 42) {
+      return 1;
+    }
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
-
-    cout << "Time taken by Path: " << duration.count() / 1000 << " ms" << endl;
   }
   return 0;
 }
