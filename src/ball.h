@@ -57,7 +57,6 @@ public:
   int getNewID() const;
 
 private:
-  int lineNumber, columnNumber;
   std::vector<Ball *> balls;
   std::vector<int> **ballGrid;
 };
