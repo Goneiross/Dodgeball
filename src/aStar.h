@@ -5,20 +5,14 @@
   \brief  add description
 */
 
+#ifndef ASTAR_H
+#define ASTAR_H
+
 #include "ball.h"
-#include "map.h"
+#include "obstacle.h"
 #include "player.h"
 #include "tools.h"
 
-typedef tile int[2];
+double whichPath(PlayerMap *players, int startID, ObstacleMap* obstacles);
 
-double pathAngle(PlayerMap *players, int index, Map *obstacles);
-int nearestPlayer(PlayerMap *players, int index);
-bool openGridArea(bool[][] openGrid, bool[][] closedGrid, int l, int c);
-void setupOpenGrid(bool[][] openGrid, Map *mainMap);
-tile lowestScoreTile(double[][] scoreGrid);
-bool isInGrid(double[][] scoreGrid, int l, int c);
-
-double tileScore(Player *players, int index, int enemyIndex,
-                 bool[][] openGrid) double distanceCost(PlayerMap *players, int index);
-double distanceApprox(PlayerMap *players, int enemyIndex);
+#endif

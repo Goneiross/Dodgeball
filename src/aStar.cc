@@ -9,21 +9,11 @@
 #include <vector>
 #include "obstacle.h"
 #include "player.h"
+#include "tools.h"
 
 #include <iostream>
 
 using namespace std;
-
-
-int nearestPlayer(PlayerMap *players, int index);
-bool openGridArea(bool **openGrid, bool **closedGrid, int l, int c);
-void setupOpenGrid(bool **openGrid, Map *mainMap);
-Tile lowestScoreTile(double **scoreGrid);
-bool isInGrid(double **scoreGrid, int l, int c);
-double TileScore(Player *players, int index, int targetIndex, bool **openGrid);
-double distanceCost(PlayerMap *players, int index);
-double distanceApprox(PlayerMap *players, int targetIndex);
-bool emptyOpenGrid(bool **openGrid, int tabsize);
 
 typedef struct Tile {
   int l;
@@ -55,31 +45,8 @@ Node::Node(Node* const& copy)
     endCost(copy->endCost),
     beginCost(copy->beginCost) {}
 
-
-class Path {
-public:
-  Path(int nbCell);
-  int getParent(int child);
-  Tile getTile(int TileIndex);
-
-private:
-  int **way;
-};
-
-Path::Path(int nbCell) {
-  int size = nbCell * nbCell;
-  way = new int *[size];
-  for (int i = 0; i < size; i++) {
-    way[i] = new int[3];
-    for (int j = 0; j < 3; j++) {
-      way[i][j] = -1;
-    }
-  }
-}
-
-
-double pathAngle(PlayerMap *players, int startID, ObstacleMap* obstacles) {
-  double angle = 0;
+double whichPath(PlayerMap *players, int startID, ObstacleMap* obstacles) {
+  double pathAngle = 0;
   int targetID = nearestPlayer(players, startID);
   int LNb = players->getLNb(), CNb = players->getCNb();
 
@@ -97,8 +64,6 @@ double pathAngle(PlayerMap *players, int startID, ObstacleMap* obstacles) {
       openGrid[i][j] = true;
     }
   }
-  setupOpenGrid(openGrid, obstacles);
-
 
   Node* start = new Node(nullptr,{players->getPlayer(startID)->getL(),players->getPlayer(startID)->getC()});
   Node* target = new Node(nullptr,{players->getPlayer(targetID)->getL(),players->getPlayer(targetID)->getC()});
@@ -153,23 +118,13 @@ double pathAngle(PlayerMap *players, int startID, ObstacleMap* obstacles) {
       children[childID]->totalCost = children[childID]->beginCost + children[childID]->endCost;
     }
   }
-  
-
+  int nextStepID= path.size() - 1;
+  pathAngle = angle(path[nextStepID].c, path[nextStepID].l, path[nextStepID].c -1, path[nextStepID].l -1);
+  cout << "PATH ANGLE" << pathAngle << endl;
   delete start;
   delete target;
   delete current;
-  return angle;
-}
-
-bool isGridEmpty(bool ** grid, ObstacleMap* obstacles) {
-  for (int l = 0; l < obstacles->getLNb(); l++) {
-    for (int c = 0; c < obstacles->getCNb(); c++) {
-      if (grid[l][c]) {
-        return false;
-      }
-    }
-  }
-  return true;
+  return pathAngle;
 }
 
 int nearestPlayer(PlayerMap *players, int ID) {
@@ -186,6 +141,19 @@ int nearestPlayer(PlayerMap *players, int ID) {
     }
   }
   return nearestID;
+}
+
+
+/*
+bool isGridEmpty(bool ** grid, ObstacleMap* obstacles) {
+  for (int l = 0; l < obstacles->getLNb(); l++) {
+    for (int c = 0; c < obstacles->getCNb(); c++) {
+      if (grid[l][c]) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 Tile lowestScoreTile(double **scoreGrid, Tile lastTile, int tabsize, ObstacleMap* obstacles) {
@@ -232,3 +200,4 @@ Tile lowestScoreTile(double **scoreGrid, Tile lastTile, int tabsize, ObstacleMap
       }
     }
   }
+*/
