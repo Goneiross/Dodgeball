@@ -181,7 +181,7 @@ static void initConstants(double &ballRadius, double &ballVelocity,
 void save(string filename) {
     if (filename == ""){cout << "ERROR wrong save file name" << endl; exit(1);} 
     ofstream flux(filename, std::ofstream::out);
-    int nbCell = obstacles->getLNb(); // Map
+    int nbCell = obstacles->getLNb();  
     int n = 0;
     flux << nbCell << endl << endl;
     n = players->getNb();
@@ -192,7 +192,7 @@ void save(string filename) {
              << p->getCount() << endl;
         p = nullptr;
     }
-    n = obstacles->getNb(); // Map
+    n = obstacles->getNb();  
     flux << endl << n << endl;
     for (int i = 0; i < n; i++) {
         Obstacle *o = obstacles->getObstacle(i);
@@ -218,7 +218,7 @@ bool isOut(double xPosition, double yPosition) {
 }
 
 bool check() {
-    double delta = COEF_MARGE_JEU * (SIDE / (double)obstacles->getLNb()); // Map
+    double delta = COEF_MARGE_JEU * (SIDE / (double)obstacles->getLNb());  
     int b = 0;
     while (b < balls->getNb()) {
         if (isOut(balls->getBall(b)->getX(), balls->getBall(b)->getY())) {
@@ -268,11 +268,11 @@ bool updatePlayers() {
 
 void fireBall() {
     double ballRadius =
-        COEF_RAYON_BALLE * (SIDE / obstacles->getLNb()); // Changer ca !
+        COEF_RAYON_BALLE * (SIDE / obstacles->getLNb());
     double playerRadius =
-        COEF_RAYON_JOUEUR * (SIDE / obstacles->getLNb()); // Ca aussi !
+        COEF_RAYON_JOUEUR * (SIDE / obstacles->getLNb()); 
     double ballVelocity =
-        COEF_VITESSE_BALLE * (SIDE / obstacles->getLNb()); // Et aussi lui !
+        COEF_VITESSE_BALLE * (SIDE / obstacles->getLNb());
     for (int p = 0; p < players->getNb(); p++) {
         if ((players->getPlayer(p)->getCount() == MAX_COUNT) &&
             (isReadyToFire(p, players, obstacles))) {
@@ -304,10 +304,10 @@ static void largeCollisionCheckPO(int p, vector<int> &toCheck) {
     }
     if (lgnPos == obstacles->getCNb() - 1) {
         rightL = 0;
-    } // Map
+    }  
     if (colPos == obstacles->getLNb() - 1) {
         rightC = 0;
-    } // Map
+    }  
     for (int i = leftL; i <= rightL; i++) {
         for (int j = leftC; j <= rightC; j++) {
             if (obstacles->isObstacle(lgnPos + i, colPos + j)) {
@@ -334,10 +334,10 @@ static void largeCollisionCheckBO(int b, vector<int> &toCheck) {
     }
     if (lgnPos == obstacles->getCNb() - 1) {
         rightL = 0;
-    } // Map
+    }  
     if (colPos == obstacles->getLNb() - 1) {
         rightC = 0;
-    } // Map
+    }  
 
     for (int i = leftL; i <= rightL; i++) {
         for (int j = leftC; j <= rightC; j++) {
@@ -542,7 +542,7 @@ static void parseData(double &ingameMargin, double &parsingMargin, string inputD
 static void parsePlayer(int p, double parsingMargin, double playerRadius,
                         double playerVelocity, string inputData0, string inputData1,
                         string inputData2, string inputData3, bool &error, int mode) {
-    int nbCell = obstacles->getLNb(); // Map
+    int nbCell = obstacles->getLNb();  
     if (((abs(stod(inputData0)) > DIM_MAX) || (abs(stod(inputData1) > DIM_MAX)))) {
         cout << PLAYER_OUT(p + 1) << endl;
         error = true;
@@ -563,7 +563,7 @@ static void parsePlayer(int p, double parsingMargin, double playerRadius,
 
 static void parseObstacle(int o, string inputData0, string inputData1, bool &error,
                           int mode) {
-    int nbCell = obstacles->getLNb(); // Map
+    int nbCell = obstacles->getLNb();  
     if (stoi(inputData0) >= nbCell) {
         cout << OBSTACLE_VALUE_INCORRECT(stoi(inputData0)) << endl;
         error = true;
@@ -592,7 +592,7 @@ static void parseObstacle(int o, string inputData0, string inputData1, bool &err
 static void parseBall(int nbPlayer, int nbObstacle, double parsingMargin, int b,
                       double ballRadius, double ballVelocity, string inputData0,
                       string inputData1, string inputData2, bool &error, int mode) {
-    int nbCell = obstacles->getLNb(); // Map
+    int nbCell = obstacles->getLNb();  
     if (isOut(stod(inputData0), stod(inputData1))) {
         cout << BALL_OUT(b + 1) << endl;
         error = true;
