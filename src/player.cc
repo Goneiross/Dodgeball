@@ -40,8 +40,8 @@ bool Player::touchedAndDead() {
 
 double Player::getX() const { return hitbox->getX(); }
 double Player::getY() const { return hitbox->getY(); }
-double Player::getL() const { return lgnPos; }
-double Player::getC() const { return colPos; }
+int Player::getL() const { return lgnPos; }
+int Player::getC() const { return colPos; }
 double Player::getGX() const { return gXPosition; }
 double Player::getGY() const { return gYPosition; }
 int Player::getID() const { return ID; }

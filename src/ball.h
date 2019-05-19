@@ -20,8 +20,8 @@ class Ball {
     ~Ball(){};
     double getX() const;
     double getY() const;
-    double getL() const;
-    double getC() const;
+    int getL() const;
+    int getC() const;
     double getGX() const;
     double getGY() const;
     double getRadius() const;

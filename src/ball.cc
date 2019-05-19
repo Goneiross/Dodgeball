@@ -28,8 +28,8 @@ Ball::Ball(double x, double y, double a, double r, double v, int l, int c, int i
 
 double Ball::getX() const { return hitbox->getX(); }
 double Ball::getY() const { return hitbox->getY(); }
-double Ball::getL() const { return lgnPos; }
-double Ball::getC() const { return colPos; }
+int Ball::getL() const { return lgnPos; }
+int Ball::getC() const { return colPos; }
 double Ball::getGX() const { return gXPosition; }
 double Ball::getGY() const { return gYPosition; }
 int Ball::getID() const { return ID; }
