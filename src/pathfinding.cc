@@ -25,7 +25,9 @@ static vector<double> pathAngles;
 static int infinityInit;
 static int infinityDist;
 
-bool pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = ASTAR) {
+vector<int> targetting(PlayerMap *players, int infinityInit, int infinityDist);
+
+bool pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type) {
     bool firstInStep = true;
     infinityDist = pow(obstacles->getCNb(), 2);
     infinityInit = infinityDist + 1;
@@ -62,4 +64,32 @@ bool isReadyToFire(int ID, PlayerMap *players, ObstacleMap *obstacles) {
     } else {
         return true;
     }
+}
+
+vector<int> targetting(PlayerMap *players, int infinityInit, int infinityDist) {
+    vector<vector<double>> dBP(players->getNb(),
+                               vector<double>(players->getNb(), infinityInit));
+    for (int i = 0; i < players->getNb(); i++) {
+        for (int j = 0; j < i; j++) {
+            dBP[i][j] = distanceAbs(
+                players->getPlayer(i)->getL(), players->getPlayer(i)->getC(),
+                players->getPlayer(j)->getL(), players->getPlayer(j)->getC());
+            dBP[j][i] = dBP[i][j];
+        }
+    }
+    vector<double> minDistance(players->getNb());
+    vector<int> target(players->getNb());
+    for (int i = 0; i < players->getNb(); i++) {
+        minDistance[i] = infinityDist;
+
+        for (int j = 0; j < players->getNb(); j++) {
+            if (i != j) {
+                if (dBP[i][j] < minDistance[i]) {
+                    minDistance[i] = dBP[i][j];
+                    target[i] = j;
+                }
+            }
+        }
+    }
+    return target;
 }
