@@ -68,7 +68,7 @@ class PlayerMap : public Map {
     void updatePosition();
 
   private:
-    bool isCollision(int newX, int newY, int ID);
+    bool isCollision(int newX, int newY, int ID, double delta);
     std::vector<Player *> players;
     std::vector<int> **playerGrid;
 };

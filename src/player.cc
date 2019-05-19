@@ -135,12 +135,12 @@ int PlayerMap::getNb() const { return players.size(); }
 int PlayerMap::getLNb() const { return lineNumber; }
 int PlayerMap::getCNb() const { return columnNumber; }
 
-bool PlayerMap::isCollision(int newX, int newY, int ID) {
+bool PlayerMap::isCollision(int newX, int newY, int ID, double delta) {
     for (int i = 0; i < players.size(); i++) {
         if (i != ID) {
             double d = distanceAbs(players[i]->getX(), players[i]->getY(), newX, newY);
-            if (d < (players[i]->getRadius() +
-                     players[ID]->getRadius())) { // Et la marge delta
+            if (d < (delta + players[i]->getRadius() +
+                     players[ID]->getRadius())) { 
                 return true;
             }
         }
@@ -148,6 +148,7 @@ bool PlayerMap::isCollision(int newX, int newY, int ID) {
 }
 
 void PlayerMap::updatePosition() {
+    double delta = COEF_MARGE_JEU * (SIDE / (double)lineNumber);
     for (int p = 0; p < players.size(); p++) {
         if (players[p]->getCount() != MAX_COUNT) {
             players[p]->setCount(players[p]->getCount() + 1);
@@ -163,7 +164,7 @@ void PlayerMap::updatePosition() {
         if (newY > (DIM_MAX - players[p]->getHitbox()->getRadius()) ||
             newY < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {continue;} // Et les marges ?
         if (isDifferentPlayer(newL, newC, players[p]->getID())) {continue;}
-        if (isCollision(newX, newY, p)) {continue;}
+        if (isCollision(newX, newY, p, delta)) {continue;}
         players[p]->setL(newL); players[p]->setC(newC);
         players[p]->getHitbox()->setX(newX); players[p]->getHitbox()->setY(newY);
 
