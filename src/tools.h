@@ -40,12 +40,12 @@ class Square {
     double yPosition;
 };
 
-double distance(double x, double y);
-double distance(double x1, double y1, double x2, double y2);
-double distance(Circle *c1, Circle *c2);
-double distance(Square *s1, Square *s2);
-double distance(Square *s, Circle *c);
-double distance(Circle *c, Square *s);
+double distanceAbs(double x, double y);
+double distanceAbs(double x1, double y1, double x2, double y2);
+double distanceAbs(Circle *c1, Circle *c2);
+double distanceAbs(Square *s1, Square *s2);
+double distanceAbs(Square *s, Circle *c);
+double distanceAbs(Circle *c, Square *s);
 
 double angle(double x1, double y1, double x2, double y2);
 

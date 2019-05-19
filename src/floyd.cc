@@ -38,7 +38,7 @@ vector<int> targetting(PlayerMap *players, int infinityInit, int infinityDist) {
     for (int i = 0; i < players->getNb(); i++) {
         for (int j = 0; j < i; j++) {
             dBP[i][j] =
-                distance(players->getPlayer(i)->getL(), players->getPlayer(i)->getC(),
+                distanceAbs(players->getPlayer(i)->getL(), players->getPlayer(i)->getC(),
                          players->getPlayer(j)->getL(), players->getPlayer(j)->getC());
             dBP[j][i] = dBP[i][j];
         }

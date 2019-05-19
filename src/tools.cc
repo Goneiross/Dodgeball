@@ -36,21 +36,21 @@ double Square::getY() const { return yPosition; }
 void Square::setX(int x) { xPosition = x; }
 void Square::setY(int y) { yPosition = y; }
 
-double distance(double x1, double x2) { return abs(x1 - x2); }
-double distance(double x1, double y1, double x2, double y2) {
-    return sqrt(pow(distance(x2, x1), 2) + pow(distance(y2, y1), 2));
+double distanceAbs(double x1, double x2) { return abs(x1 - x2); }
+double distanceAbs(double x1, double y1, double x2, double y2) {
+    return sqrt(pow(distanceAbs(x2, x1), 2) + pow(distanceAbs(y2, y1), 2));
 }
-double distance(Circle *c1, Circle *c2) {
-    return distance(c1->getX(), c1->getY(), c2->getX(), c2->getY());
+double distanceAbs(Circle *c1, Circle *c2) {
+    return distanceAbs(c1->getX(), c1->getY(), c2->getX(), c2->getY());
 }
-double distance(Square *s1, Square *s2) {
-    return distance(s1->getX(), s1->getY(), s2->getX(), s2->getY());
+double distanceAbs(Square *s1, Square *s2) {
+    return distanceAbs(s1->getX(), s1->getY(), s2->getX(), s2->getY());
 }
-double distance(Square *s, Circle *c) {
-    return distance(s->getX(), s->getY(), c->getX(), c->getY());
+double distanceAbs(Square *s, Circle *c) {
+    return distanceAbs(s->getX(), s->getY(), c->getX(), c->getY());
 }
-double distance(Circle *c, Square *s) {
-    return distance(s->getX(), s->getY(), c->getX(), c->getY());
+double distanceAbs(Circle *c, Square *s) {
+    return distanceAbs(s->getX(), s->getY(), c->getX(), c->getY());
 }
 
 double angle(double x1, double y1, double x2, double y2) {

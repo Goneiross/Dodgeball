@@ -461,7 +461,7 @@ static void largeCollisionCheckPP(int p, vector<int> &toCheck, int lMax) {
 static void collisionCheckPP(int p, int pmax, double delta, bool &error, int mode) {
     for (int i = 0; i <= pmax; i++) {
         if (i != p) {
-            double d = distance(players->getPlayer(i)->getHitbox(),
+            double d = distanceAbs(players->getPlayer(i)->getHitbox(),
                                 players->getPlayer(p)->getHitbox());
             if (d < (players->getPlayer(i)->getRadius() +
                      players->getPlayer(p)->getRadius() + delta)) {
@@ -475,7 +475,7 @@ static void collisionCheckPP(int p, int pmax, double delta, bool &error, int mod
 
 static void collisionCheckBB(int b, int c, double delta, bool &error, int mode) {
     double d =
-        distance(balls->getBall(c)->getHitbox(), balls->getBall(b)->getHitbox());
+        distanceAbs(balls->getBall(c)->getHitbox(), balls->getBall(b)->getHitbox());
     if (d <
         (balls->getBall(c)->getRadius() + balls->getBall(b)->getRadius() + delta)) {
         cout << BALL_COLLISION(c + 1, b + 1) << endl;
@@ -486,7 +486,7 @@ static void collisionCheckBB(int b, int c, double delta, bool &error, int mode) 
 
 static void collisionCheckPB(int p, int b, double delta, bool &error, int mode) {
     double d =
-        distance(players->getPlayer(p)->getHitbox(), balls->getBall(b)->getHitbox());
+        distanceAbs(players->getPlayer(p)->getHitbox(), balls->getBall(b)->getHitbox());
     if (d < (players->getPlayer(p)->getRadius() + balls->getBall(b)->getRadius() +
              delta)) {
         cout << PLAYER_BALL_COLLISION(p + 1, b + 1) << endl;
@@ -496,7 +496,7 @@ static void collisionCheckPB(int p, int b, double delta, bool &error, int mode) 
 }
 
 static void collisionCheckPO(int p, int o, double delta, bool &error, int mode) {
-    double d = distance(obstacles->getObstacle(o)->getHitbox(),
+    double d = distanceAbs(obstacles->getObstacle(o)->getHitbox(),
                         players->getPlayer(p)->getHitbox());
     double X = obstacles->getObstacle(o)->getX() - players->getPlayer(p)->getX();
     double Y = obstacles->getObstacle(o)->getY() - players->getPlayer(p)->getY();
@@ -534,7 +534,7 @@ static void collisionCheckPO(int p, int o, double delta, bool &error, int mode) 
 }
 
 static void collisionCheckBO(int b, int o, double delta, bool &error, int mode) {
-    double d = distance(obstacles->getObstacle(o)->getHitbox(),
+    double d = distanceAbs(obstacles->getObstacle(o)->getHitbox(),
                         balls->getBall(b)->getHitbox());
     double X = obstacles->getObstacle(o)->getX() - balls->getBall(b)->getX();
     double Y = obstacles->getObstacle(o)->getY() - balls->getBall(b)->getY();

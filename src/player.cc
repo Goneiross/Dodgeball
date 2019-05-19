@@ -137,7 +137,7 @@ int PlayerMap::getCNb() const { return columnNumber; }
 bool PlayerMap::isCollision(int newX, int newY, int ID) {
     for (int i = 0; i < players.size(); i++) {
         if (i != ID) {
-            double d = distance(players[i]->getX(), players[i]->getY(), newX, newY);
+            double d = distanceAbs(players[i]->getX(), players[i]->getY(), newX, newY);
             if (d < (players[i]->getRadius() +
                      players[ID]->getRadius())) { // Et la marge delta
                 return true;
@@ -173,8 +173,7 @@ void PlayerMap::updatePosition() {
             } else {
                 for (int i = 1; i < playerGrid[newL][newC].size(); i++) {
                     if (playerGrid[newL][newC][i] == ID) {
-                        playerGrid[newL][newC].erase(playerGrid[newL][newC].begin() +
-                                                     i);
+                       playerGrid[newL][newC].erase(playerGrid[newL][newC].begin() +i);
                     }
                 }
             }
