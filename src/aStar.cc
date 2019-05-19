@@ -30,8 +30,7 @@ bool operator==(Tile t1, Tile t2) {
 
 class Node {
   public:
-    Node(Tile at);
-    Node(Node *from, Tile at);
+    Node(Tile at, Node *from = nullptr);
     Node(Node *const &copy);
     ~Node() { delete parent; };
     Tile position;
@@ -40,14 +39,9 @@ class Node {
     int endCost;
     int beginCost;
 };
-Node::Node(Tile at) : position(at), totalCost(0), endCost(0), beginCost(0) {
-    parent = nullptr;
-}
 
-Node::Node(Node *from, Tile at)
-    : position(at), totalCost(0), endCost(0), beginCost(0) {
-    parent = from;
-}
+Node::Node(Tile at, Node *from = nullptr)
+    : position(at), totalCost(0), endCost(0), beginCost(0), parent(from) {}
 
 Node::Node(Node *const &copy)
     : parent(copy->parent), position(copy->position), totalCost(copy->totalCost),
@@ -106,7 +100,7 @@ double whichPath(PlayerMap *players, int startID, int targetID,
                     if (obstacles->isObstacle(newPosition.l, newPosition.c)) {
                         continue;
                     }
-                    children.push_back(new Node(current, newPosition));
+                    children.push_back(new Node(newPosition, current));
                 }
             }
         }
