@@ -5,7 +5,7 @@
   \brief  A* implementation
 */
 
-#include <math.h>
+#include <cmath>
 #include <vector>
 
 #include "define.h"
