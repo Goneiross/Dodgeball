@@ -100,26 +100,26 @@ void drawBalls(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height,
 }
 
 void drawObstacles(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height) {
-                   int nbObstacle = getObstacleNb();
-        cr->save();
-        cr->set_source_rgba(0.4, 0, 0.6, 1);
-        for (int o = 0; o < nbObstacle; o++) {
-            Square *obstacle = getObstacleHitbox(o);
-            double side = getObstacleSize();
+    int nbObstacle = getObstacleNb();
+    cr->save();
+    cr->set_source_rgba(0.4, 0, 0.6, 1);
+    for (int o = 0; o < nbObstacle; o++) {
+        Square *obstacle = getObstacleHitbox(o);
+        double side = getObstacleSize();
 
-            double GX = width / 2 + obstacle->getX();
-            double GY = height / 2 - obstacle->getY();
-            cr->move_to(GX - side / 2, GY - side / 2);
-            cr->rel_line_to(side, 0);
-            cr->rel_line_to(0, side);
-            cr->rel_line_to(-side, 0);
-            cr->rel_line_to(0, -side);
-            cr->fill_preserve();
-            cr->stroke();
-            obstacle = nullptr;
-        }
-        cr->restore();
-               }
+        double GX = width / 2 + obstacle->getX();
+        double GY = height / 2 - obstacle->getY();
+        cr->move_to(GX - side / 2, GY - side / 2);
+        cr->rel_line_to(side, 0);
+        cr->rel_line_to(0, side);
+        cr->rel_line_to(-side, 0);
+        cr->rel_line_to(0, -side);
+        cr->fill_preserve();
+        cr->stroke();
+        obstacle = nullptr;
+    }
+    cr->restore();
+}
 
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
     Allocation allocation = get_allocation();
@@ -136,8 +136,6 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
         drawBalls(cr, width, height, lesser);
 
         drawObstacles(cr, width, height);
-        
-    } else {
     }
     return true;
 }
