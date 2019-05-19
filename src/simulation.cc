@@ -230,7 +230,7 @@ void save(string filename) {
     flux << n << endl;
     for (int i = 0; i < n; i++) {
         Player *p = players->getPlayer(i);
-        flux << p->getX() << " " << p->getY() << " " << p->getTimeTouched() << " "
+        flux << p->getX() << " " << p->getY() << " " << p->getLife() << " "
              << p->getCount() << endl;
         p = nullptr;
     }
@@ -272,9 +272,9 @@ bool check() { // Et si ca touche both player et obstacle en meme temps ?
                 collisionCheckPB(p, b, delta, collision, 0);
                 if (collision) {
                     balls->removeBall(b);
-                    players->getPlayer(p)->setTimeTouched(
-                        players->getPlayer(p)->getTimeTouched() - 1);
-                    if (players->getPlayer(p)->getTimeTouched() == 0) { // RENOMER OU VERIFIER DANS LE BON SENS !!!!!
+                    players->getPlayer(p)->setLife(
+                        players->getPlayer(p)->getLife() - 1);
+                    if (players->getPlayer(p)->getLife() == 0) {
                         players->removePlayer(p);
                     }
                     break;
@@ -660,7 +660,7 @@ static void parseBall(int nbPlayer, int nbObstacle, double parsingMargin, int b,
 }
 
 int getPlayerNb() { return players->getNb(); }
-int getPlayerTimeTouched(int p) { return players->getPlayer(p)->getTimeTouched(); }
+int getPlayerLife(int p) { return players->getPlayer(p)->getLife(); }
 double getPlayerRadius() { return players->getPlayer(0)->getRadius(); } // With one ?
 int getPlayerCount(int p) { return players->getPlayer(p)->getCount(); }
 Circle *getPlayerHitbox(int p) { return players->getPlayer(p)->getHitbox(); }

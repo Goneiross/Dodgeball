@@ -24,7 +24,7 @@ bool updatePlayers();
 void dracarys();
 
 int getPlayerNb();
-int getPlayerTimeTouched(int p);
+int getPlayerLife(int p);
 double getPlayerRadius();
 int getPlayerCount(int p);
 Circle *getPlayerHitbox(int p);

@@ -18,7 +18,7 @@ using namespace std;
 
 Player::Player(double x0, double y0, int t, double c, double r, int line, int column,
                double v, int i) {
-    timeTouched = t;
+    life = t;
     ID = i;
     count = c;
     velocity = v;
@@ -30,8 +30,8 @@ Player::Player(double x0, double y0, int t, double c, double r, int line, int co
 }
 
 bool Player::touchedAndDead() {
-    timeTouched += 1;
-    if (timeTouched == MAX_TOUCH) {
+    life += 1;
+    if (life == MAX_TOUCH) {
         return (true);
     }
     return (false);
@@ -52,8 +52,8 @@ void Player::setC(int c) { colPos = c; }
 double Player::getRadius() const { return hitbox->getRadius(); }
 double Player::getCount() const { return count; }
 void Player::setCount(int c) { count = c; }
-double Player::getTimeTouched() const { return timeTouched; }
-void Player::setTimeTouched(int t) { timeTouched = t; }
+double Player::getLife() const { return life; }
+void Player::setLife(int t) { life = t; }
 
 Circle *Player::getHitbox() const { return hitbox; }
 

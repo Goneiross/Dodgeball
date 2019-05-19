@@ -13,7 +13,7 @@
 
 class Player {
   public:
-    Player(double xPosition, double yPosition, int timeTouched, double counter,
+    Player(double xPosition, double yPosition, int life, double counter,
            double radius, int lPosition, int cPosition, double velocity, int ID);
     ~Player(){};
 
@@ -28,7 +28,7 @@ class Player {
     int getID() const;
     double getRadius() const;
     double getCount() const;
-    double getTimeTouched() const;
+    double getLife() const;
     Circle *getHitbox() const;
     double getVelocity() const;
 
@@ -37,10 +37,10 @@ class Player {
     void setGX(double gY);
     void setGY(double gY);
     void setCount(int c);
-    void setTimeTouched(int t);
+    void setLife(int t);
 
   private:
-    int timeTouched;
+    int life;
     int ID;
     int lgnPos, colPos;
     double count;
@@ -53,7 +53,7 @@ class PlayerMap : public Map {
   public:
     PlayerMap(int lgnPos, int colPos);
     ~PlayerMap(){};
-    void addPlayer(double xPosition, double yPosition, int timeTouched, double counter,
+    void addPlayer(double xPosition, double yPosition, int life, double counter,
                    double radius, double velocity, int ID);
     void removePlayer(int ID);
     void removeAll();
