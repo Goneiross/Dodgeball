@@ -135,10 +135,12 @@ int PlayerMap::getNb() const { return players.size(); }
 int PlayerMap::getLNb() const { return lineNumber; }
 int PlayerMap::getCNb() const { return columnNumber; }
 
-bool PlayerMap::isCollision(int newX, int newY, int ID, double delta) {
+bool PlayerMap::isCollision(int newX, int newY, int ID, double delta, double varX,
+                            double varY) {
     for (int i = 0; i < players.size(); i++) {
         if (i != ID) {
-            double d = distanceAbs(players[i]->getX(), players[i]->getY(), newX, newY);
+            double d = distanceAbs(players[i]->getX() - varX,players[i]->getY() - varY,
+                                    newX, newY);
             if (d < (delta + players[i]->getRadius() +
                      players[ID]->getRadius())) { 
                 return true;
@@ -154,17 +156,19 @@ void PlayerMap::updatePosition() {
             players[p]->setCount(players[p]->getCount() + 1);
         }
         double angle = nearestPlayerAngle(p);
-        double newX = players[p]->getX() + cos(angle) * players[p]->getVelocity();
-        double newY = players[p]->getY() + sin(angle) * players[p]->getVelocity();
+        double varX = cos(angle) * players[p]->getVelocity() * DELTA_T;
+        double varY = sin(angle) * players[p]->getVelocity() * DELTA_T;
+        double newX = players[p]->getX() + varX;
+        double newY = players[p]->getY() + varY;
         int newC = ((newX + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
         int newL = -((newY - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
         
-        if (newX > (DIM_MAX - players[p]->getHitbox()->getRadius()) ||
-            newX < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {continue;} // Et les marges ?
-        if (newY > (DIM_MAX - players[p]->getHitbox()->getRadius()) ||
-            newY < (-DIM_MAX + players[p]->getHitbox()->getRadius())) {continue;} // Et les marges ?
+        if (newX > (DIM_MAX - delta - players[p]->getHitbox()->getRadius()) ||
+            newX < (-DIM_MAX +delta +players[p]->getHitbox()->getRadius())) {continue;}
+        if (newY > (DIM_MAX - delta - players[p]->getHitbox()->getRadius()) ||
+            newY < (-DIM_MAX +delta +players[p]->getHitbox()->getRadius())) {continue;}
         if (isDifferentPlayer(newL, newC, players[p]->getID())) {continue;}
-        if (isCollision(newX, newY, p, delta)) {continue;}
+        if (isCollision(newX, newY, p, delta, varX, varY)) {continue;}
         players[p]->setL(newL); players[p]->setC(newC);
         players[p]->getHitbox()->setX(newX); players[p]->getHitbox()->setY(newY);
 

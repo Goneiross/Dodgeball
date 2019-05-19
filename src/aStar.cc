@@ -4,7 +4,7 @@
   \date   May 2019
   \brief  A* implementation
 */
-
+#include <iostream>
 #include <cmath>
 #include <vector>
 
@@ -70,6 +70,7 @@ double whichPath(PlayerMap* players, int startID, int targetID,
     bool foundSolution = false;
 
     do {
+        cout << 1 << endl;
         getBestOpenedNode(openedList, closedList, current);
         if (won(path, current, start, target, foundSolution)) { break; }
         vector<Node*> children;
