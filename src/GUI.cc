@@ -16,6 +16,12 @@
 
 using namespace Gtk;
 
+void drawObstacles(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height);
+void drawBalls(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height,
+               int lesser);
+void drawPlayers(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height,
+                 int lesser);
+
 class MyArea : public DrawingArea {
   public:
     MyArea(){};
@@ -58,7 +64,7 @@ void drawPlayers(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height,
         double GX = width / 2 + player->getX();
         double GY = height / 2 - player->getY();
 
-        if (getPlayerLife(p) >= 4) { //PUT IN A FUNCTION !!!
+        if (getPlayerLife(p) >= 4) { // PUT IN A FUNCTION !!!
             cr->set_source_rgba(0.0, 1, 0.0, 1);
         } else if (getPlayerLife(p) == 3) {
             cr->set_source_rgba(1, 1, 0, 1);
@@ -319,7 +325,7 @@ bool GUI::on_timeout() {
     }
 }
 
-int draw(bool success) {
+int draw(bool success) { // A REFAIRE
     auto app = Application::create();
 
     GUI mainWindow;
