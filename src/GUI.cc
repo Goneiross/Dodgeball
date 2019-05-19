@@ -50,59 +50,57 @@ void MyArea::refresh() {
     }
 }
 
-bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
-    Allocation allocation = get_allocation();
-    int width = allocation.get_width();
-    int height = allocation.get_height();
-    int lesser = MIN(width, height);
+void drawPlayers(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height,
+                 int lesser) {
+    int nbPlayer = getPlayerNb();
+    for (int p = 0; p < nbPlayer; p++) {
+        Circle *player = getPlayerHitbox(p);
+        double GX = width / 2 + player->getX();
+        double GY = height / 2 - player->getY();
+
+        if (getPlayerTimeTouched(p) >= 4) { // Rename var //PUT IN A FUNCTION !!!
+            cr->set_source_rgba(0.0, 1, 0.0, 1);
+        } else if (getPlayerTimeTouched(p) == 3) {
+            cr->set_source_rgba(1, 1, 0, 1);
+        } else if (getPlayerTimeTouched(p) == 2) {
+            cr->set_source_rgba(0.8745, 0.42745, 0.07843, 1);
+        } else {
+            cr->set_source_rgba(1.0, 0.0, 0.0, 1);
+        }
+        cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
+        cr->fill_preserve();
+        cr->stroke();
+        cr->set_source_rgba(0.0, 0.0, 1.0, 1);
+        cr->set_line_width(0.2 * getPlayerRadius());
+        cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0,
+                ((double)getPlayerCount(p) / MAX_COUNT) * (2 * M_PI));
+        cr->stroke();
+        player = nullptr;
+    }
+    cr->restore();
+}
+
+void drawBalls(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height,
+               int lesser) {
+    int nbBall = getBallNb();
     cr->save();
-    cr->set_source_rgb(1, 1, 1);
-    cr->rectangle(0, 0, get_width(), get_height());
-    cr->fill();
-    if (not empty) {
-        int nbPlayer = getPlayerNb();
-        for (int p = 0; p < nbPlayer; p++) {
-            Circle *player = getPlayerHitbox(p);
-            double GX = width / 2 + player->getX();
-            double GY = height / 2 - player->getY();
+    cr->set_source_rgba(0.0, 0.0, 1, 1);
+    for (int b = 0; b < nbBall; b++) {
+        Circle *ball = getBallHitbox(b);
 
-            if (getPlayerTimeTouched(p) >= 4) { // Rename var //PUT IN A FUNCTION !!!
-                cr->set_source_rgba(0.0, 1, 0.0, 1);
-            } else if (getPlayerTimeTouched(p) == 3) {
-                cr->set_source_rgba(1, 1, 0, 1);
-            } else if (getPlayerTimeTouched(p) == 2) {
-                cr->set_source_rgba(0.8745, 0.42745, 0.07843, 1);
-            } else {
-                cr->set_source_rgba(1.0, 0.0, 0.0, 1);
-            }
-            cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
-            cr->fill_preserve();
-            cr->stroke();
-            cr->set_source_rgba(0.0, 0.0, 1.0, 1);
-            cr->set_line_width(0.2 * getPlayerRadius());
-            cr->arc(GX, GY, (getPlayerRadius() / SIDE) * lesser, 0.0,
-                    ((double)getPlayerCount(p) / MAX_COUNT) * (2 * M_PI));
-            cr->stroke();
-            player = nullptr;
-        }
-        cr->restore();
-        int nbBall = getBallNb();
-        cr->save();
-        cr->set_source_rgba(0.0, 0.0, 1, 1);
-        for (int b = 0; b < nbBall; b++) {
-            Circle *ball = getBallHitbox(b);
+        double GX = width / 2 + ball->getX();
+        double GY = height / 2 - ball->getY();
 
-            double GX = width / 2 + ball->getX();
-            double GY = height / 2 - ball->getY();
+        cr->arc(GX, GY, (getBallRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
+        cr->fill_preserve();
+        cr->stroke();
+        ball = nullptr;
+    }
+    cr->restore();
+}
 
-            cr->arc(GX, GY, (getBallRadius() / SIDE) * lesser, 0.0, 2.0 * M_PI);
-            cr->fill_preserve();
-            cr->stroke();
-            ball = nullptr;
-        }
-        cr->restore();
-
-        int nbObstacle = getObstacleNb();
+void drawObstacles(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height) {
+                   int nbObstacle = getObstacleNb();
         cr->save();
         cr->set_source_rgba(0.4, 0, 0.6, 1);
         for (int o = 0; o < nbObstacle; o++) {
@@ -121,6 +119,24 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
             obstacle = nullptr;
         }
         cr->restore();
+               }
+
+bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
+    Allocation allocation = get_allocation();
+    int width = allocation.get_width(), height = allocation.get_height();
+    int lesser = MIN(width, height);
+    cr->save();
+    cr->set_source_rgb(1, 1, 1);
+    cr->rectangle(0, 0, get_width(), get_height());
+    cr->fill();
+    if (not empty) {
+
+        drawPlayers(cr, width, height, lesser);
+
+        drawBalls(cr, width, height, lesser);
+
+        drawObstacles(cr, width, height);
+        
     } else {
     }
     return true;
@@ -194,7 +210,8 @@ GUI::GUI()
 
     show_all_children();
     maximize();
-    won = false; noSolution = false;
+    won = false;
+    noSolution = false;
 }
 
 GUI::~GUI() {}
