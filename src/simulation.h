@@ -20,7 +20,7 @@ bool isOut(double xPosision, double yPosition);
 bool check();
 void updateBalls();
 bool updatePlayers();
-void dracarys();
+void fireBall();
 
 int getPlayerNb();
 int getPlayerLife(int p);

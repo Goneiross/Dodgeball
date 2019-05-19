@@ -271,7 +271,7 @@ void GUI::on_button_clicked_start() {
 void GUI::on_button_clicked_step() {
     if (not won && not noSolution) {
         noSolution = updatePlayers();
-        dracarys();
+        fireBall();
         updateBalls();
         won = check();
         if (noSolution) { m_label_status.set_label("Cannot complete the game!"); }
@@ -298,7 +298,7 @@ bool GUI::on_timeout() {
     } else {
         if (not won && not noSolution) {
             noSolution = updatePlayers();
-            dracarys();
+            fireBall();
             updateBalls();
             won = check();
             auto win = get_window();

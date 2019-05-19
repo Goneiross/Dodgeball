@@ -72,7 +72,7 @@ void simulation(int mode, string inputFile, string saveFile){
 
     case STEP_MODE:
         updatePlayers(); 
-        dracarys();
+        fireBall();
         updateBalls();
         check();
         save(saveFile);
@@ -265,7 +265,7 @@ bool updatePlayers() {
     }
 }
 
-void dracarys() {
+void fireBall() {
     double ballRadius =
         COEF_RAYON_BALLE * (SIDE / obstacles->getLNb()); // Changer ca !
     double playerRadius =
