@@ -89,20 +89,16 @@ void simulation(int mode, string inputFile, string saveFile){
 }
 
 bool initialization(string inputFile, int mode) {
-    bool error = false;
-    int nbPlayer = 0, nbObstacle = 0, nbBall = 0, parseType = 0;
+    bool error = false; int nbPlayer = 0, nbObstacle = 0, nbBall = 0, parseType = 0;
     int p = 0, o = 0, b = 0; // ID of the currently selected object/player/ball
     double ballRadius = 0, ballVelocity = 0, playerRadius = 0, playerVelocity = 0;
-    double ingameMargin = 0, parsingMargin = 0;
-    string inputData[4];
-    char charBin;
+    double ingameMargin = 0, parsingMargin = 0; string inputData[4]; char charBin;
     enum parseType {cellParsing = 0, playerNumberParsing, playerParsing,
         obstacleNumberParsing, obstacleParsing, ballNumberParsing, ballParsing};
     ifstream flux(inputFile, ios::in);
-    if (!flux) {
-        cout << "Unable to open file " << inputFile << endl;
-        exit(0);
-    }
+
+    if (!flux) {cout << "Unable to open file " << inputFile << endl; exit(0);}
+    
     while (flux >> inputData[0]) {
         if (error) {
             return false;
@@ -113,29 +109,23 @@ bool initialization(string inputFile, int mode) {
             case cellParsing:
                 parseData(ingameMargin, parsingMargin, inputData[0], error);
                 initConstants(ballRadius, ballVelocity, playerRadius, playerVelocity);
-                parseType++;
-                break;
+                parseType++; break;
             case playerNumberParsing:
                 nbPlayer = stoi(inputData[0]);
                 players->reserveSpace(nbPlayer);
-                if (nbPlayer == 0) {parseType += 2;} else {parseType++;}
-                break;
+                if (nbPlayer == 0) {parseType += 2;} else {parseType++;} break;
             case playerParsing:
                 flux >> inputData[1] >> inputData[2] >> inputData[3];
                 parsePlayer(p, parsingMargin, playerRadius, playerVelocity,
                             inputData[0], inputData[1], inputData[2], inputData[3],
-                            error, mode);
-                p++;
-                if (p == nbPlayer) {parseType++;}
-                break;
+                            error, mode); p++;
+                if (p == nbPlayer) {parseType++;} break;
             case obstacleNumberParsing:
                 nbObstacle = stoi(inputData[0]);
-                if (nbObstacle == 0) {parseType += 2;} else {parseType++;}
-                break;
+                if (nbObstacle == 0) {parseType += 2;} else {parseType++;} break;
             case obstacleParsing:
                 flux >> inputData[1];
-                parseObstacle(o, inputData[0], inputData[1], error, mode);
-                o++;
+                parseObstacle(o, inputData[0], inputData[1], error, mode); o++;
                 if (o == nbObstacle && not error) {
                     for (int i = 0; i < nbPlayer; i++) {
                         vector<int> toCheck;
@@ -153,16 +143,13 @@ bool initialization(string inputFile, int mode) {
                 break;
             case ballNumberParsing:
                 nbBall = stoi(inputData[0]);
-                balls->reserveSpace(nbBall + nbPlayer);
-                parseType++;
-                if (nbBall == 0) {parseType++;}
-                break;
+                balls->reserveSpace(nbBall + nbPlayer); parseType++;
+                if (nbBall == 0) {parseType++;} break;
             case ballParsing:
                 flux >> inputData[1] >> inputData[2];
                 parseBall(nbPlayer, nbObstacle, parsingMargin, b, ballRadius,
                           ballVelocity, inputData[0], inputData[1], inputData[2],
-                          error, mode);
-                b++;
+                          error, mode); b++;
                 if (b == nbBall && not error) {
                     for (int i = 0; i < nbBall; i++) {
                         vector<int> toCheck;
