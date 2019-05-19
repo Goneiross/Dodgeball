@@ -284,6 +284,9 @@ void GUI::on_button_clicked_step() {
         }
     } else if (won) {
         m_label_status.set_label("Game’s over !");
+        disconnect = true;
+        timer_added = false;
+        m_button_start.set_label("Start");
         newGame();
     } else if (noSolution) {
         m_label_status.set_label("Cannot complete the game!");
@@ -310,6 +313,9 @@ bool GUI::on_timeout() {
             return true;
         } else if (won) {
             m_label_status.set_label("Game’s over !");
+            disconnect = true;
+            timer_added = false;
+            m_button_start.set_label("Start");
             newGame();
             return true;
         } else if (noSolution) {
