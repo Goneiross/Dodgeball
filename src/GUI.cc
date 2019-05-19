@@ -184,7 +184,6 @@ GUI::GUI()
       disconnect(false), timeoutValue(DELTA_T * 1000) {
     set_title("DodgeBall");
     set_border_width(0);
-
     m_box1.set_size_request(10, 10);
 
     add(m_box_top);

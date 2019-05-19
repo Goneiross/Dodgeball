@@ -6,7 +6,7 @@
 */
 
 /*
- * We use A* algorithmby default, we don't recommand using this one, as we have some
+ * We use A* algorithm by default, we don't recommand using this one, as we have some
  * angle errors and we don't have time to correct it for now. See github branch
  * floydDebug for more info, such as debug cout, comments everywhere and more recent
  * updates.
