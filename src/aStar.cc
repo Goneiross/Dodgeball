@@ -40,7 +40,7 @@ class Node {
     int beginCost;
 };
 
-Node::Node(Tile at, Node *from = nullptr)
+Node::Node(Tile at, Node *from)
     : position(at), totalCost(0), endCost(0), beginCost(0), parent(from) {}
 
 Node::Node(Node *const &copy)
