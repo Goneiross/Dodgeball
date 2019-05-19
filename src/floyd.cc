@@ -32,6 +32,7 @@ bool isThereObstacleInLine(int l1, int c1, int l2, int c2, ObstacleMap *obstacle
 double simplePath(Player *start, Player *target);
 void complexPath(Player *start, Player *target, int infinityInit, int infinityDist,
                  bool &firstInStep);
+void basicTableInit(int nbCell, int nbCellSquared, int infinityInit);
 void floyd(Player *start, Player *target, int infinityInit, int infinityDist);
 void diagDist(unsigned int i, unsigned int j, ObstacleMap *obstacles);
 void diagDistFromUp(unsigned int i, unsigned int j, int iC, int iL, int jC, int jL,
@@ -120,13 +121,7 @@ double simplePath(Player *start, Player *target) {
     return angle(start->getX(), start->getY(), target->getX(), target->getY());
 }
 
-void floyd(Player *start, Player *target, int infinityInit, int infinityDist,
-           ObstacleMap *obstacles) {
-    int nbCell = obstacles->getLNb();
-    int nbCellSquared = pow(nbCell, 2);
-    tabDist.resize(nbCellSquared, vector<double>(nbCellSquared, infinityInit));
-    angles.resize(nbCellSquared, vector<double>(nbCellSquared, 0));
-    previousObstacles.resize(nbCell, vector<int>(nbCell, 0));
+void basicTableInit(int nbCell, int nbCellSquared, int infinityInit) {
     for (int i(0); i < nbCellSquared; i++) {
         for (int j(0); j < nbCellSquared; j++) { tabDist[i][j] = infinityInit; }
         for (int j(0); j < i; j++) {
@@ -157,6 +152,18 @@ void floyd(Player *start, Player *target, int infinityInit, int infinityDist,
             }
         }
     }
+}
+
+void floyd(Player *start, Player *target, int infinityInit, int infinityDist,
+           ObstacleMap *obstacles) {
+    int nbCell = obstacles->getLNb();
+    int nbCellSquared = pow(nbCell, 2);
+    tabDist.resize(nbCellSquared, vector<double>(nbCellSquared, infinityInit));
+    angles.resize(nbCellSquared, vector<double>(nbCellSquared, 0));
+    previousObstacles.resize(nbCell, vector<int>(nbCell, 0));
+
+    basicTableInit(nbCell, nbCellSquared, infinityInit);
+
     for (int i(0); i < nbCellSquared; i++) {
         if (obstacles->isObstacle(i % nbCell, i / nbCell)) {
             for (int j(0); j < nbCellSquared; j++) {
