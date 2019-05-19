@@ -289,6 +289,9 @@ void GUI::on_button_clicked_step() {
         m_button_start.set_label("Start");
         newGame();
     } else if (noSolution) {
+        disconnect = true;
+        timer_added = false;
+        m_button_start.set_label("Start");
         m_label_status.set_label("Cannot complete the game!");
         newGame();
     }
@@ -320,6 +323,9 @@ bool GUI::on_timeout() {
             return true;
         } else if (noSolution) {
             m_label_status.set_label("Cannot complete the game!");
+            disconnect = true;
+            timer_added = false;
+            m_button_start.set_label("Start");
             newGame();
             return true;
         }
