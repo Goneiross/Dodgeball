@@ -14,7 +14,7 @@ class Map {
     virtual ~Map(){};
     int getLNb() const;
     int getCNb() const;
-    // virtual int getNb() const {};
+    virtual int getNb() const {};
   protected:
     int lineNumber, columnNumber;
 };

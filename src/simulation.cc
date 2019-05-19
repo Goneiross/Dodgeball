@@ -259,7 +259,7 @@ bool isOut(double xPosition, double yPosition) {
     }
 }
 
-bool check() { // Et si ca touche both player et obstacle en meme temps ?
+bool check() {
     double delta = COEF_MARGE_JEU * (SIDE / (double)obstacles->getLNb()); // Map
     int b = 0;
     while (b < balls->getNb()) {
