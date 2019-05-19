@@ -1,5 +1,5 @@
 CC     = g++
-CFLAGS = -g -Wall -std=c++11
+CFLAGS = -g -std=c++11
 OFILES = ball.o GUI.o main.o map.o player.o simulation.o tools.o obstacle.o floyd.o pathfinding.o aStar.o
 
 projet: $(OFILES)

@@ -171,10 +171,11 @@ bool initialization(string inputFile, int mode) {
 static void initConstants(double &ballRadius, double &ballVelocity,
                           double &playerRadius, double &playerVelocity) {
     int nbCell = obstacles->getLNb(); // MAP
-    ballRadius = COEF_RAYON_BALLE * (SIDE / nbCell);
-    ballVelocity = COEF_VITESSE_BALLE * (SIDE / nbCell);
-    playerRadius = COEF_RAYON_JOUEUR * (SIDE / nbCell);
-    playerVelocity = COEF_VITESSE_JOUEUR * (SIDE / nbCell);
+    double globalCoef = SIDE / nbCell;
+    ballRadius = COEF_RAYON_BALLE * globalCoef;
+    ballVelocity = COEF_VITESSE_BALLE * globalCoef;
+    playerRadius = COEF_RAYON_JOUEUR * globalCoef;
+    playerVelocity = COEF_VITESSE_JOUEUR * globalCoef;
 }
 
 void save(string filename) {
