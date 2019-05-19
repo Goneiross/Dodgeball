@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "aStar.h"
+#include "define.h"
 #include "floyd.h"
 #include "obstacle.h"
 #include "player.h"
@@ -24,7 +25,7 @@ static vector<double> pathAngles;
 static int infinityInit;
 static int infinityDist;
 
-bool pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1) {
+bool pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = ASTAR) {
     bool firstInStep = true;
     infinityDist = pow(obstacles->getCNb(), 2);
     infinityInit = infinityDist + 1;
@@ -33,11 +34,11 @@ bool pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type = 1) {
     targets = targetting(players, infinityInit, infinityDist);
     auto start = high_resolution_clock::now();
     for (int p = 0; p < players->getNb(); p++) {
-        if (type == 0) {
+        if (type == FLOYD) {
             pathAngles[p] =
                 whichPath(players->getPlayer(p), players->getPlayer(targets[p]),
                           infinityInit, infinityDist, obstacles, firstInStep);
-        } else {
+        } else if (type == ASTAR){
             pathAngles[p] = whichPath(players, p, targets[p], obstacles);
         }
         if (pathAngles[p] == 42) {
