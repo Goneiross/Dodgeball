@@ -71,7 +71,7 @@ void simulation(int mode, string inputFile, string saveFile){
         break;
 
     case STEP_MODE:
-        updatePlayers(); // Cannot complete the game! WHAT TO DO
+        updatePlayers(); 
         dracarys();
         updateBalls();
         check();
