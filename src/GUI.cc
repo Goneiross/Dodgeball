@@ -321,11 +321,11 @@ bool GUI::on_timeout() {
     }
 }
 
-int draw(bool success) { // A REFAIRE
+int draw(bool success, bool won) {
     auto app = Application::create();
-
     GUI mainWindow;
-    if (success) { mainWindow.setLabelStatus("Game ready to run"); }
+    if (won && success) { mainWindow.setLabelStatus("Game’s over !"); }
+    else if (success) { mainWindow.setLabelStatus("Game ready to run"); }
     app->run(mainWindow);
     return 0;
 }

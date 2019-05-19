@@ -45,9 +45,9 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     if (saveFile == "") {
-        simulation(inputFile, mode);
+        simulation(mode, inputFile);
     } else {
-        simulation(inputFile, saveFile, mode);
+        simulation(mode, inputFile, saveFile);
     }
     return 0;
 }

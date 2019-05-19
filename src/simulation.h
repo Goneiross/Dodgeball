@@ -12,8 +12,7 @@
 
 #include "tools.h"
 
-void simulation(std::string inputFile, int mode);
-void simulation(std::string inputFile, std::string saveFile, int mode);
+void simulation(int mode, std::string inputFile, std::string saveFile = "");
 void newGame();
 void save(std::string filename);
 bool initialization(std::string inputFile, int mode);

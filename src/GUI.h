@@ -8,6 +8,6 @@
 #ifndef GUI_H
 #define GUI_H
 
-int draw(bool success);
+int draw(bool success, bool won);
 
 #endif

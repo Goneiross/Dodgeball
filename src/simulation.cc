@@ -54,69 +54,38 @@ void newGame() {
     obstacles = new ObstacleMap(0, 0);
 }
 
-void simulation(std::string inputFile, std::string saveFile, int mode) {
+
+void simulation(int mode, string inputFile, string saveFile){
     bool success = false;
+    bool won = false;
+    if (inputFile != "") {success = initialization(inputFile, mode);}
+    switch (mode) {
+    case NORMAL_MODE:
+        if (not success) {newGame();}
+        else if (success && players->getNb() < 2) {won = true;}
+        draw(success, won);
+        break;
 
-    if (inputFile != "") {
-        success = initialization(inputFile, mode);
-    }
+    case ERROR_MODE:
+        if (success) {cout << FILE_READING_SUCCESS << endl;}
+        break;
 
-    if (mode == ERROR_MODE) {
-        if (success) {
-            cout << FILE_READING_SUCCESS << endl;
-        }
-        delete obstacles;
-        delete players;
-        delete balls;
-        return;
-    } else if (mode == STEP_MODE) {
+    case STEP_MODE:
         updatePlayers(); // Cannot complete the game! WHAT TO DO
         dracarys();
         updateBalls();
         check();
         save(saveFile);
-        delete obstacles;
-        delete players;
-        delete balls;
-        return;
-    } else {
-        if (not success) {
-            newGame();
-        }
-        draw(success);
-        delete obstacles;
-        delete players;
-        delete balls;
-        return;
+        break;
+    
+    default:
+        cout << "Wrong mode selection" << endl;
+        break;
     }
-}
-
-void simulation(std::string inputFile, int mode) {
-    newGame();
-    bool success = false;
-
-    if (inputFile != "") {
-        success = initialization(inputFile, mode);
-    }
-
-    if (mode == ERROR_MODE) {
-        if (success) {
-            cout << FILE_READING_SUCCESS << endl;
-        }
-        delete obstacles;
-        delete players;
-        delete balls;
-        return;
-    } else {
-        if (not success) {
-            newGame();
-        }
-        draw(success);
-        delete obstacles;
-        delete players;
-        delete balls;
-        return;
-    }
+    delete obstacles;
+    delete players;
+    delete balls;
+    return;
 }
 
 bool initialization(string inputFile, int mode) {
@@ -222,6 +191,7 @@ static void initConstants(double &ballRadius, double &ballVelocity,
 }
 
 void save(string filename) {
+    if (filename == ""){cout << "ERROR wrong save file name" << endl; exit(1);} 
     ofstream flux(filename, std::ofstream::out);
     int nbCell = obstacles->getLNb(); // Map
     int n = 0;
