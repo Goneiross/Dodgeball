@@ -40,12 +40,10 @@ bool pathfinding(PlayerMap *players, ObstacleMap *obstacles, int type) {
             pathAngles[p] =
                 whichPath(players->getPlayer(p), players->getPlayer(targets[p]),
                           infinityInit, infinityDist, obstacles, firstInStep);
-        } else if (type == ASTAR){
+        } else if (type == ASTAR) {
             pathAngles[p] = whichPath(players, p, targets[p], obstacles);
         }
-        if (pathAngles[p] == 42) {
-            return 1;
-        }
+        if (pathAngles[p] == 42) { return 1; }
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
     }

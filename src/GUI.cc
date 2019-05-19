@@ -275,12 +275,8 @@ void GUI::on_button_clicked_step() {
         dracarys();
         updateBalls();
         won = check();
-        if (noSolution) {
-            m_label_status.set_label("Cannot complete the game!");
-        }
-        if (won) {
-            m_label_status.set_label("Game’s over !");
-        }
+        if (noSolution) { m_label_status.set_label("Cannot complete the game!"); }
+        if (won) { m_label_status.set_label("Game’s over !"); }
         auto win = get_window();
         if (win) {
             Gdk::Rectangle r(0, 0, get_allocation().get_width(),
@@ -329,9 +325,7 @@ int draw(bool success) { // A REFAIRE
     auto app = Application::create();
 
     GUI mainWindow;
-    if (success) {
-        mainWindow.setLabelStatus("Game ready to run");
-    }
+    if (success) { mainWindow.setLabelStatus("Game ready to run"); }
     app->run(mainWindow);
     return 0;
 }

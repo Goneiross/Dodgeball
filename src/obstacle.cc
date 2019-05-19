@@ -37,9 +37,7 @@ ObstacleMap::ObstacleMap(int l, int c) : Map(l, c) {
     obstaclesGrid = new int *[lineNumber];
     for (int i = 0; i < lineNumber; i++) {
         obstaclesGrid[i] = new int[columnNumber];
-        for (int j = 0; j < columnNumber; j++) {
-            obstaclesGrid[i][j] = -1;
-        }
+        for (int j = 0; j < columnNumber; j++) { obstaclesGrid[i][j] = -1; }
     }
 }
 
@@ -63,9 +61,7 @@ void ObstacleMap::removeObstacle(int ID) {
 
 void ObstacleMap::removeAll() {
     int obstacleNb = obstacles.size();
-    for (int i = 0; i < obstacleNb; i++) {
-        removeObstacle(0);
-    }
+    for (int i = 0; i < obstacleNb; i++) { removeObstacle(0); }
 }
 
 bool ObstacleMap::isObstacle(double lgnPos, double colPos) {

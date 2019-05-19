@@ -13,8 +13,8 @@
 
 class Player {
   public:
-    Player(double xPosition, double yPosition, int life, double counter,
-           double radius, int lPosition, int cPosition, double velocity, int ID);
+    Player(double xPosition, double yPosition, int life, double counter, double radius,
+           int lPosition, int cPosition, double velocity, int ID);
     ~Player(){};
 
     bool touchedAndDead();

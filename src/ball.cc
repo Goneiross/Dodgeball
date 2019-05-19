@@ -48,21 +48,15 @@ BallMap::BallMap(int l, int c) : Map(l, c) {
     ballGrid = new vector<int> *[lineNumber];
     for (int i = 0; i < lineNumber; i++) {
         ballGrid[i] = new vector<int>[columnNumber];
-        for (int j = 0; j < columnNumber; j++) {
-            ballGrid[i][j].push_back(-1);
-        }
+        for (int j = 0; j < columnNumber; j++) { ballGrid[i][j].push_back(-1); }
     }
 }
 
 void BallMap::addBall(double x, double y, double a, double r, double v, int ID) {
     int colPos = ((x + DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
     int lgnPos = -((y - DIM_MAX) / (SIDE / lineNumber)) - 1 / 2;
-    if (colPos >= columnNumber || colPos < 0) {
-        return;
-    }
-    if (lgnPos >= lineNumber || lgnPos < 0) {
-        return;
-    }
+    if (colPos >= columnNumber || colPos < 0) { return; }
+    if (lgnPos >= lineNumber || lgnPos < 0) { return; }
     balls.push_back(new Ball(x, y, a, r, v, colPos, lgnPos, ID));
     if (ballGrid[lgnPos][colPos][0] == -1) {
         ballGrid[lgnPos][colPos][0] = ID;
@@ -90,9 +84,7 @@ void BallMap::removeBall(int ID) {
 
 void BallMap::removeAll() {
     int ballNb = balls.size();
-    for (int i = 0; i < ballNb; i++) {
-        removeBall(0);
-    }
+    for (int i = 0; i < ballNb; i++) { removeBall(0); }
 }
 
 bool BallMap::isBall(int lgnPos, int colPos) {
@@ -116,9 +108,7 @@ int BallMap::getNb() const { return balls.size(); }
 int BallMap::getNewID() const {
     int maxID = 0;
     for (int b = 0; b < balls.size(); b++) {
-        if (balls[b]->getID() > b) {
-            maxID = balls[b]->getID();
-        }
+        if (balls[b]->getID() > b) { maxID = balls[b]->getID(); }
     }
     return maxID + 1;
 }
