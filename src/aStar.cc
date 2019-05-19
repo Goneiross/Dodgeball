@@ -33,7 +33,7 @@ class Node {
     Node(Tile at);
     Node(Node *from, Tile at);
     Node(Node *const &copy);
-    ~Node() { delete parent; parent = nullptr; };
+    ~Node() { delete parent; };
     Tile position;
     Node *parent;
     int totalCost;
