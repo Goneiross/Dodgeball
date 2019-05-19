@@ -113,6 +113,7 @@ bool won(vector<Tile>& path, Node* current, Node* start, Node* target,
          bool& foundSolution) {
     if (current->position == target->position) {
         Node* back = current;
+        if (start->position == back->position){foundSolution = true; return true;}
         while (not(back->parent->position == start->position)) {
             path.push_back(back->parent->position);
             back = back->parent;
