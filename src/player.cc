@@ -13,6 +13,7 @@
 #include "pathfinding.h"
 #include "player.h"
 #include "tools.h"
+#include "map.h"
 
 using namespace std;
 

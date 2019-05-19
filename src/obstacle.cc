@@ -5,12 +5,13 @@
   \brief  "Obstacle" implementation
 */
 
+#include <iostream>
+#include <vector>
+
 #include "obstacle.h"
 #include "define.h"
 #include "map.h"
 #include "tools.h"
-#include <iostream>
-#include <vector>
 
 using namespace std;
 
