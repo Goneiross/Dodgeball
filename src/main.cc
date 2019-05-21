@@ -22,9 +22,9 @@ int main(int argc, char *argv[]) {
         // cout << "Type '--help' for a list of commands" << endl;
     } else if (argc <= 4) {
         for (int i = 1; i < argc; i++) {
-            if (string(argv[i]) == "Error" && mode == 0) {
+            if (string(argv[i]) == "Error" && mode == ERROR_MODE) {
                 mode = ERROR_MODE;
-            } else if (string(argv[i]) == "Step" && mode == 0) {
+            } else if (string(argv[i]) == "Step" && mode == STEP_MODE) {
                 mode = STEP_MODE;
             } else if (string(argv[i]) == "--help") {
                 cout << "Type :" << endl
