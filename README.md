@@ -1,2 +1,3 @@
-# ICCProject
-Change my name and my description :D
+# Dodgeball simulation
+
+A little simulation as a first year EPFL project.
